@@ -24,11 +24,29 @@ package io.github.ssoloff.polyhedra
 
 import util.Random
 
+/** A die.
+  *
+  * @constructor Creates a new die with the specified number of sides.
+  *
+  * @param sides
+  *   The count of sides the die possesses.
+  *
+  * @throws java.lang.IllegalArgumentException
+  *   If `sides` is not positive.
+  */
 final class Die(val sides: Int) {
   require(sides > 0)
 
+  /** Rolls the die.
+    *
+    * @see [[roll]]
+    */
   def apply(): Int = roll()
 
+  /** Returns the result of rolling the die.
+    *
+    * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
+    */
   def roll(): Int = Random.nextInt(sides) + 1
 }
 

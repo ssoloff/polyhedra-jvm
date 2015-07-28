@@ -29,7 +29,7 @@ final class DieSpec extends FunSpec with Matchers {
     describe("#Die") {
       describe("when sides less than one") {
         it("should throw an exception") {
-          an [IllegalArgumentException] should be thrownBy {
+          an [IllegalArgumentException] should be thrownBy { // scalastyle:ignore no.whitespace.before.left.bracket
             new Die(0)
           }
         }
@@ -38,7 +38,7 @@ final class DieSpec extends FunSpec with Matchers {
 
     describe("#apply") {
       it("should return a value in the range [1,sides]") {
-        val die = new Die(6)
+        val die = new Die(6) // scalastyle:ignore magic.number
 
         val roll = die()
 
@@ -48,7 +48,7 @@ final class DieSpec extends FunSpec with Matchers {
 
     describe("#roll") {
       it("should return a value in the range [1,sides]") {
-        val die = new Die(6)
+        val die = new Die(6) // scalastyle:ignore magic.number
 
         val roll = die.roll()
 
@@ -58,9 +58,9 @@ final class DieSpec extends FunSpec with Matchers {
 
     describe("#sides") {
       it("should return the die sides") {
-        val die = new Die(6)
+        val die = new Die(6) // scalastyle:ignore magic.number
 
-        die.sides should equal (6)
+        die.sides should equal (6) // scalastyle:ignore magic.number
       }
     }
   }

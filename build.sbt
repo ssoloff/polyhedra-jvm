@@ -26,3 +26,5 @@ javacOptions ++= Seq(
   "-Xlint:all"
 )
 
+scalastyleFailOnError := true
+

@@ -25,42 +25,72 @@ package io.github.ssoloff.polyhedra
 import org.scalatest.{FunSpec, Matchers}
 
 final class DieSpec extends FunSpec with Matchers {
+  final val Sides = 6
+
   describe("Die") {
     describe("#Die") {
+      describe("when random number generator is not specified") {
+        it("should use a default random number generator") {
+          noException should be thrownBy new Die(Sides)
+        }
+      }
+
       describe("when sides less than one") {
         it("should throw an exception") {
-          an [IllegalArgumentException] should be thrownBy { // scalastyle:ignore no.whitespace.before.left.bracket
-            new Die(0)
-          }
+          an [IllegalArgumentException] should be thrownBy new Die(0) // scalastyle:ignore no.whitespace.before.left.bracket
         }
       }
     }
 
     describe("#apply") {
-      it("should return a value in the range [1,sides]") {
-        val die = new Die(6) // scalastyle:ignore magic.number
+      describe("when random number generator returns minimum value") {
+        it("should return 1") {
+          val die = new Die(Sides, () => 0.0)
 
-        val roll = die()
+          val roll = die()
 
-        roll should (be >= 1 and be <= 6)
+          roll should equal (1)
+        }
+      }
+
+      describe("when random number generator returns maximum value") {
+        it("should return sides") {
+          val die = new Die(Sides, () => Math.nextAfter(1.0, Double.NegativeInfinity))
+
+          val roll = die()
+
+          roll should equal (Sides)
+        }
       }
     }
 
     describe("#roll") {
-      it("should return a value in the range [1,sides]") {
-        val die = new Die(6) // scalastyle:ignore magic.number
+      describe("when random number generator returns minimum value") {
+        it("should return 1") {
+          val die = new Die(Sides, () => 0.0)
 
-        val roll = die.roll()
+          val roll = die.roll()
 
-        roll should (be >= 1 and be <= 6)
+          roll should equal (1)
+        }
+      }
+
+      describe("when random number generator returns maximum value") {
+        it("should return sides") {
+          val die = new Die(Sides, () => Math.nextAfter(1.0, Double.NegativeInfinity))
+
+          val roll = die.roll()
+
+          roll should equal (Sides)
+        }
       }
     }
 
     describe("#sides") {
       it("should return the die sides") {
-        val die = new Die(6) // scalastyle:ignore magic.number
+        val die = new Die(Sides)
 
-        die.sides should equal (6) // scalastyle:ignore magic.number
+        die.sides should equal (Sides)
       }
     }
   }

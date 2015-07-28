@@ -30,11 +30,14 @@ import util.Random
   *
   * @param sides
   *   The count of sides the die possesses.
+  * @param randomNumberGenerator
+  *   A random number generator that returns a number in the half-open range
+  *   [0,1).
   *
   * @throws java.lang.IllegalArgumentException
   *   If `sides` is not positive.
   */
-final class Die(val sides: Int) {
+final class Die(val sides: Int, randomNumberGenerator: () => Double = Random.nextDouble) {
   require(sides > 0)
 
   /** Rolls the die.
@@ -47,6 +50,6 @@ final class Die(val sides: Int) {
     *
     * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
     */
-  def roll(): Int = Random.nextInt(sides) + 1
+  def roll(): Int = (randomNumberGenerator() * sides).toInt + 1
 }
 

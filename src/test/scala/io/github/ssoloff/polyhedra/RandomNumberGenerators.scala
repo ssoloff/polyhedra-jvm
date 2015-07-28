@@ -22,40 +22,23 @@
 
 package io.github.ssoloff.polyhedra
 
-import org.scalatest.{FunSpec, Matchers}
+import util.Random
 
-final class BagSpec extends FunSpec with Matchers with RandomNumberGenerators {
-  private[this] final val Sides = 6
+/** Trait that provides common random number generators used for dice testing.
+  */
+trait RandomNumberGenerators {
+  /** A random number generator that always returns the maximum value
+    * (1 - ULP).
+    */
+  final val AlwaysMaximumRandomNumberGenerator = () => Math.nextAfter(1.0, Double.NegativeInfinity)
 
-  private[this] def createBag(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator) =
-    new Bag(randomNumberGenerator)
+  /** A random number generator that always returns the minimum value (0).
+    */
+  final val AlwaysMinimumRandomNumberGenerator = () => 0.0
 
-  describe("Bag") {
-    describe("#Bag") {
-      describe("when random number generator is not specified") {
-        it("should use a default random number generator") {
-          noException should be thrownBy new Bag()
-        }
-      }
-    }
-
-    describe("#d") {
-      it("should return a die with the specified number of sides") {
-        val bag = createBag()
-
-        val die = bag.d(Sides)
-
-        die.sides should equal (Sides)
-      }
-
-      it("should return a die that uses the configured random number generator") {
-        val bag = createBag(AlwaysMinimumRandomNumberGenerator)
-
-        val die = bag.d(Sides)
-
-        die.roll() should equal (1)
-      }
-    }
-  }
+  /** The default random number generator that samples from a uniform
+    * distribution.
+    */
+  final val DefaultRandomNumberGenerator = Random.nextDouble _
 }
 

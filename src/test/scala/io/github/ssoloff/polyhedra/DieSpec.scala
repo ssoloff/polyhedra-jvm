@@ -23,15 +23,12 @@
 package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
-import util.Random
 
-final class DieSpec extends FunSpec with Matchers {
-  private final val AlwaysMaximumRandomNumberGenerator = () => Math.nextAfter(1.0, Double.NegativeInfinity)
-  private final val AlwaysMinimumRandomNumberGenerator = () => 0.0
-  private final val DefaultRandomNumberGenerator = Random.nextDouble _
-  private final val Sides = 6
+final class DieSpec extends FunSpec with Matchers with RandomNumberGenerators {
+  private[this] final val Sides = 6
 
-  private final def createDie(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator): Die = new Die(Sides, randomNumberGenerator)
+  private[this] final def createDie(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator): Die =
+    new Die(Sides, randomNumberGenerator)
 
   describe("Die") {
     describe("#Die") {

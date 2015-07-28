@@ -22,43 +22,42 @@
 
 package io.github.ssoloff.polyhedra
 
-/** A die.
-  *
-  * @constructor Creates a new die with the specified number of sides.
-  *
-  * @param sides
-  *   The count of sides the die possesses.
-  * @param randomNumberGenerator
-  *   A random number generator that returns a number in the half-open range
-  *   [0,1).
-  *
-  * @throws java.lang.IllegalArgumentException
-  *   If `sides` is not positive.
-  */
-final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator) {
-  require(sides > 0)
+import org.scalatest.{FunSpec, Matchers}
+import util.Random
 
-  /** Rolls the die.
-    *
-    * @see [[roll]]
-    */
-  def apply(): Int = roll()
+final class BagSpec extends FunSpec with Matchers {
+  private final val AlwaysMinimumRandomNumberGenerator = () => 0.0
+  private final val DefaultRandomNumberGenerator = Random.nextDouble _
+  private final val Sides = 6
 
-  /** Returns the result of rolling the die.
-    *
-    * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
-    */
-  def roll(): Int = (randomNumberGenerator() * sides).toInt + 1
-}
+  private def createBag(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator) = new Bag(randomNumberGenerator)
 
-/** Provides useful members for working with dice.
-  */
-object Die {
-  /** A random number generator that returns a number in the half-open range
-    * [0,1).
-    *
-    * @return A random number in the half-open range [0,1).
-    */
-  type RandomNumberGenerator = () => Double
+  describe("Bag") {
+    describe("#Bag") {
+      describe("when random number generator is not specified") {
+        it("should use a default random number generator") {
+          noException should be thrownBy new Bag()
+        }
+      }
+    }
+
+    describe("#d") {
+      it("should return a die with the specified number of sides") {
+        val bag = createBag()
+
+        val die = bag.d(Sides)
+
+        die.sides should equal (Sides)
+      }
+
+      it("should return a die that uses the configured random number generator") {
+        val bag = createBag(AlwaysMinimumRandomNumberGenerator)
+
+        val die = bag.d(Sides)
+
+        die.roll() should equal (1)
+      }
+    }
+  }
 }
 

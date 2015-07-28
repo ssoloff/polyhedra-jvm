@@ -22,43 +22,26 @@
 
 package io.github.ssoloff.polyhedra
 
-/** A die.
+import util.Random
+
+/** A dice bag.
   *
-  * @constructor Creates a new die with the specified number of sides.
+  * @constructor Creates a new dice bag.
   *
-  * @param sides
-  *   The count of sides the die possesses.
   * @param randomNumberGenerator
-  *   A random number generator that returns a number in the half-open range
-  *   [0,1).
-  *
-  * @throws java.lang.IllegalArgumentException
-  *   If `sides` is not positive.
+  *   A random number generator.
   */
-final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator) {
-  require(sides > 0)
-
-  /** Rolls the die.
+final class Bag(randomNumberGenerator: Die.RandomNumberGenerator = Random.nextDouble) {
+  /** Creates a new die with the specified count of sides.
     *
-    * @see [[roll]]
-    */
-  def apply(): Int = roll()
-
-  /** Returns the result of rolling the die.
+    * @param sides
+    *   The count of sides the die possesses.
     *
-    * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
-    */
-  def roll(): Int = (randomNumberGenerator() * sides).toInt + 1
-}
-
-/** Provides useful members for working with dice.
-  */
-object Die {
-  /** A random number generator that returns a number in the half-open range
-    * [0,1).
+    * @return The new die.
     *
-    * @return A random number in the half-open range [0,1).
+    * @throws java.lang.IllegalArgumentException
+    *   If `sides` is not positive.
     */
-  type RandomNumberGenerator = () => Double
+  def d(sides: Int): Die = new Die(sides, randomNumberGenerator)
 }
 

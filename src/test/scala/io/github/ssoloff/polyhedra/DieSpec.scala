@@ -23,21 +23,21 @@
 package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
+import util.Random
 
 final class DieSpec extends FunSpec with Matchers {
-  final val Sides = 6
+  private final val AlwaysMaximumRandomNumberGenerator = () => Math.nextAfter(1.0, Double.NegativeInfinity)
+  private final val AlwaysMinimumRandomNumberGenerator = () => 0.0
+  private final val DefaultRandomNumberGenerator = Random.nextDouble _
+  private final val Sides = 6
+
+  private final def createDie(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator): Die = new Die(Sides, randomNumberGenerator)
 
   describe("Die") {
     describe("#Die") {
-      describe("when random number generator is not specified") {
-        it("should use a default random number generator") {
-          noException should be thrownBy new Die(Sides)
-        }
-      }
-
       describe("when sides less than one") {
         it("should throw an exception") {
-          an [IllegalArgumentException] should be thrownBy new Die(0) // scalastyle:ignore no.whitespace.before.left.bracket
+          an [IllegalArgumentException] should be thrownBy new Die(0, DefaultRandomNumberGenerator) // scalastyle:ignore no.whitespace.before.left.bracket
         }
       }
     }
@@ -45,7 +45,7 @@ final class DieSpec extends FunSpec with Matchers {
     describe("#apply") {
       describe("when random number generator returns minimum value") {
         it("should return 1") {
-          val die = new Die(Sides, () => 0.0)
+          val die = createDie(AlwaysMinimumRandomNumberGenerator)
 
           val roll = die()
 
@@ -55,7 +55,7 @@ final class DieSpec extends FunSpec with Matchers {
 
       describe("when random number generator returns maximum value") {
         it("should return sides") {
-          val die = new Die(Sides, () => Math.nextAfter(1.0, Double.NegativeInfinity))
+          val die = createDie(AlwaysMaximumRandomNumberGenerator)
 
           val roll = die()
 
@@ -67,7 +67,7 @@ final class DieSpec extends FunSpec with Matchers {
     describe("#roll") {
       describe("when random number generator returns minimum value") {
         it("should return 1") {
-          val die = new Die(Sides, () => 0.0)
+          val die = createDie(AlwaysMinimumRandomNumberGenerator)
 
           val roll = die.roll()
 
@@ -77,7 +77,7 @@ final class DieSpec extends FunSpec with Matchers {
 
       describe("when random number generator returns maximum value") {
         it("should return sides") {
-          val die = new Die(Sides, () => Math.nextAfter(1.0, Double.NegativeInfinity))
+          val die = createDie(AlwaysMaximumRandomNumberGenerator)
 
           val roll = die.roll()
 
@@ -88,7 +88,7 @@ final class DieSpec extends FunSpec with Matchers {
 
     describe("#sides") {
       it("should return the die sides") {
-        val die = new Die(Sides)
+        val die = createDie()
 
         die.sides should equal (Sides)
       }

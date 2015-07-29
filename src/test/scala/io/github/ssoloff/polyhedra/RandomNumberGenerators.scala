@@ -22,7 +22,7 @@
 
 package io.github.ssoloff.polyhedra
 
-import util.Random
+import scala.util.Random
 
 /** Trait that provides common random number generators used for dice testing.
   */

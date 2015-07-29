@@ -26,7 +26,7 @@ import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionResultSpec extends FunSpec with Matchers {
   val three = new ConstantExpressionResult(3.0)
-  val four = new ConstantExpressionResult(4.0) // scalastyle:ignore magic.number
+  val four = new ConstantExpressionResult(4.0)
 
   describe("AdditionExpressionResult") {
     describe("#value") {
@@ -47,6 +47,17 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
         val expressionResult = new ConstantExpressionResult(constant)
 
         expressionResult.value should equal (constant)
+      }
+    }
+  }
+
+  describe("MultiplicationExpressionResult") {
+    describe("#value") {
+      it("should return product") {
+        val product = 12.0
+        val expressionResult = new MultiplicationExpressionResult(product, four, three)
+
+        expressionResult.value should equal (product)
       }
     }
   }

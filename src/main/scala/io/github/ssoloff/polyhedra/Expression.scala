@@ -66,6 +66,26 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 }
 
+/** An expression that multiplies two expressions.
+  *
+  * @constructor Creates a new multiplication expression.
+  *
+  * @param multiplicandExpression
+  *   The multiplicand expression.
+  * @param multiplierExpression
+  *   The multiplier expression.
+  */
+final class MultiplicationExpression(
+    val multiplicandExpression: Expression[Double],
+    val multiplierExpression: Expression[Double]) extends Expression[Double] {
+  override def evaluate(): MultiplicationExpressionResult = {
+    val multiplicandExpressionResult = multiplicandExpression.evaluate()
+    val multiplierExpressionResult = multiplierExpression.evaluate()
+    val product = multiplicandExpressionResult.value * multiplierExpressionResult.value
+    new MultiplicationExpressionResult(product, multiplicandExpressionResult, multiplierExpressionResult)
+  }
+}
+
 /** An expression that subtracts two expressions.
   *
   * @constructor Creates a new subtraction expression.

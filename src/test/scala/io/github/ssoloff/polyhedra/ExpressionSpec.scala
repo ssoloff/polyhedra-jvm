@@ -26,7 +26,7 @@ import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionSpec extends FunSpec with Matchers {
   val three = new ConstantExpression(3.0)
-  val four = new ConstantExpression(4.0) // scalastyle:ignore magic.number
+  val four = new ConstantExpression(4.0)
 
   describe("AdditionExpression") {
     describe("#evaluate") {
@@ -35,7 +35,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (7.0) // scalastyle:ignore magic.number
+        expressionResult.value should equal (7.0)
       }
 
       it("should evaluate subexpressions") {
@@ -43,7 +43,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (10.0) // scalastyle:ignore magic.number
+        expressionResult.value should equal (10.0)
       }
     }
   }
@@ -58,6 +58,26 @@ final class ExpressionSpec extends FunSpec with Matchers {
         val expressionResult = expression.evaluate()
 
         expressionResult.value should equal (constant)
+      }
+    }
+  }
+
+  describe("MultiplicationExpression") {
+    describe("#evaluate") {
+      it("should return result with value equal to product of multiplicand and multiplier") {
+        val expression = new MultiplicationExpression(four, three)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (12.0)
+      }
+
+      it("should evaluate subexpressions") {
+        val expression = new MultiplicationExpression(new MultiplicationExpression(four, three), three)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (36.0)
       }
     }
   }
@@ -77,7 +97,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (-2.0) // scalastyle:ignore magic.number
+        expressionResult.value should equal (-2.0)
       }
     }
   }

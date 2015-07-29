@@ -38,7 +38,7 @@ sealed abstract class ExpressionResult[A] {
   * @constructor Creates a new addition expression result.
   *
   * @param sum
-  *   The sum of the augend and addend.
+  *   The sum of the augend and the addend.
   * @param augendExpressionResult
   *   The augend expression result.
   * @param addendExpressionResult
@@ -62,12 +62,30 @@ final class ConstantExpressionResult(val constant: Double) extends ExpressionRes
   override val value: Double = constant
 }
 
+/** The result of an expression that multiplies two expressions.
+  *
+  * @constructor Creates a new multiplication expression result.
+  *
+  * @param product
+  *   The product of the multiplicand and the multiplier.
+  * @param multiplicandExpressionResult
+  *   The multiplicand expression result.
+  * @param multiplierExpressionResult
+  *   The multiplier expression result.
+  */
+final class MultiplicationExpressionResult(
+    product: Double,
+    val multiplicandExpressionResult: ExpressionResult[Double],
+    val multiplierExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = product
+}
+
 /** The result of an expression that subtracts two expressions.
   *
   * @constructor Creates a new subtraction expression result.
   *
   * @param difference
-  *   The difference of the minuend and subtrahend.
+  *   The difference between the minuend and the subtrahend.
   * @param minuendExpressionResult
   *   The minuend expression result.
   * @param subtrahendExpressionResult

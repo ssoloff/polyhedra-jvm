@@ -30,7 +30,25 @@ sealed abstract class ExpressionResult {
   val value: Any
 }
 
-/** An expression result that represents a constant value.
+/** The result of an expression that adds two expressions.
+  *
+  * @constructor Creates a new addition expression result.
+  *
+  * @param sum
+  *   The sum of the augend and addend.
+  * @param augendExpressionResult
+  *   The augend expression result.
+  * @param addendExpressionResult
+  *   The addend expression result.
+  */
+final class AdditionExpressionResult(
+    sum: Int,
+    val augendExpressionResult: ExpressionResult,
+    val addendExpressionResult: ExpressionResult) extends ExpressionResult {
+  override val value: Int = sum
+}
+
+/** An result of a constant expression.
   *
   * @constructor Creates a new constant expression result.
   *

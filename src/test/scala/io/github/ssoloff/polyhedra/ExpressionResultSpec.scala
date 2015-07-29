@@ -25,14 +25,28 @@ package io.github.ssoloff.polyhedra
 import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionResultSpec extends FunSpec with Matchers {
+  val three = new ConstantExpressionResult(3)
+  val four = new ConstantExpressionResult(4) // scalastyle:ignore magic.number
+
+  describe("AdditionExpressionResult") {
+    describe("#value") {
+      it("should return sum") {
+        val sum = 4 + 3
+        val expressionResult = new AdditionExpressionResult(sum, four, three)
+
+        expressionResult.value should equal (sum)
+      }
+    }
+  }
+
   describe("ConstantExpressionResult") {
-    val Constant = 42
+    val constant = 42
 
     describe("#value") {
       it("should return constant") {
-        val expressionResult = new ConstantExpressionResult(Constant)
+        val expressionResult = new ConstantExpressionResult(constant)
 
-        expressionResult.value should equal (Constant)
+        expressionResult.value should equal (constant)
       }
     }
   }

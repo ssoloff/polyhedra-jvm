@@ -32,6 +32,26 @@ sealed abstract class Expression {
   def evaluate(): ExpressionResult
 }
 
+/** An expression that adds two expressions.
+  *
+  * @constructor Creates a new addition expression.
+  *
+  * @param augendExpression
+  *   The augend expression.
+  * @param addendExpression
+  *   The addend expression.
+  */
+final class AdditionExpression(
+    val augendExpression: Expression,
+    val addendExpression: Expression) extends Expression {
+  override def evaluate(): AdditionExpressionResult = {
+    val augendExpressionResult = augendExpression.evaluate()
+    val addendExpressionResult = addendExpression.evaluate()
+    val sum = augendExpressionResult.value.asInstanceOf[Int] + addendExpressionResult.value.asInstanceOf[Int]
+    new AdditionExpressionResult(sum, augendExpressionResult, addendExpressionResult)
+  }
+}
+
 /** An expression that represents a constant value.
   *
   * @constructor Creates a new constant expression.

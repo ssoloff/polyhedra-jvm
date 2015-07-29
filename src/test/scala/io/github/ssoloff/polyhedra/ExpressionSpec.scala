@@ -25,8 +25,8 @@ package io.github.ssoloff.polyhedra
 import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionSpec extends FunSpec with Matchers {
-  val three = new ConstantExpression(3)
-  val four = new ConstantExpression(4) // scalastyle:ignore magic.number
+  val three = new ConstantExpression(3.0)
+  val four = new ConstantExpression(4.0) // scalastyle:ignore magic.number
 
   describe("AdditionExpression") {
     describe("#evaluate") {
@@ -35,7 +35,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (7) // scalastyle:ignore magic.number
+        expressionResult.value should equal (7.0) // scalastyle:ignore magic.number
       }
 
       it("should evaluate subexpressions") {
@@ -43,13 +43,13 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (10) // scalastyle:ignore magic.number
+        expressionResult.value should equal (10.0) // scalastyle:ignore magic.number
       }
     }
   }
 
   describe("ConstantExpression") {
-    val constant = 42
+    val constant = 42.0
 
     describe("#evaluate") {
       it("should return result with value equal to constant") {
@@ -69,7 +69,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (1)
+        expressionResult.value should equal (1.0)
       }
 
       it("should evaluate subexpressions") {
@@ -77,7 +77,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (-2) // scalastyle:ignore magic.number
+        expressionResult.value should equal (-2.0) // scalastyle:ignore magic.number
       }
     }
   }

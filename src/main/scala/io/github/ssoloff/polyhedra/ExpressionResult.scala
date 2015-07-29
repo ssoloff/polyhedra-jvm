@@ -45,10 +45,10 @@ sealed abstract class ExpressionResult[A] {
   *   The addend expression result.
   */
 final class AdditionExpressionResult(
-    sum: Int,
-    val augendExpressionResult: ExpressionResult[Int],
-    val addendExpressionResult: ExpressionResult[Int]) extends ExpressionResult[Int] {
-  override val value: Int = sum
+    sum: Double,
+    val augendExpressionResult: ExpressionResult[Double],
+    val addendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = sum
 }
 
 /** An result of a constant expression.
@@ -58,8 +58,8 @@ final class AdditionExpressionResult(
   * @param constant
   *   The constant.
   */
-final class ConstantExpressionResult(val constant: Int) extends ExpressionResult[Int] {
-  override val value: Int = constant
+final class ConstantExpressionResult(val constant: Double) extends ExpressionResult[Double] {
+  override val value: Double = constant
 }
 
 /** The result of an expression that subtracts two expressions.
@@ -74,9 +74,9 @@ final class ConstantExpressionResult(val constant: Int) extends ExpressionResult
   *   The subtrahend expression result.
   */
 final class SubtractionExpressionResult(
-    difference: Int,
-    val minuendExpressionResult: ExpressionResult[Int],
-    val subtrahendExpressionResult: ExpressionResult[Int]) extends ExpressionResult[Int] {
-  override val value: Int = difference
+    difference: Double,
+    val minuendExpressionResult: ExpressionResult[Double],
+    val subtrahendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = difference
 }
 

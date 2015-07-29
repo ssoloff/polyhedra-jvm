@@ -45,8 +45,8 @@ sealed abstract class Expression[A] {
   *   The addend expression.
   */
 final class AdditionExpression(
-    val augendExpression: Expression[Int],
-    val addendExpression: Expression[Int]) extends Expression[Int] {
+    val augendExpression: Expression[Double],
+    val addendExpression: Expression[Double]) extends Expression[Double] {
   override def evaluate(): AdditionExpressionResult = {
     val augendExpressionResult = augendExpression.evaluate()
     val addendExpressionResult = addendExpression.evaluate()
@@ -62,7 +62,7 @@ final class AdditionExpression(
   * @param constant
   *   The constant.
   */
-final class ConstantExpression(val constant: Int) extends Expression[Int] {
+final class ConstantExpression(val constant: Double) extends Expression[Double] {
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 }
 
@@ -76,8 +76,8 @@ final class ConstantExpression(val constant: Int) extends Expression[Int] {
   *   The subtrahend expression.
   */
 final class SubtractionExpression(
-    val minuendExpression: Expression[Int],
-    val subtrahendExpression: Expression[Int]) extends Expression[Int] {
+    val minuendExpression: Expression[Double],
+    val subtrahendExpression: Expression[Double]) extends Expression[Double] {
   override def evaluate(): SubtractionExpressionResult = {
     val minuendExpressionResult = minuendExpression.evaluate()
     val subtrahendExpressionResult = subtrahendExpression.evaluate()

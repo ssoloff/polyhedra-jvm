@@ -23,11 +23,14 @@
 package io.github.ssoloff.polyhedra
 
 /** A dice expression result.
+  *
+  * @tparam A
+  *   The type of the evaluated expression value.
   */
-sealed abstract class ExpressionResult {
+sealed abstract class ExpressionResult[A] {
   /** The value of the evaluated expression.
     */
-  val value: Any
+  val value: A
 }
 
 /** The result of an expression that adds two expressions.
@@ -43,8 +46,8 @@ sealed abstract class ExpressionResult {
   */
 final class AdditionExpressionResult(
     sum: Int,
-    val augendExpressionResult: ExpressionResult,
-    val addendExpressionResult: ExpressionResult) extends ExpressionResult {
+    val augendExpressionResult: ExpressionResult[Int],
+    val addendExpressionResult: ExpressionResult[Int]) extends ExpressionResult[Int] {
   override val value: Int = sum
 }
 
@@ -55,7 +58,7 @@ final class AdditionExpressionResult(
   * @param constant
   *   The constant.
   */
-final class ConstantExpressionResult(val constant: Int) extends ExpressionResult {
+final class ConstantExpressionResult(val constant: Int) extends ExpressionResult[Int] {
   override val value: Int = constant
 }
 

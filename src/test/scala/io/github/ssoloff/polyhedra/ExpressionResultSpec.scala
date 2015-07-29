@@ -31,7 +31,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
   describe("AdditionExpressionResult") {
     describe("#value") {
       it("should return sum") {
-        val sum = 4 + 3
+        val sum = 7
         val expressionResult = new AdditionExpressionResult(sum, four, three)
 
         expressionResult.value should equal (sum)
@@ -47,6 +47,17 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
         val expressionResult = new ConstantExpressionResult(constant)
 
         expressionResult.value should equal (constant)
+      }
+    }
+  }
+
+  describe("SubtractionExpressionResult") {
+    describe("#value") {
+      it("should return difference") {
+        val difference = 1
+        val expressionResult = new SubtractionExpressionResult(difference, four, three)
+
+        expressionResult.value should equal (difference)
       }
     }
   }

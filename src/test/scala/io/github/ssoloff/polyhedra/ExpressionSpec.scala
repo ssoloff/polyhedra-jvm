@@ -35,7 +35,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (4 + 3)
+        expressionResult.value should equal (7) // scalastyle:ignore magic.number
       }
 
       it("should evaluate subexpressions") {
@@ -43,7 +43,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (4 + 3 + 3)
+        expressionResult.value should equal (10) // scalastyle:ignore magic.number
       }
     }
   }
@@ -58,6 +58,26 @@ final class ExpressionSpec extends FunSpec with Matchers {
         val expressionResult = expression.evaluate()
 
         expressionResult.value should equal (constant)
+      }
+    }
+  }
+
+  describe("SubtractionExpression") {
+    describe("#evaluate") {
+      it("should return result with value equal to difference between minuend and subtrahend") {
+        val expression = new SubtractionExpression(four, three)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (1)
+      }
+
+      it("should evaluate subexpressions") {
+        val expression = new SubtractionExpression(new SubtractionExpression(four, three), three)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (-2) // scalastyle:ignore magic.number
       }
     }
   }

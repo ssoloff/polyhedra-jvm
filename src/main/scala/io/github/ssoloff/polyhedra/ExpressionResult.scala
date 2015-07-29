@@ -62,3 +62,21 @@ final class ConstantExpressionResult(val constant: Int) extends ExpressionResult
   override val value: Int = constant
 }
 
+/** The result of an expression that subtracts two expressions.
+  *
+  * @constructor Creates a new subtraction expression result.
+  *
+  * @param difference
+  *   The difference of the minuend and subtrahend.
+  * @param minuendExpressionResult
+  *   The minuend expression result.
+  * @param subtrahendExpressionResult
+  *   The subtrahend expression result.
+  */
+final class SubtractionExpressionResult(
+    difference: Int,
+    val minuendExpressionResult: ExpressionResult[Int],
+    val subtrahendExpressionResult: ExpressionResult[Int]) extends ExpressionResult[Int] {
+  override val value: Int = difference
+}
+

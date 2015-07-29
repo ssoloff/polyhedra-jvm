@@ -66,3 +66,23 @@ final class ConstantExpression(val constant: Int) extends Expression[Int] {
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 }
 
+/** An expression that subtracts two expressions.
+  *
+  * @constructor Creates a new subtraction expression.
+  *
+  * @param minuendExpression
+  *   The minuend expression.
+  * @param subtrahendExpression
+  *   The subtrahend expression.
+  */
+final class SubtractionExpression(
+    val minuendExpression: Expression[Int],
+    val subtrahendExpression: Expression[Int]) extends Expression[Int] {
+  override def evaluate(): SubtractionExpressionResult = {
+    val minuendExpressionResult = minuendExpression.evaluate()
+    val subtrahendExpressionResult = subtrahendExpression.evaluate()
+    val difference = minuendExpressionResult.value - subtrahendExpressionResult.value
+    new SubtractionExpressionResult(difference, minuendExpressionResult, subtrahendExpressionResult)
+  }
+}
+

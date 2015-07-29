@@ -62,6 +62,26 @@ final class ExpressionSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("DivisionExpression") {
+    describe("#evaluate") {
+      it("should return result with value equal to quotient of dividend and divisor") {
+        val expression = new DivisionExpression(three, four)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (0.75)
+      }
+
+      it("should evaluate subexpressions") {
+        val expression = new DivisionExpression(new DivisionExpression(three, four), four)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult.value should equal (0.1875)
+      }
+    }
+  }
+
   describe("MultiplicationExpression") {
     describe("#evaluate") {
       it("should return result with value equal to product of multiplicand and multiplier") {

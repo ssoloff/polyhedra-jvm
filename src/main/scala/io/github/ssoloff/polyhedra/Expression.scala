@@ -66,6 +66,26 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 }
 
+/** An expression that divides two expressions.
+  *
+  * @constructor Creates a new division expression.
+  *
+  * @param dividendExpression
+  *   The dividend expression.
+  * @param divisorExpression
+  *   The divisor expression.
+  */
+final class DivisionExpression(
+    val dividendExpression: Expression[Double],
+    val divisorExpression: Expression[Double]) extends Expression[Double] {
+  override def evaluate(): DivisionExpressionResult = {
+    val dividendExpressionResult = dividendExpression.evaluate()
+    val divisorExpressionResult = divisorExpression.evaluate()
+    val quotient = dividendExpressionResult.value / divisorExpressionResult.value
+    new DivisionExpressionResult(quotient, dividendExpressionResult, divisorExpressionResult)
+  }
+}
+
 /** An expression that multiplies two expressions.
   *
   * @constructor Creates a new multiplication expression.

@@ -62,6 +62,24 @@ final class ConstantExpressionResult(val constant: Double) extends ExpressionRes
   override val value: Double = constant
 }
 
+/** The result of an expression that divides two expressions.
+  *
+  * @constructor Creates a new division expression result.
+  *
+  * @param quotient
+  *   The quotient of the dividend and the divisor.
+  * @param dividendExpressionResult
+  *   The dividend expression result.
+  * @param divisorExpressionResult
+  *   The divisor expression result.
+  */
+final class DivisionExpressionResult(
+    quotient: Double,
+    val dividendExpressionResult: ExpressionResult[Double],
+    val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = quotient
+}
+
 /** The result of an expression that multiplies two expressions.
   *
   * @constructor Creates a new multiplication expression result.

@@ -86,6 +86,26 @@ final class DivisionExpression(
   }
 }
 
+/** An expression that modulos two expressions.
+  *
+  * @constructor Creates a new modulo expression.
+  *
+  * @param dividendExpression
+  *   The dividend expression.
+  * @param divisorExpression
+  *   The divisor expression.
+  */
+final class ModuloExpression(
+    val dividendExpression: Expression[Double],
+    val divisorExpression: Expression[Double]) extends Expression[Double] {
+  override def evaluate(): ModuloExpressionResult = {
+    val dividendExpressionResult = dividendExpression.evaluate()
+    val divisorExpressionResult = divisorExpression.evaluate()
+    val remainder = dividendExpressionResult.value % divisorExpressionResult.value
+    new ModuloExpressionResult(remainder, dividendExpressionResult, divisorExpressionResult)
+  }
+}
+
 /** An expression that multiplies two expressions.
   *
   * @constructor Creates a new multiplication expression.

@@ -62,6 +62,17 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("ModuloExpressionResult") {
+    describe("#value") {
+      it("should return remainder") {
+        val remainder = 1.0
+        val expressionResult = new ModuloExpressionResult(remainder, four, three)
+
+        expressionResult.value should equal (remainder)
+      }
+    }
+  }
+
   describe("MultiplicationExpressionResult") {
     describe("#value") {
       it("should return product") {

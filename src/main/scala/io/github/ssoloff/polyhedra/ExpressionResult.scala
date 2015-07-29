@@ -80,6 +80,24 @@ final class DivisionExpressionResult(
   override val value: Double = quotient
 }
 
+/** The result of an expression that modulos two expressions.
+  *
+  * @constructor Creates a new modulo expression result.
+  *
+  * @param remainder
+  *   The remainder of the division of the dividend and the divisor.
+  * @param dividendExpressionResult
+  *   The dividend expression result.
+  * @param divisorExpressionResult
+  *   The divisor expression result.
+  */
+final class ModuloExpressionResult(
+    remainder: Double,
+    val dividendExpressionResult: ExpressionResult[Double],
+    val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = remainder
+}
+
 /** The result of an expression that multiplies two expressions.
   *
   * @constructor Creates a new multiplication expression result.

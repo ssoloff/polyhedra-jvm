@@ -53,6 +53,11 @@ final class AdditionExpression(
     val sum = augendExpressionResult.value + addendExpressionResult.value
     new AdditionExpressionResult(sum, augendExpressionResult, addendExpressionResult)
   }
+
+  override def toString: String = "AdditionExpression(" +
+    s"augendExpression=$augendExpression" +
+    s", addendExpression=$addendExpression" +
+    ")"
 }
 
 /** An expression that represents a constant value.
@@ -64,6 +69,10 @@ final class AdditionExpression(
   */
 final class ConstantExpression(val constant: Double) extends Expression[Double] {
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
+
+  override def toString: String = "ConstantExpression(" +
+    s"constant=$constant" +
+    ")"
 }
 
 /** An expression that divides two expressions.
@@ -84,6 +93,11 @@ final class DivisionExpression(
     val quotient = dividendExpressionResult.value / divisorExpressionResult.value
     new DivisionExpressionResult(quotient, dividendExpressionResult, divisorExpressionResult)
   }
+
+  override def toString: String = "DivisionExpression(" +
+    s"dividendExpression=$dividendExpression" +
+    s", divisorExpression=$divisorExpression" +
+    ")"
 }
 
 /** An expression that modulos two expressions.
@@ -104,7 +118,11 @@ final class ModuloExpression(
     val remainder = dividendExpressionResult.value % divisorExpressionResult.value
     new ModuloExpressionResult(remainder, dividendExpressionResult, divisorExpressionResult)
   }
-}
+
+  override def toString: String = "ModuloExpression(" +
+    s"dividendExpression=$dividendExpression" +
+    s", divisorExpression=$divisorExpression" +
+    ")"}
 
 /** An expression that multiplies two expressions.
   *
@@ -124,7 +142,11 @@ final class MultiplicationExpression(
     val product = multiplicandExpressionResult.value * multiplierExpressionResult.value
     new MultiplicationExpressionResult(product, multiplicandExpressionResult, multiplierExpressionResult)
   }
-}
+
+  override def toString: String = "MultiplicationExpression(" +
+    s"multiplicandExpression=$multiplicandExpression" +
+    s", multiplierExpression=$multiplierExpression" +
+    ")"}
 
 /** An expression that subtracts two expressions.
   *
@@ -144,5 +166,10 @@ final class SubtractionExpression(
     val difference = minuendExpressionResult.value - subtrahendExpressionResult.value
     new SubtractionExpressionResult(difference, minuendExpressionResult, subtrahendExpressionResult)
   }
+
+  override def toString: String = "SubtractionExpression(" +
+    s"minuendExpression=$minuendExpression" +
+    s", subtrahendExpression=$subtrahendExpression" +
+    ")"
 }
 

@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionSpec extends FunSpec with Matchers {
+final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMatchers {
   val three = new ConstantExpression(3.0)
   val four = new ConstantExpression(4.0)
 
@@ -35,7 +35,11 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (7.0)
+        expressionResult should beExpressionResult (new AdditionExpressionResult(
+          7.0,
+          new ConstantExpressionResult(4.0),
+          new ConstantExpressionResult(3.0)
+        ))
       }
 
       it("should evaluate subexpressions") {
@@ -57,7 +61,7 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (constant)
+        expressionResult should beExpressionResult (new ConstantExpressionResult(constant))
       }
     }
   }
@@ -69,7 +73,11 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (0.75)
+        expressionResult should beExpressionResult (new DivisionExpressionResult(
+          0.75,
+          new ConstantExpressionResult(3.0),
+          new ConstantExpressionResult(4.0)
+        ))
       }
 
       it("should evaluate subexpressions") {
@@ -89,7 +97,11 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (1.0)
+        expressionResult should beExpressionResult (new ModuloExpressionResult(
+          1.0,
+          new ConstantExpressionResult(4.0),
+          new ConstantExpressionResult(3.0)
+        ))
       }
 
       it("should evaluate subexpressions") {
@@ -109,7 +121,11 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (12.0)
+        expressionResult should beExpressionResult (new MultiplicationExpressionResult(
+          12.0,
+          new ConstantExpressionResult(4.0),
+          new ConstantExpressionResult(3.0)
+        ))
       }
 
       it("should evaluate subexpressions") {
@@ -129,7 +145,11 @@ final class ExpressionSpec extends FunSpec with Matchers {
 
         val expressionResult = expression.evaluate()
 
-        expressionResult.value should equal (1.0)
+        expressionResult should beExpressionResult (new SubtractionExpressionResult(
+          1.0,
+          new ConstantExpressionResult(4.0),
+          new ConstantExpressionResult(3.0)
+        ))
       }
 
       it("should evaluate subexpressions") {

@@ -27,7 +27,7 @@ package io.github.ssoloff.polyhedra
   * @tparam A
   *   The type of the evaluated expression value.
   */
-sealed abstract class ExpressionResult[A] {
+sealed abstract class ExpressionResult[+A] {
   /** The value of the evaluated expression.
     */
   val value: A
@@ -49,6 +49,12 @@ final class AdditionExpressionResult(
     val augendExpressionResult: ExpressionResult[Double],
     val addendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = sum
+
+  override def toString: String = "AdditionExpressionResult(" +
+    s"value=$value" +
+    s", augendExpressionResult=$augendExpressionResult" +
+    s", addendExpressionResult=$addendExpressionResult" +
+    ")"
 }
 
 /** An result of a constant expression.
@@ -60,6 +66,10 @@ final class AdditionExpressionResult(
   */
 final class ConstantExpressionResult(val constant: Double) extends ExpressionResult[Double] {
   override val value: Double = constant
+
+  override def toString: String = "ConstantExpressionResult(" +
+    s"value=$value" +
+    ")"
 }
 
 /** The result of an expression that divides two expressions.
@@ -78,6 +88,12 @@ final class DivisionExpressionResult(
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = quotient
+
+  override def toString: String = "DivisionExpressionResult(" +
+    s"value=$value" +
+    s", dividendExpressionResult=$dividendExpressionResult" +
+    s", divisorExpressionResult=$divisorExpressionResult" +
+    ")"
 }
 
 /** The result of an expression that modulos two expressions.
@@ -96,6 +112,12 @@ final class ModuloExpressionResult(
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = remainder
+
+  override def toString: String = "ModuloExpressionResult(" +
+    s"value=$value" +
+    s", dividendExpressionResult=$dividendExpressionResult" +
+    s", divisorExpressionResult=$divisorExpressionResult" +
+    ")"
 }
 
 /** The result of an expression that multiplies two expressions.
@@ -114,6 +136,12 @@ final class MultiplicationExpressionResult(
     val multiplicandExpressionResult: ExpressionResult[Double],
     val multiplierExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = product
+
+  override def toString: String = "MultiplicationExpressionResult(" +
+    s"value=$value" +
+    s", multiplicandExpressionResult=$multiplicandExpressionResult" +
+    s", multiplierExpressionResult=$multiplierExpressionResult" +
+    ")"
 }
 
 /** The result of an expression that subtracts two expressions.
@@ -132,5 +160,11 @@ final class SubtractionExpressionResult(
     val minuendExpressionResult: ExpressionResult[Double],
     val subtrahendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = difference
+
+  override def toString: String = "SubtractionExpressionResult(" +
+    s"value=$value" +
+    s", minuendExpressionResult=$minuendExpressionResult" +
+    s", subtrahendExpressionResult=$subtrahendExpressionResult" +
+    ")"
 }
 

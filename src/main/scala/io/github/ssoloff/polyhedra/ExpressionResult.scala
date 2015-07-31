@@ -52,11 +52,9 @@ final class AdditionExpressionResult(
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: AdditionExpressionResult => {
-        value.compareTo(that.value) == 0 &&
-          augendExpressionResult == that.augendExpressionResult &&
-          addendExpressionResult == that.addendExpressionResult
-      }
+      case that: AdditionExpressionResult => value.compareTo(that.value) == 0 &&
+        augendExpressionResult == that.augendExpressionResult &&
+        addendExpressionResult == that.addendExpressionResult
       case _ => false
     }
   }
@@ -127,11 +125,9 @@ final class DivisionExpressionResult(
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: DivisionExpressionResult => {
-        value.compareTo(that.value) == 0 &&
-          dividendExpressionResult == that.dividendExpressionResult &&
-          divisorExpressionResult == that.divisorExpressionResult
-      }
+      case that: DivisionExpressionResult => value.compareTo(that.value) == 0 &&
+        dividendExpressionResult == that.dividendExpressionResult &&
+        divisorExpressionResult == that.divisorExpressionResult
       case _ => false
     }
   }
@@ -172,11 +168,9 @@ final class ModuloExpressionResult(
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: ModuloExpressionResult => {
-        value.compareTo(that.value) == 0 &&
-          dividendExpressionResult == that.dividendExpressionResult &&
-          divisorExpressionResult == that.divisorExpressionResult
-      }
+      case that: ModuloExpressionResult => value.compareTo(that.value) == 0 &&
+        dividendExpressionResult == that.dividendExpressionResult &&
+        divisorExpressionResult == that.divisorExpressionResult
       case _ => false
     }
   }
@@ -217,11 +211,9 @@ final class MultiplicationExpressionResult(
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: MultiplicationExpressionResult => {
-        value.compareTo(that.value) == 0 &&
-          multiplicandExpressionResult == that.multiplicandExpressionResult &&
-          multiplierExpressionResult == that.multiplierExpressionResult
-      }
+      case that: MultiplicationExpressionResult => value.compareTo(that.value) == 0 &&
+        multiplicandExpressionResult == that.multiplicandExpressionResult &&
+        multiplierExpressionResult == that.multiplierExpressionResult
       case _ => false
     }
   }
@@ -262,11 +254,9 @@ final class SubtractionExpressionResult(
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: SubtractionExpressionResult => {
-        value.compareTo(that.value) == 0 &&
-          minuendExpressionResult == that.minuendExpressionResult &&
-          subtrahendExpressionResult == that.subtrahendExpressionResult
-      }
+      case that: SubtractionExpressionResult => value.compareTo(that.value) == 0 &&
+        minuendExpressionResult == that.minuendExpressionResult &&
+        subtrahendExpressionResult == that.subtrahendExpressionResult
       case _ => false
     }
   }

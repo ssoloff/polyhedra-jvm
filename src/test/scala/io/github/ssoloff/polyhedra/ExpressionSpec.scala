@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMatchers {
+final class ExpressionSpec extends FunSpec with Matchers {
   val three = new ConstantExpression(3.0)
   val four = new ConstantExpression(4.0)
 
@@ -35,7 +35,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new AdditionExpressionResult(
+        expressionResult should equal (new AdditionExpressionResult(
           7.0,
           new ConstantExpressionResult(4.0),
           new ConstantExpressionResult(3.0)
@@ -61,7 +61,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new ConstantExpressionResult(constant))
+        expressionResult should equal (new ConstantExpressionResult(constant))
       }
     }
   }
@@ -73,7 +73,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new DivisionExpressionResult(
+        expressionResult should equal (new DivisionExpressionResult(
           0.75,
           new ConstantExpressionResult(3.0),
           new ConstantExpressionResult(4.0)
@@ -97,7 +97,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new ModuloExpressionResult(
+        expressionResult should equal (new ModuloExpressionResult(
           1.0,
           new ConstantExpressionResult(4.0),
           new ConstantExpressionResult(3.0)
@@ -121,7 +121,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new MultiplicationExpressionResult(
+        expressionResult should equal (new MultiplicationExpressionResult(
           12.0,
           new ConstantExpressionResult(4.0),
           new ConstantExpressionResult(3.0)
@@ -145,7 +145,7 @@ final class ExpressionSpec extends FunSpec with Matchers with ExpressionResultMa
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should beExpressionResult (new SubtractionExpressionResult(
+        expressionResult should equal (new SubtractionExpressionResult(
           1.0,
           new ConstantExpressionResult(4.0),
           new ConstantExpressionResult(3.0)

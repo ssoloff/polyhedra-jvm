@@ -2,7 +2,10 @@ name := "polyhedra-jvm"
 version := "0.1"
 scalaVersion := "2.11.7"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+libraryDependencies ++= Seq(
+  "nl.jqno.equalsverifier" % "equalsverifier" % "1.7.3" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+)
 
 scalacOptions ++= Seq(
   "-encoding", "UTF-8",

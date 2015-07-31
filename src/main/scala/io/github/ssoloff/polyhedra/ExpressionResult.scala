@@ -50,6 +50,27 @@ final class AdditionExpressionResult(
     val addendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = sum
 
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: AdditionExpressionResult => {
+        value.compareTo(that.value) == 0 &&
+          augendExpressionResult == that.augendExpressionResult &&
+          addendExpressionResult == that.addendExpressionResult
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + augendExpressionResult.hashCode
+    hashCode = 31 * hashCode + addendExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
   override def toString: String = "AdditionExpressionResult(" +
     s"value=$value" +
     s", augendExpressionResult=$augendExpressionResult" +
@@ -64,8 +85,23 @@ final class AdditionExpressionResult(
   * @param constant
   *   The constant.
   */
-final class ConstantExpressionResult(val constant: Double) extends ExpressionResult[Double] {
+final class ConstantExpressionResult(constant: Double) extends ExpressionResult[Double] {
   override val value: Double = constant
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: ConstantExpressionResult => value.compareTo(that.value) == 0
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
 
   override def toString: String = "ConstantExpressionResult(" +
     s"value=$value" +
@@ -88,6 +124,27 @@ final class DivisionExpressionResult(
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = quotient
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: DivisionExpressionResult => {
+        value.compareTo(that.value) == 0 &&
+          dividendExpressionResult == that.dividendExpressionResult &&
+          divisorExpressionResult == that.divisorExpressionResult
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + dividendExpressionResult.hashCode
+    hashCode = 31 * hashCode + divisorExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
 
   override def toString: String = "DivisionExpressionResult(" +
     s"value=$value" +
@@ -113,6 +170,27 @@ final class ModuloExpressionResult(
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = remainder
 
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: ModuloExpressionResult => {
+        value.compareTo(that.value) == 0 &&
+          dividendExpressionResult == that.dividendExpressionResult &&
+          divisorExpressionResult == that.divisorExpressionResult
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + dividendExpressionResult.hashCode
+    hashCode = 31 * hashCode + divisorExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
   override def toString: String = "ModuloExpressionResult(" +
     s"value=$value" +
     s", dividendExpressionResult=$dividendExpressionResult" +
@@ -137,6 +215,27 @@ final class MultiplicationExpressionResult(
     val multiplierExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = product
 
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: MultiplicationExpressionResult => {
+        value.compareTo(that.value) == 0 &&
+          multiplicandExpressionResult == that.multiplicandExpressionResult &&
+          multiplierExpressionResult == that.multiplierExpressionResult
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + multiplicandExpressionResult.hashCode
+    hashCode = 31 * hashCode + multiplierExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
   override def toString: String = "MultiplicationExpressionResult(" +
     s"value=$value" +
     s", multiplicandExpressionResult=$multiplicandExpressionResult" +
@@ -160,6 +259,27 @@ final class SubtractionExpressionResult(
     val minuendExpressionResult: ExpressionResult[Double],
     val subtrahendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override val value: Double = difference
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: SubtractionExpressionResult => {
+        value.compareTo(that.value) == 0 &&
+          minuendExpressionResult == that.minuendExpressionResult &&
+          subtrahendExpressionResult == that.subtrahendExpressionResult
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + minuendExpressionResult.hashCode
+    hashCode = 31 * hashCode + subtrahendExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
 
   override def toString: String = "SubtractionExpressionResult(" +
     s"value=$value" +

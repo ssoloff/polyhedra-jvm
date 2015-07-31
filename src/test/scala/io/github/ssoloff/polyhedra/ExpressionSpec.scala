@@ -22,6 +22,7 @@
 
 package io.github.ssoloff.polyhedra
 
+import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionSpec extends FunSpec with Matchers {
@@ -29,6 +30,12 @@ final class ExpressionSpec extends FunSpec with Matchers {
   val four = new ConstantExpression(4.0)
 
   describe("AdditionExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[AdditionExpression])
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to sum of augend and addend") {
         val expression = new AdditionExpression(four, three)
@@ -55,6 +62,10 @@ final class ExpressionSpec extends FunSpec with Matchers {
   describe("ConstantExpression") {
     val constant = 42.0
 
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[ConstantExpression]).verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to constant") {
         val expression = new ConstantExpression(constant)
@@ -67,6 +78,12 @@ final class ExpressionSpec extends FunSpec with Matchers {
   }
 
   describe("DivisionExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[DivisionExpression])
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to quotient of dividend and divisor") {
         val expression = new DivisionExpression(three, four)
@@ -91,6 +108,12 @@ final class ExpressionSpec extends FunSpec with Matchers {
   }
 
   describe("ModuloExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[ModuloExpression])
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to remainder of division of dividend and divisor") {
         val expression = new ModuloExpression(four, three)
@@ -115,6 +138,12 @@ final class ExpressionSpec extends FunSpec with Matchers {
   }
 
   describe("MultiplicationExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[MultiplicationExpression])
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to product of multiplicand and multiplier") {
         val expression = new MultiplicationExpression(four, three)
@@ -139,6 +168,12 @@ final class ExpressionSpec extends FunSpec with Matchers {
   }
 
   describe("SubtractionExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[SubtractionExpression])
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
     describe("#evaluate") {
       it("should return result with value equal to difference between minuend and subtrahend") {
         val expression = new SubtractionExpression(four, three)

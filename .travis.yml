@@ -6,7 +6,7 @@ jdk:
   - oraclejdk7
   - openjdk7
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test:scalastyle coverage test doc
+  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test:scalastyle coverage test doc test:doc
 after_success:
   - sbt ++$TRAVIS_SCALA_VERSION coveralls
 

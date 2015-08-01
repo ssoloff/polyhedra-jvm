@@ -69,11 +69,13 @@ final class AdditionExpressionResult(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "AdditionExpressionResult(" +
     s"value=$value" +
     s", augendExpressionResult=$augendExpressionResult" +
     s", addendExpressionResult=$addendExpressionResult" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An result of a constant expression.
@@ -101,9 +103,11 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "ConstantExpressionResult(" +
     s"value=$value" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** The result of an expression that divides two expressions.
@@ -142,11 +146,13 @@ final class DivisionExpressionResult(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "DivisionExpressionResult(" +
     s"value=$value" +
     s", dividendExpressionResult=$dividendExpressionResult" +
     s", divisorExpressionResult=$divisorExpressionResult" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** The result of an expression that modulos two expressions.
@@ -185,11 +191,13 @@ final class ModuloExpressionResult(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "ModuloExpressionResult(" +
     s"value=$value" +
     s", dividendExpressionResult=$dividendExpressionResult" +
     s", divisorExpressionResult=$divisorExpressionResult" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** The result of an expression that multiplies two expressions.
@@ -228,11 +236,13 @@ final class MultiplicationExpressionResult(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "MultiplicationExpressionResult(" +
     s"value=$value" +
     s", multiplicandExpressionResult=$multiplicandExpressionResult" +
     s", multiplierExpressionResult=$multiplierExpressionResult" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** The result of an expression that subtracts two expressions.
@@ -271,10 +281,12 @@ final class SubtractionExpressionResult(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "SubtractionExpressionResult(" +
     s"value=$value" +
     s", minuendExpressionResult=$minuendExpressionResult" +
     s", subtrahendExpressionResult=$subtrahendExpressionResult" +
     ")"
+  // $COVERAGE-ON$
 }
 

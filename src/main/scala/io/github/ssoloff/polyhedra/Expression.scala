@@ -71,10 +71,12 @@ final class AdditionExpression(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "AdditionExpression(" +
     s"augendExpression=$augendExpression" +
     s", addendExpression=$addendExpression" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An expression that represents a constant value.
@@ -102,9 +104,11 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "ConstantExpression(" +
     s"constant=$constant" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An expression that divides two expressions.
@@ -143,10 +147,12 @@ final class DivisionExpression(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "DivisionExpression(" +
     s"dividendExpression=$dividendExpression" +
     s", divisorExpression=$divisorExpression" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An expression that modulos two expressions.
@@ -185,10 +191,12 @@ final class ModuloExpression(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "ModuloExpression(" +
     s"dividendExpression=$dividendExpression" +
     s", divisorExpression=$divisorExpression" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An expression that multiplies two expressions.
@@ -227,10 +235,12 @@ final class MultiplicationExpression(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "MultiplicationExpression(" +
     s"multiplicandExpression=$multiplicandExpression" +
     s", multiplierExpression=$multiplierExpression" +
     ")"
+  // $COVERAGE-ON$
 }
 
 /** An expression that subtracts two expressions.
@@ -269,9 +279,11 @@ final class SubtractionExpression(
     // scalastyle:on magic.number
   }
 
+  // $COVERAGE-OFF$
   override def toString: String = "SubtractionExpression(" +
     s"minuendExpression=$minuendExpression" +
     s", subtrahendExpression=$subtrahendExpression" +
     ")"
+  // $COVERAGE-ON$
 }
 

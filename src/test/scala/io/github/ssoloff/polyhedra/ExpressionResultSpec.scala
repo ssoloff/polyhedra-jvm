@@ -22,18 +22,15 @@
 
 package io.github.ssoloff.polyhedra
 
-import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionResultSpec extends FunSpec with Matchers {
+final class ExpressionResultSpec extends FunSpec with Matchers with EqualsVerifierSugar {
   val three = new ConstantExpressionResult(3.0)
   val four = new ConstantExpressionResult(4.0)
 
   describe("AdditionExpressionResult") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[AdditionExpressionResult])
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      classOf[AdditionExpressionResult] should be (equatable)
     }
 
     describe("#value") {
@@ -50,7 +47,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
     val constant = 42.0
 
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[ConstantExpressionResult]).verify()
+      classOf[ConstantExpressionResult] should be (equatable)
     }
 
     describe("#value") {
@@ -64,9 +61,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
 
   describe("DivisionExpressionResult") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[DivisionExpressionResult])
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      classOf[DivisionExpressionResult] should be (equatable)
     }
 
     describe("#value") {
@@ -81,9 +76,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
 
   describe("ModuloExpressionResult") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[ModuloExpressionResult])
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      classOf[ModuloExpressionResult] should be (equatable)
     }
 
     describe("#value") {
@@ -98,9 +91,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
 
   describe("MultiplicationExpressionResult") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[MultiplicationExpressionResult])
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      classOf[MultiplicationExpressionResult] should be (equatable)
     }
 
     describe("#value") {
@@ -115,9 +106,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers {
 
   describe("SubtractionExpressionResult") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[SubtractionExpressionResult])
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      classOf[SubtractionExpressionResult] should be (equatable)
     }
 
     describe("#value") {

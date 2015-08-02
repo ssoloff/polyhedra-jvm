@@ -110,6 +110,38 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
   // $COVERAGE-ON$
 }
 
+/** The result of a die expression.
+  *
+  * @constructor Creates a new die expression result.
+  *
+  * @param die
+  *
+  */
+final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
+  override val value: Die = die
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: DieExpressionResult => value.sides == that.value.sides
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.sides.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "DieExpressionResult(" +
+    s"value=$value" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** The result of an expression that divides two expressions.
   *
   * @constructor Creates a new division expression result.

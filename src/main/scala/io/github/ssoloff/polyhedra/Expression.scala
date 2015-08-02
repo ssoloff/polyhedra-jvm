@@ -111,6 +111,38 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
   // $COVERAGE-ON$
 }
 
+/** An expression that represents a die.
+  *
+  * @constructor Creates a new die expression.
+  *
+  * @param die
+  *   The die.
+  */
+final class DieExpression(val die: Die) extends Expression[Die] {
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: DieExpression => die.sides == that.die.sides
+      case _ => false
+    }
+  }
+
+  override def evaluate(): DieExpressionResult = new DieExpressionResult(die)
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + die.sides.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "DieExpression(" +
+    s"die=$die" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An expression that divides two expressions.
   *
   * @constructor Creates a new division expression.

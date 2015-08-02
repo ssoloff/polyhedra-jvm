@@ -22,9 +22,10 @@
 
 package io.github.ssoloff.polyhedra
 
+import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionSpec extends FunSpec with Matchers with EqualsVerifierSugar {
+final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenerators with EqualsVerifierSugar {
   val three = new ConstantExpression(3.0)
   val four = new ConstantExpression(4.0)
 
@@ -57,19 +58,38 @@ final class ExpressionSpec extends FunSpec with Matchers with EqualsVerifierSuga
   }
 
   describe("ConstantExpression") {
-    val constant = 42.0
-
     it("should be equatable") {
       classOf[ConstantExpression] should be (equatable)
     }
 
     describe("#evaluate") {
       it("should return result with value equal to constant") {
+        val constant = 42.0
         val expression = new ConstantExpression(constant)
 
         val expressionResult = expression.evaluate()
 
         expressionResult should equal (new ConstantExpressionResult(constant))
+      }
+    }
+  }
+
+  describe("DieExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[DieExpression])
+        .withPrefabValues(classOf[Die], new Die(1, DefaultRandomNumberGenerator), new Die(2, DefaultRandomNumberGenerator))
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
+    describe("#evaluate") {
+      it("should return result with value equal to die") {
+        val die = new Die(2, DefaultRandomNumberGenerator)
+        val expression = new DieExpression(die)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult should equal (new DieExpressionResult(die))
       }
     }
   }

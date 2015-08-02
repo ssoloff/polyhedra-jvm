@@ -49,6 +49,13 @@ final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator
     * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
     */
   def roll(): Int = (randomNumberGenerator() * sides).toInt + 1
+
+  // $COVERAGE-OFF$
+  override def toString: String = "Die(" +
+    s"sides=$sides" +
+    s", randomNumberGenerator=$randomNumberGenerator" +
+    ")"
+  // $COVERAGE-ON$
 }
 
 /** Provides useful members for working with dice.

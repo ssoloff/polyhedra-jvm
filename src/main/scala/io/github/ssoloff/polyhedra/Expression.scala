@@ -263,6 +263,39 @@ final class MultiplicationExpression(
   // $COVERAGE-ON$
 }
 
+/** An expression that negates another expression.
+  *
+  * @constructor Creates a new negative expression.
+  *
+  * @param childExpression
+  *   The expression to be negated.
+  */
+final class NegativeExpression(val childExpression: Expression[Double]) extends Expression[Double] {
+  override def equals(other: Any): Boolean = other match {
+    case that: NegativeExpression => childExpression == that.childExpression
+    case _ => false
+  }
+
+  override def evaluate(): NegativeExpressionResult = {
+    val childExpressionResult = childExpression.evaluate()
+    new NegativeExpressionResult(childExpressionResult)
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + childExpression.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "NegativeExpression(" +
+    s"childExpression=$childExpression" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An expression that subtracts two expressions.
   *
   * @constructor Creates a new subtraction expression.

@@ -124,6 +124,21 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
   }
 
+  describe("NegativeExpressionResult") {
+    it("should be equatable") {
+      classOf[NegativeExpressionResult] should be (equatable)
+    }
+
+    describe("#value") {
+      it("should return negative of child expression result value") {
+        val constant = 42.0
+        val expressionResult = new NegativeExpressionResult(new ConstantExpressionResult(constant))
+
+        expressionResult.value should equal (-constant)
+      }
+    }
+  }
+
   describe("SubtractionExpressionResult") {
     it("should be equatable") {
       classOf[SubtractionExpressionResult] should be (equatable)

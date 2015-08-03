@@ -47,12 +47,10 @@ sealed abstract class Expression[+A] {
 final class AdditionExpression(
     val augendExpression: Expression[Double],
     val addendExpression: Expression[Double]) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: AdditionExpression => augendExpression == that.augendExpression &&
-        addendExpression == that.addendExpression
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: AdditionExpression => augendExpression == that.augendExpression &&
+      addendExpression == that.addendExpression
+    case _ => false
   }
 
   override def evaluate(): AdditionExpressionResult = {
@@ -87,11 +85,9 @@ final class AdditionExpression(
   *   The constant.
   */
 final class ConstantExpression(val constant: Double) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: ConstantExpression => constant.compareTo(that.constant) == 0
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: ConstantExpression => constant.compareTo(that.constant) == 0
+    case _ => false
   }
 
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
@@ -119,11 +115,9 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
   *   The die.
   */
 final class DieExpression(val die: Die) extends Expression[Die] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: DieExpression => die.sides == that.die.sides
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: DieExpression => die.sides == that.die.sides
+    case _ => false
   }
 
   override def evaluate(): DieExpressionResult = new DieExpressionResult(die)
@@ -155,12 +149,10 @@ final class DieExpression(val die: Die) extends Expression[Die] {
 final class DivisionExpression(
     val dividendExpression: Expression[Double],
     val divisorExpression: Expression[Double]) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: DivisionExpression => dividendExpression == that.dividendExpression &&
-        divisorExpression == that.divisorExpression
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: DivisionExpression => dividendExpression == that.dividendExpression &&
+      divisorExpression == that.divisorExpression
+    case _ => false
   }
 
   override def evaluate(): DivisionExpressionResult = {
@@ -199,12 +191,10 @@ final class DivisionExpression(
 final class ModuloExpression(
     val dividendExpression: Expression[Double],
     val divisorExpression: Expression[Double]) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: ModuloExpression => dividendExpression == that.dividendExpression &&
-        divisorExpression == that.divisorExpression
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: ModuloExpression => dividendExpression == that.dividendExpression &&
+      divisorExpression == that.divisorExpression
+    case _ => false
   }
 
   override def evaluate(): ModuloExpressionResult = {
@@ -243,12 +233,10 @@ final class ModuloExpression(
 final class MultiplicationExpression(
     val multiplicandExpression: Expression[Double],
     val multiplierExpression: Expression[Double]) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: MultiplicationExpression => multiplicandExpression == that.multiplicandExpression &&
-        multiplierExpression == that.multiplierExpression
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: MultiplicationExpression => multiplicandExpression == that.multiplicandExpression &&
+      multiplierExpression == that.multiplierExpression
+    case _ => false
   }
 
   override def evaluate(): MultiplicationExpressionResult = {
@@ -287,12 +275,10 @@ final class MultiplicationExpression(
 final class SubtractionExpression(
     val minuendExpression: Expression[Double],
     val subtrahendExpression: Expression[Double]) extends Expression[Double] {
-  override def equals(other: Any): Boolean = {
-    other match {
-      case that: SubtractionExpression => minuendExpression == that.minuendExpression &&
-        subtrahendExpression == that.subtrahendExpression
-      case _ => false
-    }
+  override def equals(other: Any): Boolean = other match {
+    case that: SubtractionExpression => minuendExpression == that.minuendExpression &&
+      subtrahendExpression == that.subtrahendExpression
+    case _ => false
   }
 
   override def evaluate(): SubtractionExpressionResult = {

@@ -57,6 +57,28 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
     }
   }
 
+  describe("ArrayExpression") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[ArrayExpression[_]])
+        .withPrefabValues(classOf[List[Expression[_]]], List(three, four), List(four, three))
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
+    describe("#evaluate") {
+      it("should return result with value equal to array of expression result values") {
+        val expression = new ArrayExpression(List(three, four))
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult should equal (new ArrayExpressionResult(List(
+          new ConstantExpressionResult(three.constant),
+          new ConstantExpressionResult(four.constant)
+        )))
+      }
+    }
+  }
+
   describe("ConstantExpression") {
     it("should be equatable") {
       classOf[ConstantExpression] should be (equatable)

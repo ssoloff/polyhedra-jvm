@@ -29,5 +29,6 @@ javacOptions ++= Seq(
   "-Xlint:all"
 )
 
+fork in Test := true
 scalastyleFailOnError := true
 

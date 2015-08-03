@@ -76,6 +76,44 @@ final class AdditionExpressionResult(
   // $COVERAGE-ON$
 }
 
+/** The result of an array expression.
+  *
+  * @tparam A
+  *   The type of the evaluated expression value of each array element.
+  *
+  * @constructor Creates a new array expression result.
+  *
+  * @param expressionResults
+  *   The array of expression results.
+  */
+final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResult[A]]) extends ExpressionResult[List[A]] {
+  override val value: List[A] = expressionResults.map(_.value)
+
+  override def equals(other: Any): Boolean = {
+    other match {
+      case that: ArrayExpressionResult[A] => value == that.value &&
+        expressionResults == that.expressionResults
+      case _ => false
+    }
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + expressionResults.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "ArrayExpressionResult(" +
+    s"value=$value" +
+    s", expressionResults=$expressionResults" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An result of a constant expression.
   *
   * @constructor Creates a new constant expression result.

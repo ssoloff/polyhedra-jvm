@@ -77,6 +77,41 @@ final class AdditionExpression(
   // $COVERAGE-ON$
 }
 
+/** An expression that acts as an array of expressions.
+  *
+  * @tparam A
+  *   The type of the evaluated expression value of each array element.
+  *
+  * @constructor Creates a new array expression.
+  *
+  * @param expressions
+  *   The expressions that are the array elements.
+  */
+final class ArrayExpression[A](val expressions: List[Expression[A]]) extends Expression[List[A]] {
+  override def equals(other: Any): Boolean = other match {
+    case that: ArrayExpression[A] => expressions == that.expressions
+    case _ => false
+  }
+
+  override def evaluate(): ArrayExpressionResult[A] = {
+    new ArrayExpressionResult(expressions.map(_.evaluate()))
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + expressions.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "ArrayExpression(" +
+    s"expressions=$expressions" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An expression that represents a constant value.
   *
   * @constructor Creates a new constant expression.
@@ -196,8 +231,7 @@ final class GroupExpression[A](val childExpression: Expression[A]) extends Expre
   }
 
   override def evaluate(): GroupExpressionResult[A] = {
-    val childExpressionResult = childExpression.evaluate()
-    new GroupExpressionResult(childExpressionResult)
+    new GroupExpressionResult(childExpression.evaluate())
   }
 
   override def hashCode(): Int = {
@@ -313,8 +347,7 @@ final class NegativeExpression(val childExpression: Expression[Double]) extends 
   }
 
   override def evaluate(): NegativeExpressionResult = {
-    val childExpressionResult = childExpression.evaluate()
-    new NegativeExpressionResult(childExpressionResult)
+    new NegativeExpressionResult(childExpression.evaluate())
   }
 
   override def hashCode(): Int = {
@@ -346,8 +379,7 @@ final class PositiveExpression(val childExpression: Expression[Double]) extends 
   }
 
   override def evaluate(): PositiveExpressionResult = {
-    val childExpressionResult = childExpression.evaluate()
-    new PositiveExpressionResult(childExpressionResult)
+    new PositiveExpressionResult(childExpression.evaluate())
   }
 
   override def hashCode(): Int = {

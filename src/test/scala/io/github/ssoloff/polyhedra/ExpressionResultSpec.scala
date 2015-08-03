@@ -44,6 +44,23 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
   }
 
+  describe("ArrayExpressionResult") {
+    it("should be equatable") {
+      EqualsVerifier.forClass(classOf[ArrayExpressionResult[_]])
+        .withPrefabValues(classOf[List[ExpressionResult[_]]], List(three, four), List(four, three))
+        .suppress(Warning.NULL_FIELDS)
+        .verify()
+    }
+
+    describe("#value") {
+      it("should return array of expression result values") {
+        val expressionResult = new ArrayExpressionResult(List(three, four))
+
+        expressionResult.value should equal (List(three.value, four.value))
+      }
+    }
+  }
+
   describe("ConstantExpressionResult") {
     val constant = 42.0
 

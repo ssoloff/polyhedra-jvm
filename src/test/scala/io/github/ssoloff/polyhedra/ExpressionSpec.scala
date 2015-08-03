@@ -122,6 +122,22 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
     }
   }
 
+  describe("GroupExpression") {
+    it("should be equatable") {
+      classOf[GroupExpression[_]] should be (equatable)
+    }
+
+    describe("#evaluate") {
+      it("should return result with value equal to child expression result value") {
+        val expression = new GroupExpression(three)
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult should equal (new GroupExpressionResult(new ConstantExpressionResult(three.constant)))
+      }
+    }
+  }
+
   describe("ModuloExpression") {
     it("should be equatable") {
       classOf[ModuloExpression] should be (equatable)
@@ -185,12 +201,11 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
     describe("#evaluate") {
       it("should return result with value equal to negative of child expression result value") {
-        val constant = 42.0
-        val expression = new NegativeExpression(new ConstantExpression(constant))
+        val expression = new NegativeExpression(three)
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should equal (new NegativeExpressionResult(new ConstantExpressionResult(constant)))
+        expressionResult should equal (new NegativeExpressionResult(new ConstantExpressionResult(three.constant)))
       }
     }
   }
@@ -202,12 +217,11 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
     describe("#evaluate") {
       it("should return result with value equal to child expression result value") {
-        val constant = 42.0
-        val expression = new PositiveExpression(new ConstantExpression(constant))
+        val expression = new PositiveExpression(three)
 
         val expressionResult = expression.evaluate()
 
-        expressionResult should equal (new PositiveExpressionResult(new ConstantExpressionResult(constant)))
+        expressionResult should equal (new PositiveExpressionResult(new ConstantExpressionResult(three.constant)))
       }
     }
   }

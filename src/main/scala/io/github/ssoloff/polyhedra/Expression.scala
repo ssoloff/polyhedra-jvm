@@ -179,6 +179,42 @@ final class DivisionExpression(
   // $COVERAGE-ON$
 }
 
+/** An expression that groups another expression.
+  *
+  * @tparam A
+  *   The type of the evaluated expression value.
+  *
+  * @constructor Creates a new group expression.
+  *
+  * @param childExpression
+  *   The expression to be grouped.
+  */
+final class GroupExpression[A](val childExpression: Expression[A]) extends Expression[A] {
+  override def equals(other: Any): Boolean = other match {
+    case that: GroupExpression[A] => childExpression == that.childExpression
+    case _ => false
+  }
+
+  override def evaluate(): GroupExpressionResult[A] = {
+    val childExpressionResult = childExpression.evaluate()
+    new GroupExpressionResult(childExpressionResult)
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + childExpression.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "GroupExpression(" +
+    s"childExpression=$childExpression" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An expression that modulos two expressions.
   *
   * @constructor Creates a new modulo expression.

@@ -94,6 +94,20 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
   }
 
+  describe("GroupExpressionResult") {
+    it("should be equatable") {
+      classOf[GroupExpressionResult[_]] should be (equatable)
+    }
+
+    describe("#value") {
+      it("should return child expression value") {
+        val expressionResult = new GroupExpressionResult(three)
+
+        expressionResult.value should equal (three.value)
+      }
+    }
+  }
+
   describe("ModuloExpressionResult") {
     it("should be equatable") {
       classOf[ModuloExpressionResult] should be (equatable)
@@ -130,11 +144,10 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
 
     describe("#value") {
-      it("should return negative of child expression") {
-        val constant = 42.0
-        val expressionResult = new NegativeExpressionResult(new ConstantExpressionResult(constant))
+      it("should return negative of child expression value") {
+        val expressionResult = new NegativeExpressionResult(three)
 
-        expressionResult.value should equal (-constant)
+        expressionResult.value should equal (-three.value)
       }
     }
   }
@@ -145,11 +158,10 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
 
     describe("#value") {
-      it("should return positive of child expression") {
-        val constant = 42.0
-        val expressionResult = new PositiveExpressionResult(new ConstantExpressionResult(constant))
+      it("should return child expression value") {
+        val expressionResult = new PositiveExpressionResult(three)
 
-        expressionResult.value should equal (constant)
+        expressionResult.value should equal (three.value)
       }
     }
   }

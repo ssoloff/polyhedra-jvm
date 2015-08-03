@@ -195,6 +195,23 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
     }
   }
 
+  describe("PositiveExpression") {
+    it("should be equatable") {
+      classOf[PositiveExpression] should be (equatable)
+    }
+
+    describe("#evaluate") {
+      it("should return result with value equal to child expression result value") {
+        val constant = 42.0
+        val expression = new PositiveExpression(new ConstantExpression(constant))
+
+        val expressionResult = expression.evaluate()
+
+        expressionResult should equal (new PositiveExpressionResult(new ConstantExpressionResult(constant)))
+      }
+    }
+  }
+
   describe("SubtractionExpression") {
     it("should be equatable") {
       classOf[SubtractionExpression] should be (equatable)

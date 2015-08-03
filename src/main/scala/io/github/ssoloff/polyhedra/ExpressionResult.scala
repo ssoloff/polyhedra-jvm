@@ -298,6 +298,39 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
   // $COVERAGE-ON$
 }
 
+/** The result of an expression that applies another expression.
+  *
+  * @constructor Creates a new positive expression result.
+  *
+  * @param childExpressionResult
+  *   The result of the expression to be applied.
+  */
+final class PositiveExpressionResult(val childExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
+  override val value: Double = childExpressionResult.value
+
+  override def equals(other: Any): Boolean = other match {
+    case that: PositiveExpressionResult => value.compareTo(that.value) == 0 &&
+      childExpressionResult == that.childExpressionResult
+    case _ => false
+  }
+
+  override def hashCode(): Int = {
+    // scalastyle:off magic.number
+    var hashCode = 17
+    hashCode = 31 * hashCode + value.hashCode
+    hashCode = 31 * hashCode + childExpressionResult.hashCode
+    hashCode
+    // scalastyle:on magic.number
+  }
+
+  // $COVERAGE-OFF$
+  override def toString: String = "PositiveExpressionResult(" +
+    s"value=$value" +
+    s", childExpressionResult=$childExpressionResult" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** The result of an expression that subtracts two expressions.
   *
   * @constructor Creates a new subtraction expression result.

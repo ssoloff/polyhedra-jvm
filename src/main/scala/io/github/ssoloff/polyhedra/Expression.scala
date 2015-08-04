@@ -71,8 +71,8 @@ final class AdditionExpression(
 
   // $COVERAGE-OFF$
   override def toString: String = "AdditionExpression(" +
-    s"augendExpression=$augendExpression" +
-    s", addendExpression=$addendExpression" +
+    s"addendExpression=$addendExpression" +
+    s", augendExpression=$augendExpression" +
     ")"
   // $COVERAGE-ON$
 }

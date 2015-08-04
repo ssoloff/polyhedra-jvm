@@ -97,13 +97,7 @@ final class ArrayExpression[A](val expressions: List[Expression[A]]) extends Exp
     new ArrayExpressionResult(expressions.map(_.evaluate()))
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + expressions.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = expressions.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "ArrayExpression(" +
@@ -127,13 +121,7 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
 
   override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + constant.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = constant.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "ConstantExpression(" +
@@ -157,13 +145,7 @@ final class DieExpression(val die: Die) extends Expression[Die] {
 
   override def evaluate(): DieExpressionResult = new DieExpressionResult(die)
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + die.sides.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = die.sides.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "DieExpression(" +
@@ -234,13 +216,7 @@ final class GroupExpression[A](val childExpression: Expression[A]) extends Expre
     new GroupExpressionResult(childExpression.evaluate())
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + childExpression.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpression.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "GroupExpression(" +
@@ -350,13 +326,7 @@ final class NegativeExpression(val childExpression: Expression[Double]) extends 
     new NegativeExpressionResult(childExpression.evaluate())
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + childExpression.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpression.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "NegativeExpression(" +
@@ -382,13 +352,7 @@ final class PositiveExpression(val childExpression: Expression[Double]) extends 
     new PositiveExpressionResult(childExpression.evaluate())
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + childExpression.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpression.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "PositiveExpression(" +

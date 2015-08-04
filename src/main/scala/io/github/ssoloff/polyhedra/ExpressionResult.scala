@@ -91,20 +91,12 @@ final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResul
 
   override def equals(other: Any): Boolean = {
     other match {
-      case that: ArrayExpressionResult[A] => value == that.value &&
-        expressionResults == that.expressionResults
+      case that: ArrayExpressionResult[A] => expressionResults == that.expressionResults
       case _ => false
     }
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.hashCode
-    hashCode = 31 * hashCode + expressionResults.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = expressionResults.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "ArrayExpressionResult(" +
@@ -129,13 +121,7 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
     case _ => false
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = value.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "ConstantExpressionResult(" +
@@ -159,13 +145,7 @@ final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
     case _ => false
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.sides.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = value.sides.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "DieExpressionResult(" +
@@ -231,19 +211,11 @@ final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult
   override val value: A = childExpressionResult.value
 
   override def equals(other: Any): Boolean = other match {
-    case that: GroupExpressionResult[A] => value == that.value &&
-      childExpressionResult == that.childExpressionResult
+    case that: GroupExpressionResult[A] => childExpressionResult == that.childExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.hashCode
-    hashCode = 31 * hashCode + childExpressionResult.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpressionResult.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "GroupExpressionResult(" +
@@ -350,19 +322,11 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
   override val value: Double = -childExpressionResult.value
 
   override def equals(other: Any): Boolean = other match {
-    case that: NegativeExpressionResult => value.compareTo(that.value) == 0 &&
-      childExpressionResult == that.childExpressionResult
+    case that: NegativeExpressionResult => childExpressionResult == that.childExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.hashCode
-    hashCode = 31 * hashCode + childExpressionResult.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpressionResult.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "NegativeExpressionResult(" +
@@ -383,19 +347,11 @@ final class PositiveExpressionResult(val childExpressionResult: ExpressionResult
   override val value: Double = childExpressionResult.value
 
   override def equals(other: Any): Boolean = other match {
-    case that: PositiveExpressionResult => value.compareTo(that.value) == 0 &&
-      childExpressionResult == that.childExpressionResult
+    case that: PositiveExpressionResult => childExpressionResult == that.childExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = {
-    // scalastyle:off magic.number
-    var hashCode = 17
-    hashCode = 31 * hashCode + value.hashCode
-    hashCode = 31 * hashCode + childExpressionResult.hashCode
-    hashCode
-    // scalastyle:on magic.number
-  }
+  override def hashCode(): Int = childExpressionResult.hashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "PositiveExpressionResult(" +

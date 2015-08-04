@@ -22,7 +22,6 @@
 
 package io.github.ssoloff.polyhedra
 
-import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenerators with EqualsVerifierSugar {
@@ -31,7 +30,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("AdditionExpression") {
     it("should be equatable") {
-      classOf[AdditionExpression] should be (equatable)
+      instancesOf [AdditionExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -59,10 +58,14 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("ArrayExpression") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[ArrayExpression[_]])
-        .withPrefabValues(classOf[List[Expression[_]]], List(three, four), List(four, three))
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      (
+        instancesOf [ArrayExpression[_]] // scalastyle:ignore no.whitespace.before.left.bracket
+          withPrefabValues(
+            List[Expression[_]](three, four),
+            List[Expression[_]](four, three)
+          )
+          should be (equatable)
+      )
     }
 
     describe("#evaluate") {
@@ -81,7 +84,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("ConstantExpression") {
     it("should be equatable") {
-      classOf[ConstantExpression] should be (equatable)
+      instancesOf [ConstantExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -98,10 +101,14 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("DieExpression") {
     it("should be equatable") {
-      EqualsVerifier.forClass(classOf[DieExpression])
-        .withPrefabValues(classOf[Die], new Die(1, DefaultRandomNumberGenerator), new Die(2, DefaultRandomNumberGenerator))
-        .suppress(Warning.NULL_FIELDS)
-        .verify()
+      (
+        instancesOf [DieExpression] // scalastyle:ignore no.whitespace.before.left.bracket
+          withPrefabValues(
+            new Die(1, DefaultRandomNumberGenerator),
+            new Die(2, DefaultRandomNumberGenerator)
+          )
+          should be (equatable)
+      )
     }
 
     describe("#evaluate") {
@@ -118,7 +125,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("DivisionExpression") {
     it("should be equatable") {
-      classOf[DivisionExpression] should be (equatable)
+      instancesOf [DivisionExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -146,7 +153,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("GroupExpression") {
     it("should be equatable") {
-      classOf[GroupExpression[_]] should be (equatable)
+      instancesOf [GroupExpression[_]] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -162,7 +169,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("ModuloExpression") {
     it("should be equatable") {
-      classOf[ModuloExpression] should be (equatable)
+      instancesOf [ModuloExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -190,7 +197,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("MultiplicationExpression") {
     it("should be equatable") {
-      classOf[MultiplicationExpression] should be (equatable)
+      instancesOf [MultiplicationExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -218,7 +225,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("NegativeExpression") {
     it("should be equatable") {
-      classOf[NegativeExpression] should be (equatable)
+      instancesOf [NegativeExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -234,7 +241,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("PositiveExpression") {
     it("should be equatable") {
-      classOf[PositiveExpression] should be (equatable)
+      instancesOf [PositiveExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {
@@ -250,7 +257,7 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
   describe("SubtractionExpression") {
     it("should be equatable") {
-      classOf[SubtractionExpression] should be (equatable)
+      instancesOf [SubtractionExpression] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
     }
 
     describe("#evaluate") {

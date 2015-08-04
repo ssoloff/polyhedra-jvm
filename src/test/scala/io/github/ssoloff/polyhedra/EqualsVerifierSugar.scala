@@ -24,6 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.matchers.{BeMatcher, MatchResult}
+import scala.reflect.{ClassTag, classTag}
 import scala.util.{Failure, Try}
 
 /** Trait that provides some basic syntax sugar for EqualsVerifier.
@@ -31,27 +32,70 @@ import scala.util.{Failure, Try}
 trait EqualsVerifierSugar {
   /** This class is part of the EqualsVerifier sugar DSL.
     */
-  final class EquatableMatcher extends BeMatcher[Class[_]] {
-    override def apply(left: Class[_]): MatchResult = {
-      val result = Try(EqualsVerifier.forClass(left).suppress(Warning.NULL_FIELDS).verify())
+  final class EquatableMatcher extends BeMatcher[ResultOfInstancesOfTypeInvocation[_]] {
+    override def apply(left: ResultOfInstancesOfTypeInvocation[_]): MatchResult = {
+      val result = Try(left.equalsVerifier.verify())
       val failureDetailMessage = result match {
         case Failure(e) => s" (${e.getMessage})"
         case _ => ""
       }
       MatchResult(
         result.isSuccess,
-        s"${left.getName} is not equatable$failureDetailMessage",
-        s"${left.getName} is equatable"
+        s"${left.runtimeClass.getName} is not equatable$failureDetailMessage",
+        s"${left.runtimeClass.getName} is equatable"
       )
+    }
+  }
+
+  /** This class is part of the EqualsVerifier sugar DSL.
+    */
+  final class ResultOfInstancesOfTypeInvocation[T: ClassTag] {
+    /** The runtime class under test.
+      */
+    val runtimeClass = classTag[T].runtimeClass.asInstanceOf[Class[T]]
+
+    /** The `EqualsVerifier` instance used to verify implementation of the
+      * equatable interface.
+      */
+    val equalsVerifier = EqualsVerifier.forClass(runtimeClass).suppress(Warning.NULL_FIELDS)
+
+    /** Adds prefabricated values for instance fields of classes that
+      * `EqualsVerifier` cannot instantiate by itself.
+      *
+      * @tparam U
+      *   The type of the prefabricated values.
+      *
+      * @param red
+      *   An instance of {@code U}.
+      * @param black
+      *   Another instance of {@code U}.
+      *
+      * @return A reference to this invocation.
+      *
+      * @throws java.lang.IllegalArgumentException
+      *   If {@code red} equals {@code black}.
+      */
+    def withPrefabValues[U: ClassTag](red: U, black: U): ResultOfInstancesOfTypeInvocation[T] = {
+      val runtimeClassForU = classTag[U].runtimeClass.asInstanceOf[Class[U]]
+      equalsVerifier.withPrefabValues(runtimeClassForU, red, black)
+      this
     }
   }
 
   /** This field enables syntax such as the following:
     *
     * <pre>
-    * classOf[String] should be (equatable)
+    * instancesOf [String] should be (equatable)
     * </pre>
     */
   val equatable = new EquatableMatcher
+
+  /** This method enables syntax such as the following:
+    *
+    * <pre>
+    * instancesOf [String] should be (equatable)
+    * </pre>
+    */
+  def instancesOf[T: ClassTag]: ResultOfInstancesOfTypeInvocation[T] = new ResultOfInstancesOfTypeInvocation[T]
 }
 

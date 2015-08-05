@@ -41,8 +41,8 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
         expressionResult should equal (new AdditionExpressionResult(
           7.0,
-          new ConstantExpressionResult(4.0),
-          new ConstantExpressionResult(3.0)
+          new ConstantExpressionResult(four.constant),
+          new ConstantExpressionResult(three.constant)
         ))
       }
 
@@ -136,8 +136,8 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
         expressionResult should equal (new DivisionExpressionResult(
           0.75,
-          new ConstantExpressionResult(3.0),
-          new ConstantExpressionResult(4.0)
+          new ConstantExpressionResult(three.constant),
+          new ConstantExpressionResult(four.constant)
         ))
       }
 
@@ -246,8 +246,8 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
         expressionResult should equal (new ModuloExpressionResult(
           1.0,
-          new ConstantExpressionResult(4.0),
-          new ConstantExpressionResult(3.0)
+          new ConstantExpressionResult(four.constant),
+          new ConstantExpressionResult(three.constant)
         ))
       }
 
@@ -274,8 +274,8 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
         expressionResult should equal (new MultiplicationExpressionResult(
           12.0,
-          new ConstantExpressionResult(4.0),
-          new ConstantExpressionResult(3.0)
+          new ConstantExpressionResult(four.constant),
+          new ConstantExpressionResult(three.constant)
         ))
       }
 
@@ -334,8 +334,8 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
 
         expressionResult should equal (new SubtractionExpressionResult(
           1.0,
-          new ConstantExpressionResult(4.0),
-          new ConstantExpressionResult(3.0)
+          new ConstantExpressionResult(four.constant),
+          new ConstantExpressionResult(three.constant)
         ))
       }
 

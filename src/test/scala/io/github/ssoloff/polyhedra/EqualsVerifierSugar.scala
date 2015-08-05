@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import nl.jqno.equalsverifier.{EqualsVerifier, Warning}
 import org.scalatest.matchers.{BeMatcher, MatchResult}
-import scala.reflect.{ClassTag, classTag}
+import scala.reflect.ClassTag
 import scala.util.{Failure, Try}
 
 /** Trait that provides some basic syntax sugar for EqualsVerifier.
@@ -52,7 +52,7 @@ trait EqualsVerifierSugar {
   final class ResultOfInstancesOfTypeInvocation[T: ClassTag] {
     /** The runtime class under test.
       */
-    val runtimeClass = classTag[T].runtimeClass.asInstanceOf[Class[T]]
+    val runtimeClass = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]]
 
     /** The `EqualsVerifier` instance used to verify implementation of the
       * equatable interface.
@@ -76,7 +76,7 @@ trait EqualsVerifierSugar {
       *   If {@code red} equals {@code black}.
       */
     def withPrefabValues[U: ClassTag](red: U, black: U): ResultOfInstancesOfTypeInvocation[T] = {
-      val runtimeClassForU = classTag[U].runtimeClass.asInstanceOf[Class[U]]
+      val runtimeClassForU = implicitly[ClassTag[U]].runtimeClass.asInstanceOf[Class[U]]
       equalsVerifier.withPrefabValues(runtimeClassForU, red, black)
       this
     }

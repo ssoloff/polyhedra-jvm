@@ -151,6 +151,72 @@ final class ExpressionSpec extends FunSpec with Matchers with RandomNumberGenera
     }
   }
 
+  describe("FunctionCallExpression") {
+    it("should be equatable") {
+      (
+        instancesOf [FunctionCallExpression[_, _]] // scalastyle:ignore no.whitespace.before.left.bracket
+          withPrefabValues(
+            List(three, four),
+            List(four, three)
+          )
+          should be (equatable)
+      )
+    }
+
+    describe("#evaluate") {
+      describe("when zero arguments specified") {
+        it("should return result with value equal to function return value") {
+          val name = "f0"
+          val returnValue = 0.0
+          val expression = new FunctionCallExpression(name, (args: Seq[Any]) => returnValue, Nil)
+
+          val expressionResult = expression.evaluate()
+
+          expressionResult should equal (new FunctionCallExpressionResult(
+            returnValue,
+            name,
+            Nil
+          ))
+        }
+      }
+
+      describe("when one argument specified") {
+        it("should return result with value equal to function return value") {
+          val name = "f1"
+          val expression = new FunctionCallExpression(name, (args: Seq[Double]) => args(0), List(three))
+
+          val expressionResult = expression.evaluate()
+
+          expressionResult should equal (new FunctionCallExpressionResult(
+            three.constant,
+            name,
+            List(
+              new ConstantExpressionResult(three.constant)
+            )
+          ))
+        }
+      }
+
+      describe("when two arguments specified") {
+        it("should return result with value equal to function return value") {
+          val name = "f2"
+          val expression = new FunctionCallExpression(name, (args: Seq[Double]) => args(0) + args(1), List(three, four))
+
+          val expressionResult = expression.evaluate()
+
+          expressionResult should equal (new FunctionCallExpressionResult(
+            three.constant + four.constant,
+            name,
+            List(
+              new ConstantExpressionResult(three.constant),
+              new ConstantExpressionResult(four.constant)
+            )
+          ))
+        }
+      }
+    }
+  }
+
   describe("GroupExpression") {
     it("should be equatable") {
       instancesOf [GroupExpression[_]] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket

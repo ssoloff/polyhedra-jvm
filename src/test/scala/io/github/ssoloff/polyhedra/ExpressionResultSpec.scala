@@ -118,6 +118,28 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     }
   }
 
+  describe("FunctionCallExpressionResult") {
+    it("should be equatable") {
+      (
+        instancesOf [FunctionCallExpressionResult[_]] // scalastyle:ignore no.whitespace.before.left.bracket
+          withPrefabValues(
+            List(three, four),
+            List(four, three)
+          )
+          should be (equatable)
+      )
+    }
+
+    describe("#value") {
+      it("should return function return value") {
+        val returnValue = 2.0
+        val expressionResult = new FunctionCallExpressionResult(returnValue, "name", List(three, four))
+
+        expressionResult.value should equal (returnValue)
+      }
+    }
+  }
+
   describe("GroupExpressionResult") {
     it("should be equatable") {
       instancesOf [GroupExpressionResult[_]] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket

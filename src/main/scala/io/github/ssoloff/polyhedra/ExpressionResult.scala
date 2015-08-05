@@ -191,6 +191,48 @@ final class DivisionExpressionResult(
   override val value: Double = quotient
 }
 
+/** The result of an expression that calls a function.
+  *
+  * @tparam A
+  *   The type of the evaluated expression value.
+  *
+  * @constructor Creates a new function expression result.
+  *
+  * @param returnValue
+  *   The function return value.
+  * @param name
+  *   The function name.
+  * @param argumentListExpressionResults
+  *   The expression results that represent the arguments to the function call.
+  */
+final class FunctionCallExpressionResult[A](
+    returnValue: A,
+    val name: String,
+    val argumentListExpressionResults: List[ExpressionResult[_]]) extends ExpressionResult[A] {
+  override def equals(other: Any): Boolean = other match {
+    case that: FunctionCallExpressionResult[A] => argumentListExpressionResults == that.argumentListExpressionResults &&
+      name == that.name &&
+      value == that.value
+    case _ => false
+  }
+
+  override def hashCode(): Int = new HashCodeBuilder()
+    .append(argumentListExpressionResults)
+    .append(name)
+    .append(value)
+    .toHashCode
+
+  // $COVERAGE-OFF$
+  override def toString: String = "FunctionCallExpressionResult(" +
+    s"argumentListExpressionResults=$argumentListExpressionResults" +
+    s", name=$name" +
+    s", value=$value" +
+    ")"
+  // $COVERAGE-ON$
+
+  override val value: A = returnValue
+}
+
 /** The result of an expression that groups another expression.
   *
   * @tparam A

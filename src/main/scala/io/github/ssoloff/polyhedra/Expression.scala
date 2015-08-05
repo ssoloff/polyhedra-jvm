@@ -190,6 +190,55 @@ final class DivisionExpression(
   // $COVERAGE-ON$
 }
 
+/** An expression that calls a function.
+  *
+  * @tparam T
+  *   The type of the function arguments.
+  * @tparam R
+  *   The type of the evaluated expression value.
+  *
+  * @constructor Creates a new function call expression.
+  *
+  * @param name
+  *   The function name.
+  * @param func
+  *   The function.
+  * @param argumentListExpressions
+  *   The expressions that represent the arguments to the function call.
+  */
+final class FunctionCallExpression[T, R](
+    val name: String,
+    val func: Seq[T] => R,
+    val argumentListExpressions: List[Expression[T]]) extends Expression[R] {
+  override def equals(other: Any): Boolean = other match {
+    case that: FunctionCallExpression[T, R] => argumentListExpressions == that.argumentListExpressions &&
+      func == that.func &&
+      name == that.name
+    case _ => false
+  }
+
+  override def evaluate(): FunctionCallExpressionResult[R] = {
+    val argumentListExpressionResults = argumentListExpressions map (_.evaluate())
+    val argumentList = argumentListExpressionResults map (_.value)
+    val returnValue = func(argumentList)
+    new FunctionCallExpressionResult[R](returnValue, name, argumentListExpressionResults)
+  }
+
+  override def hashCode(): Int = new HashCodeBuilder()
+    .append(argumentListExpressions)
+    .append(func)
+    .append(name)
+    .toHashCode
+
+  // $COVERAGE-OFF$
+  override def toString: String = "FunctionCallExpression(" +
+    s"argumentListExpressions=$argumentListExpressions" +
+    s", func=$func" +
+    s", name=$name" +
+    ")"
+  // $COVERAGE-ON$
+}
+
 /** An expression that groups another expression.
   *
   * @tparam A

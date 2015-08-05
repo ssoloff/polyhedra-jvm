@@ -50,8 +50,6 @@ final class AdditionExpressionResult(
     sum: Double,
     val augendExpressionResult: ExpressionResult[Double],
     val addendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = sum
-
   override def equals(other: Any): Boolean = other match {
     case that: AdditionExpressionResult => addendExpressionResult == that.addendExpressionResult &&
       augendExpressionResult == that.augendExpressionResult &&
@@ -72,6 +70,8 @@ final class AdditionExpressionResult(
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = sum
 }
 
 /** The result of an array expression.
@@ -85,8 +85,6 @@ final class AdditionExpressionResult(
   *   The array of expression results.
   */
 final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResult[A]]) extends ExpressionResult[List[A]] {
-  override val value: List[A] = expressionResults.map(_.value)
-
   override def equals(other: Any): Boolean = {
     other match {
       case that: ArrayExpressionResult[A] => expressionResults == that.expressionResults
@@ -102,6 +100,8 @@ final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResul
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: List[A] = expressionResults.map(_.value)
 }
 
 /** An result of a constant expression.
@@ -112,8 +112,6 @@ final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResul
   *   The constant.
   */
 final class ConstantExpressionResult(constant: Double) extends ExpressionResult[Double] {
-  override val value: Double = constant
-
   override def equals(other: Any): Boolean = other match {
     case that: ConstantExpressionResult => value.compareTo(that.value) == 0
     case _ => false
@@ -126,6 +124,8 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
     s"value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = constant
 }
 
 /** The result of a die expression.
@@ -136,8 +136,6 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
   *
   */
 final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
-  override val value: Die = die
-
   override def equals(other: Any): Boolean = other match {
     case that: DieExpressionResult => value.sides == that.value.sides
     case _ => false
@@ -150,6 +148,8 @@ final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
     s"value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Die = die
 }
 
 /** The result of an expression that divides two expressions.
@@ -167,8 +167,6 @@ final class DivisionExpressionResult(
     quotient: Double,
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = quotient
-
   override def equals(other: Any): Boolean = other match {
     case that: DivisionExpressionResult => dividendExpressionResult == that.dividendExpressionResult &&
       divisorExpressionResult == that.divisorExpressionResult &&
@@ -189,6 +187,8 @@ final class DivisionExpressionResult(
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = quotient
 }
 
 /** The result of an expression that groups another expression.
@@ -202,8 +202,6 @@ final class DivisionExpressionResult(
   *   The result of the expression to be grouped.
   */
 final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult[A]) extends ExpressionResult[A] {
-  override val value: A = childExpressionResult.value
-
   override def equals(other: Any): Boolean = other match {
     case that: GroupExpressionResult[A] => childExpressionResult == that.childExpressionResult
     case _ => false
@@ -217,6 +215,8 @@ final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: A = childExpressionResult.value
 }
 
 /** The result of an expression that modulos two expressions.
@@ -234,8 +234,6 @@ final class ModuloExpressionResult(
     remainder: Double,
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = remainder
-
   override def equals(other: Any): Boolean = other match {
     case that: ModuloExpressionResult => dividendExpressionResult == that.dividendExpressionResult &&
       divisorExpressionResult == that.divisorExpressionResult &&
@@ -256,6 +254,8 @@ final class ModuloExpressionResult(
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = remainder
 }
 
 /** The result of an expression that multiplies two expressions.
@@ -273,8 +273,6 @@ final class MultiplicationExpressionResult(
     product: Double,
     val multiplicandExpressionResult: ExpressionResult[Double],
     val multiplierExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = product
-
   override def equals(other: Any): Boolean = other match {
     case that: MultiplicationExpressionResult => multiplicandExpressionResult == that.multiplicandExpressionResult &&
       multiplierExpressionResult == that.multiplierExpressionResult &&
@@ -295,6 +293,8 @@ final class MultiplicationExpressionResult(
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = product
 }
 
 /** The result of an expression that negates another expression.
@@ -305,8 +305,6 @@ final class MultiplicationExpressionResult(
   *   The result of the expression to be negated.
   */
 final class NegativeExpressionResult(val childExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = -childExpressionResult.value
-
   override def equals(other: Any): Boolean = other match {
     case that: NegativeExpressionResult => childExpressionResult == that.childExpressionResult
     case _ => false
@@ -320,6 +318,8 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = -childExpressionResult.value
 }
 
 /** The result of an expression that applies another expression.
@@ -330,8 +330,6 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
   *   The result of the expression to be applied.
   */
 final class PositiveExpressionResult(val childExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = childExpressionResult.value
-
   override def equals(other: Any): Boolean = other match {
     case that: PositiveExpressionResult => childExpressionResult == that.childExpressionResult
     case _ => false
@@ -345,6 +343,8 @@ final class PositiveExpressionResult(val childExpressionResult: ExpressionResult
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = childExpressionResult.value
 }
 
 /** The result of an expression that subtracts two expressions.
@@ -362,8 +362,6 @@ final class SubtractionExpressionResult(
     difference: Double,
     val minuendExpressionResult: ExpressionResult[Double],
     val subtrahendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
-  override val value: Double = difference
-
   override def equals(other: Any): Boolean = other match {
     case that: SubtractionExpressionResult => minuendExpressionResult == that.minuendExpressionResult &&
       subtrahendExpressionResult == that.subtrahendExpressionResult &&
@@ -384,5 +382,7 @@ final class SubtractionExpressionResult(
     s", value=$value" +
     ")"
   // $COVERAGE-ON$
+
+  override val value: Double = difference
 }
 

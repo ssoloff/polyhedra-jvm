@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder
 sealed abstract class ExpressionResult[+A] {
   /** The value of the evaluated expression.
     */
-  val value: A
+  def value: A
 }
 
 /** The result of an expression that adds two expressions.

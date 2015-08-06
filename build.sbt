@@ -31,4 +31,9 @@ lazy val root = (project in file("."))
     fork in Test := true,
     scalastyleFailOnError := true
   )
+  .settings(antlr4Settings)
+  .settings(
+    antlr4GenListener in Antlr4 := false,
+    antlr4GenVisitor in Antlr4 := true
+  )
 

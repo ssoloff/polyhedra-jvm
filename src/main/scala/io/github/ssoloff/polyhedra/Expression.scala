@@ -85,7 +85,7 @@ final class AdditionExpression(
   * @param expressions
   *   The expressions that are the array elements.
   */
-final class ArrayExpression[A](val expressions: List[Expression[A]]) extends Expression[List[A]] {
+final class ArrayExpression[A](val expressions: Seq[Expression[A]]) extends Expression[Seq[A]] {
   override def equals(other: Any): Boolean = other match {
     case that: ArrayExpression[A] => expressions == that.expressions
     case _ => false

@@ -84,7 +84,7 @@ final class AdditionExpressionResult(
   * @param expressionResults
   *   The array of expression results.
   */
-final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResult[A]]) extends ExpressionResult[List[A]] {
+final class ArrayExpressionResult[A](val expressionResults: Seq[ExpressionResult[A]]) extends ExpressionResult[Seq[A]] {
   override def equals(other: Any): Boolean = {
     other match {
       case that: ArrayExpressionResult[A] => expressionResults == that.expressionResults
@@ -101,7 +101,7 @@ final class ArrayExpressionResult[A](val expressionResults: List[ExpressionResul
     ")"
   // $COVERAGE-ON$
 
-  override val value: List[A] = expressionResults.map(_.value)
+  override val value: Seq[A] = expressionResults.map(_.value)
 }
 
 /** An result of a constant expression.

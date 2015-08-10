@@ -28,10 +28,5 @@ package object polyhedra {
   /** An immutable collection.
     */
   type Seq[+A] = scala.collection.immutable.Seq[A]
-
-  /** This object provides a set of operations to create {@code immutable.Seq}
-    * values.
-    */
-  val Seq = scala.collection.immutable.Seq
 }
 

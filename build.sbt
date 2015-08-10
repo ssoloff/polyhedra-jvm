@@ -1,3 +1,5 @@
+import ScaladocSettings._
+
 lazy val root = (project in file("."))
   .settings(
     name := "polyhedra-jvm",
@@ -33,6 +35,7 @@ lazy val root = (project in file("."))
     fork in Test := true,
     scalastyleFailOnError := true
   )
+  .settings(scaladocSettings)
   .settings(antlr4Settings)
   .settings(
     antlr4GenListener in Antlr4 := false,

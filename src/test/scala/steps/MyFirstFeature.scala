@@ -20,16 +20,26 @@
  * THE SOFTWARE.
  */
 
-package stepdefs
+package steps
 
-import cucumber.api.CucumberOptions
-import cucumber.api.junit.Cucumber
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitSuite
+import cucumber.api.PendingException
+import cucumber.api.scala.{ScalaDsl, EN}
+import org.scalatest.Matchers
 
-@RunWith(classOf[Cucumber])
-@CucumberOptions(
-  features = Array("classpath:features/")
-)
-class RunCucumber extends JUnitSuite
+class MyFirstFeature extends ScalaDsl with EN with Matchers {
+  Given("""^I have navigated to google$""") { () =>
+    // Write code here that turns the phrase above into concrete actions
+    //throw new PendingException
+  }
+
+  When("""^I search for "(.*?)"$""") { (arg0: String) =>
+    // Write code here that turns the phrase above into concrete actions
+    //throw new PendingException
+  }
+
+  Then("""^the page title should be selenium - Google Search$""") { () =>
+    // Write code here that turns the phrase above into concrete actions
+    //throw new PendingException
+  }
+}
 

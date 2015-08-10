@@ -20,26 +20,12 @@
  * THE SOFTWARE.
  */
 
-package steps
+package io.github.ssoloff.polyhedra
 
-import cucumber.api.PendingException
-import cucumber.api.scala.{ScalaDsl, EN}
-import org.scalatest.Matchers
+import cucumber.api.junit.Cucumber
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitSuite
 
-class MyFirstFeature extends ScalaDsl with EN with Matchers {
-  Given("""^I have navigated to google$""") { () =>
-    // Write code here that turns the phrase above into concrete actions
-    //throw new PendingException
-  }
-
-  When("""^I search for "(.*?)"$""") { (arg0: String) =>
-    // Write code here that turns the phrase above into concrete actions
-    //throw new PendingException
-  }
-
-  Then("""^the page title should be selenium - Google Search$""") { () =>
-    // Write code here that turns the phrase above into concrete actions
-    //throw new PendingException
-  }
-}
+@RunWith(classOf[Cucumber])
+final class AcceptanceTestSuite extends JUnitSuite
 

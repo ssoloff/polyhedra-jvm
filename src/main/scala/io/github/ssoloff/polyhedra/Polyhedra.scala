@@ -20,10 +20,25 @@
  * THE SOFTWARE.
  */
 
-import cucumber.api.junit.Cucumber
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitSuite
+package io.github.ssoloff.polyhedra
 
-@RunWith(classOf[Cucumber])
-class AcceptanceTestSuite extends JUnitSuite
+/** Provides a set of operations for using the dice notation library.
+  */
+object Polyhedra {
+  /** Evaluates a dice notation expression.
+    *
+    * @param expressionText
+    *   The dice notation expression to evaluate.
+    *
+    * @return The value of the evaluated expression.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *   If {@code expressionText} is not a valid dice notation expression.
+    */
+  def evaluate(expressionText: String): Double = {
+    val expression = new ConstantExpression(expressionText.toDouble)
+    val expressionResult = expression.evaluate()
+    expressionResult.value
+  }
+}
 

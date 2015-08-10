@@ -6,7 +6,9 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.apache.commons" % "commons-lang3" % "3.4",
       "nl.jqno.equalsverifier" % "equalsverifier" % "1.7.3" % Test,
-      "org.scalatest" %% "scalatest" % "2.2.4" % Test
+      "org.scalatest" %% "scalatest" % "2.2.4" % Test,
+      "info.cukes" %% "cucumber-scala" % "1.2.4" % Test,
+      "info.cukes" % "cucumber-junit" % "1.2.4" % Test
     ),
     scalacOptions ++= Seq(
       "-encoding", "UTF-8",

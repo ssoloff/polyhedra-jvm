@@ -39,7 +39,7 @@ object ExpressionParser {
       new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
 
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
-      new DivisionExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+      new DivisionExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
 
     override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
       visit(ctx.additive_expression())
@@ -48,10 +48,13 @@ object ExpressionParser {
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
 
     override def visitModulo(ctx: InternalExpressionParser.ModuloContext): Expression[Double] =
-      new ModuloExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+      new ModuloExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
 
     override def visitMultiplication(ctx: InternalExpressionParser.MultiplicationContext): Expression[Double] =
-      new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+      new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
+
+    override def visitPositive(ctx: InternalExpressionParser.PositiveContext): Expression[Double] =
+      new PositiveExpression(visit(ctx.literal()))
 
     override def visitSubtraction(ctx: InternalExpressionParser.SubtractionContext): Expression[Double] =
       new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))

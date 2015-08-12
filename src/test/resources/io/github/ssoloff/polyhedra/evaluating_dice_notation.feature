@@ -30,3 +30,11 @@ Scenario Outline: Evaluating arithmetic expressions with constants
         | 4 % 3      | 1                  |
         | 3 % 4      | 3                  |
 
+Scenario Outline: Evaluating expressions with unary operators
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then the expression result value should be <result value>
+    Examples:
+        | expression | result value |
+        | +1         | 1            |
+

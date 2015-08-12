@@ -46,9 +46,14 @@ literal
     ;
 
 multiplicative_expression
-    : multiplicative_expression STAR literal    # Multiplication
-    | multiplicative_expression SLASH literal   # Division
-    | multiplicative_expression PERCENT literal # Modulo
-    | literal                                   # ToLiteral
+    : multiplicative_expression STAR unary_expression    # Multiplication
+    | multiplicative_expression SLASH unary_expression   # Division
+    | multiplicative_expression PERCENT unary_expression # Modulo
+    | unary_expression                                   # ToUnaryExpression
+    ;
+
+unary_expression
+    : PLUS literal # Positive
+    | literal      # ToLiteral
     ;
 

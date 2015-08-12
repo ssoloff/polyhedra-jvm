@@ -90,6 +90,16 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           expression should equal (new ModuloExpression(three, two))
         }
       }
+
+      describe("unary operators") {
+        it("should parse positive") {
+          val source = "+1"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new PositiveExpression(one))
+        }
+      }
     }
   }
 }

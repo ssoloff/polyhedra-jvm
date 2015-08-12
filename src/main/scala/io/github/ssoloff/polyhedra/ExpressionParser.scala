@@ -38,6 +38,9 @@ object ExpressionParser {
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
       new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
 
+    override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
+      new DivisionExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+
     override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
       visit(ctx.additive_expression())
 

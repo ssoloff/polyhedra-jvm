@@ -64,14 +64,22 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           expression should equal (new SubtractionExpression(one, two))
         }
-      }
 
-      it("should parse the multiplication of two constants") {
+        it("should parse the multiplication of two constants") {
           val source = "1 * 2"
 
           val expression = ExpressionParser.parse(source)
 
           expression should equal (new MultiplicationExpression(one, two))
+        }
+
+        it("should parse the division of two constants") {
+          val source = "1 / 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new DivisionExpression(one, two))
+        }
       }
     }
   }

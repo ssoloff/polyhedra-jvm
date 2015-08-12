@@ -27,6 +27,7 @@ WS              : [ \t\r\n]+ -> skip;
 
 MINUS : '-';
 PLUS  : '+';
+SLASH : '/';
 STAR  : '*';
 
 additive_expression
@@ -44,7 +45,8 @@ literal
     ;
 
 multiplicative_expression
-    : multiplicative_expression STAR literal # Multiplication
-    | literal                                # ToLiteral
+    : multiplicative_expression STAR literal  # Multiplication
+    | multiplicative_expression SLASH literal # Division
+    | literal                                 # ToLiteral
     ;
 

@@ -20,25 +20,29 @@
  * THE SOFTWARE.
  */
 
+package io.github.ssoloff.polyhedra
+
 import org.scalatest.{FunSpec, Matchers}
 
-final class CalculatorSpec extends FunSpec with Matchers {
-  describe("Calculator") {
-    describe("when evaluating valid input") {
-      it("should return evaluated result") {
-        val text = "100+2*34"
+final class ExpressionParserSpec extends FunSpec with Matchers {
+  describe("ExpressionParser") {
+    describe(".parse") {
+      describe("when source is empty") {
+        it("should throw an exception") {
+          val source = ""
 
-        val result = Calculator.evaluate(text)
-
-        result should equal (168.0)
+          an [IllegalArgumentException] should be thrownBy ExpressionParser.parse(source) // scalastyle:ignore no.whitespace.before.left.bracket
+        }
       }
-    }
 
-    describe("when evaluating invalid input") {
-      it("should throw an exception") {
-        val text = "100+2*34)"
+      describe("literals") {
+        it("should parse an integer literal") {
+          val source = "42"
 
-        an [Exception] should be thrownBy Calculator.evaluate(text) // scalastyle:ignore no.whitespace.before.left.bracket
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new ConstantExpression(42.0))
+        }
       }
     }
   }

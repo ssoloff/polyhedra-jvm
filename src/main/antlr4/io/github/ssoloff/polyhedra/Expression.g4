@@ -20,25 +20,17 @@
  * THE SOFTWARE.
  */
 
-package io.github.ssoloff.polyhedra
+grammar Expression;
 
-/** Provides a set of operations for using the dice notation library.
-  */
-object Polyhedra {
-  /** Evaluates a dice expression.
-    *
-    * @param expressionText
-    *   The dice expression to evaluate.
-    *
-    * @return The value of the evaluated expression.
-    *
-    * @throws java.lang.IllegalArgumentException
-    *   If {@code expressionText} is not a valid dice expression.
-    */
-  def evaluate(expressionText: String): Double = {
-    val expression = ExpressionParser.parse(expressionText)
-    val expressionResult = expression.evaluate()
-    expressionResult.value
-  }
-}
+INTEGER_LITERAL : [0-9]+;
+NL              : '\n';
+WS              : [ \t\r]+ -> skip;
+
+input
+    : literal NL? EOF # Evaluate
+    ;
+
+literal
+    : INTEGER_LITERAL # IntegerLiteral
+    ;
 

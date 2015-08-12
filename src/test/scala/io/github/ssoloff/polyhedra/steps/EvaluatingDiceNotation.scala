@@ -22,12 +22,13 @@
 
 package io.github.ssoloff.polyhedra.steps
 
-import cucumber.api.scala.{ScalaDsl, EN}
+import cucumber.api.scala.{EN, ScalaDsl}
 import io.github.ssoloff.polyhedra.Polyhedra
-import org.scalatest.Matchers
+import org.scalatest.{Matchers, OptionValues}
 
-final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers {
-  var expressionResultValue = 0.0
+final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with OptionValues {
+  var expressionResultException: Option[Exception] = None
+  var expressionResultValue: Option[Double] = None
   var expressionText = ""
 
   Given("""^the expression "([^"]*)"$""") { (expressionText: String) =>
@@ -35,11 +36,19 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers {
   }
 
   When("""^the expression is evaluated$""") { () =>
-    expressionResultValue = Polyhedra.evaluate(expressionText)
+    try {
+      expressionResultValue = Some(Polyhedra.evaluate(expressionText))
+    } catch {
+      case e: Exception => expressionResultException = Some(e)
+    }
+  }
+
+  Then("""^an exception should be thrown$""") { () =>
+    expressionResultException should be ('defined)
   }
 
   Then("""^the expression result value should be "([^"]*)"$""") { (expressionResultValueAsString: String) =>
-    expressionResultValueAsString.toDouble should equal (expressionResultValue)
+    expressionResultValue.value should equal (expressionResultValueAsString.toDouble)
   }
 }
 

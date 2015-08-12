@@ -27,6 +27,7 @@ import org.scalatest.{FunSpec, Matchers}
 final class ExpressionParserSpec extends FunSpec with Matchers {
   val one = new ConstantExpression(1.0)
   val two = new ConstantExpression(2.0)
+  val three = new ConstantExpression(3.0)
 
   describe("ExpressionParser") {
     describe(".parse") {
@@ -79,6 +80,14 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           val expression = ExpressionParser.parse(source)
 
           expression should equal (new DivisionExpression(one, two))
+        }
+
+        it("should parse the modulo of two constants") {
+          val source = "3 % 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new ModuloExpression(three, two))
         }
       }
     }

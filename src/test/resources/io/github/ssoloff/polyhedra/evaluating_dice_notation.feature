@@ -27,4 +27,6 @@ Scenario Outline: Evaluating arithmetic expressions with constants
         | 3 * 4      | 12                 |
         | 4 / 3      | 1.3333333333333333 |
         | 3 / 4      | 0.75               |
+        | 4 % 3      | 1                  |
+        | 3 % 4      | 3                  |
 

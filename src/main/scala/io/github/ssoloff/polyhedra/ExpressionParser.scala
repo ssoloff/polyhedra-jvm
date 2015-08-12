@@ -47,6 +47,9 @@ object ExpressionParser {
     override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
 
+    override def visitModulo(ctx: InternalExpressionParser.ModuloContext): Expression[Double] =
+      new ModuloExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+
     override def visitMultiplication(ctx: InternalExpressionParser.MultiplicationContext): Expression[Double] =
       new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
 

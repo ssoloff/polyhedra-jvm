@@ -25,10 +25,11 @@ grammar Expression;
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
-MINUS : '-';
-PLUS  : '+';
-SLASH : '/';
-STAR  : '*';
+MINUS   : '-';
+PERCENT : '%';
+PLUS    : '+';
+SLASH   : '/';
+STAR    : '*';
 
 additive_expression
     : additive_expression PLUS multiplicative_expression  # Addition
@@ -45,8 +46,9 @@ literal
     ;
 
 multiplicative_expression
-    : multiplicative_expression STAR literal  # Multiplication
-    | multiplicative_expression SLASH literal # Division
-    | literal                                 # ToLiteral
+    : multiplicative_expression STAR literal    # Multiplication
+    | multiplicative_expression SLASH literal   # Division
+    | multiplicative_expression PERCENT literal # Modulo
+    | literal                                   # ToLiteral
     ;
 

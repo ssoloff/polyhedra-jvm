@@ -11,5 +11,14 @@ Scenario: Evaluating malformed expressions
 Scenario: Evaluating constants
     Given the expression "5"
     When the expression is evaluated
-    Then the expression result value should be "5"
+    Then the expression result value should be 5
+
+Scenario Outline: Evaluating arithmetic expressions with constants
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then the expression result value should be <result value>
+    Examples:
+        | expression | result value |
+        | 4 + 3      | 7            |
+        | 3 + 4      | 7            |
 

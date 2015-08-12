@@ -23,11 +23,17 @@
 grammar Expression;
 
 INTEGER_LITERAL : [0-9]+;
-NL              : '\n';
-WS              : [ \t\r]+ -> skip;
+WS              : [ \t\r\n]+ -> skip;
+
+PLUS : '+';
+
+additive_expression
+    : additive_expression PLUS literal # Add
+    | literal                          # ToLiteral
+    ;
 
 input
-    : literal NL? EOF # Evaluate
+    : additive_expression EOF # Evaluate
     ;
 
 literal

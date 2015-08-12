@@ -25,6 +25,9 @@ package io.github.ssoloff.polyhedra
 import org.scalatest.{FunSpec, Matchers}
 
 final class ExpressionParserSpec extends FunSpec with Matchers {
+  val one = new ConstantExpression(1.0)
+  val two = new ConstantExpression(2.0)
+
   describe("ExpressionParser") {
     describe(".parse") {
       describe("when source is empty") {
@@ -42,6 +45,16 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           val expression = ExpressionParser.parse(source)
 
           expression should equal (new ConstantExpression(42.0))
+        }
+      }
+
+      describe("arithmetic operators") {
+        it("should parse the addition of two constants") {
+          val source = "1 + 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new AdditionExpression(one, two))
         }
       }
     }

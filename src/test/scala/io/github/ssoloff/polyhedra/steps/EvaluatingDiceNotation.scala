@@ -47,7 +47,7 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with O
     expressionResultException should be ('defined)
   }
 
-  Then("""^the expression result value should be "([^"]*)"$""") { (expressionResultValueAsString: String) =>
+  Then("""^the expression result value should be (.*)$""") { (expressionResultValueAsString: String) =>
     expressionResultValue.value should equal (expressionResultValueAsString.toDouble)
   }
 }

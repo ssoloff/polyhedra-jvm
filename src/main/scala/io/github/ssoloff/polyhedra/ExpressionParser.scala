@@ -35,11 +35,14 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
 object ExpressionParser {
   // $COVERAGE-OFF$
   private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[Double]] {
-    override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
-      new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
+    override def visitAdd(ctx: InternalExpressionParser.AddContext): Expression[Double] =
+      new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.literal()))
 
     override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
-      visit(ctx.literal())
+      visit(ctx.additive_expression())
+
+    override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
+      new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
   }
   // $COVERAGE-ON$
 

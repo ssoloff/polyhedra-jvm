@@ -27,11 +27,12 @@ WS              : [ \t\r\n]+ -> skip;
 
 MINUS : '-';
 PLUS  : '+';
+STAR  : '*';
 
 additive_expression
-    : additive_expression PLUS literal  # Addition
-    | additive_expression MINUS literal # Subtraction
-    | literal                           # ToLiteral
+    : additive_expression PLUS multiplicative_expression  # Addition
+    | additive_expression MINUS multiplicative_expression # Subtraction
+    | multiplicative_expression                           # ToMultiplicativeExpression
     ;
 
 input
@@ -40,5 +41,10 @@ input
 
 literal
     : INTEGER_LITERAL # IntegerLiteral
+    ;
+
+multiplicative_expression
+    : multiplicative_expression STAR literal # Multiplication
+    | literal                                # ToLiteral
     ;
 

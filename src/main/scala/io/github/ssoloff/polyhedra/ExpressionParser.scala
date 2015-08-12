@@ -36,7 +36,7 @@ object ExpressionParser {
   // $COVERAGE-OFF$
   private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[Double]] {
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
-      new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.literal()))
+      new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
 
     override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
       visit(ctx.additive_expression())
@@ -44,8 +44,11 @@ object ExpressionParser {
     override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
 
+    override def visitMultiplication(ctx: InternalExpressionParser.MultiplicationContext): Expression[Double] =
+      new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.literal()))
+
     override def visitSubtraction(ctx: InternalExpressionParser.SubtractionContext): Expression[Double] =
-      new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.literal()))
+      new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
   }
   // $COVERAGE-ON$
 

@@ -41,8 +41,8 @@ object ExpressionParser {
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
       new DivisionExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
 
-    override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
-      visit(ctx.additive_expression())
+    override def visitGroup(ctx: InternalExpressionParser.GroupContext): Expression[Double] =
+      new GroupExpression(visit(ctx.expression()))
 
     override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
@@ -54,10 +54,13 @@ object ExpressionParser {
       new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
 
     override def visitNegative(ctx: InternalExpressionParser.NegativeContext): Expression[Double] =
-      new NegativeExpression(visit(ctx.literal()))
+      new NegativeExpression(visit(ctx.primary_expression()))
 
     override def visitPositive(ctx: InternalExpressionParser.PositiveContext): Expression[Double] =
-      new PositiveExpression(visit(ctx.literal()))
+      new PositiveExpression(visit(ctx.primary_expression()))
+
+    override def visitProgram(ctx: InternalExpressionParser.ProgramContext): Expression[Double] =
+      visit(ctx.expression())
 
     override def visitSubtraction(ctx: InternalExpressionParser.SubtractionContext): Expression[Double] =
       new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
@@ -99,7 +102,7 @@ object ExpressionParser {
       val parser = new InternalExpressionParser(tokens)
       parser.removeErrorListeners()
       parser.addErrorListener(ThrowingErrorListener)
-      val tree = parser.input()
+      val tree = parser.program()
 
       val visitor = new ExpressionVisitor
       visitor.visit(tree)

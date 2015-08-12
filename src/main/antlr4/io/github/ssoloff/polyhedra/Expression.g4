@@ -25,9 +25,11 @@ grammar Expression;
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
+LPAREN  : '(';
 MINUS   : '-';
 PERCENT : '%';
 PLUS    : '+';
+RPAREN  : ')';
 SLASH   : '/';
 STAR    : '*';
 
@@ -37,8 +39,8 @@ additive_expression
     | multiplicative_expression                           # ToMultiplicativeExpression
     ;
 
-input
-    : additive_expression EOF # Evaluate
+expression
+    : additive_expression # ToAdditiveExpression
     ;
 
 literal
@@ -52,9 +54,18 @@ multiplicative_expression
     | unary_expression                                   # ToUnaryExpression
     ;
 
+primary_expression
+    : literal                  # ToLiteral
+    | LPAREN expression RPAREN # Group
+    ;
+
+program
+    : expression EOF
+    ;
+
 unary_expression
-    : PLUS literal  # Positive
-    | MINUS literal # Negative
-    | literal       # ToLiteral
+    : PLUS primary_expression  # Positive
+    | MINUS primary_expression # Negative
+    | primary_expression       # ToPrimaryExpression
     ;
 

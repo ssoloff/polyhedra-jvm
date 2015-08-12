@@ -108,6 +108,61 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           expression should equal (new PositiveExpression(one))
         }
       }
+
+      describe("operator precedence") {
+        it("should give precedence to multiplication over addition") {
+          val source = "3 * 1 + 1 * 3"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new AdditionExpression(
+              new MultiplicationExpression(three, one),
+              new MultiplicationExpression(one, three)
+            )
+          )
+        }
+
+        it("should allow grouping to override operator precedence") {
+          ExpressionParser.parse("(3 * 1) + (1 * 3)") should equal (
+            new AdditionExpression(
+              new GroupExpression(new MultiplicationExpression(three, one)),
+              new GroupExpression(new MultiplicationExpression(one, three))
+            )
+          )
+          ExpressionParser.parse("3 * (1 + 1) * 3") should equal (
+            new MultiplicationExpression(
+              new MultiplicationExpression(
+                three,
+                new GroupExpression(new AdditionExpression(one, one))
+              ),
+              three
+            )
+          )
+          ExpressionParser.parse("3 * ((1 + 1) * 3)") should equal (
+            new MultiplicationExpression(
+              three,
+              new GroupExpression(
+                new MultiplicationExpression(
+                  new GroupExpression(new AdditionExpression(one, one)),
+                  three
+                )
+              )
+            )
+          )
+          ExpressionParser.parse("(3 * (1 + 1)) * 3") should equal (
+            new MultiplicationExpression(
+              new GroupExpression(
+                new MultiplicationExpression(
+                  three,
+                  new GroupExpression(new AdditionExpression(one, one))
+                )
+              ),
+              three
+            )
+          )
+        }
+      }
     }
   }
 }

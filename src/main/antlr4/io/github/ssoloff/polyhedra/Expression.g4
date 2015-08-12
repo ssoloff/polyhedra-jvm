@@ -25,11 +25,13 @@ grammar Expression;
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
-PLUS : '+';
+MINUS : '-';
+PLUS  : '+';
 
 additive_expression
-    : additive_expression PLUS literal # Add
-    | literal                          # ToLiteral
+    : additive_expression PLUS literal  # Addition
+    | additive_expression MINUS literal # Subtraction
+    | literal                           # ToLiteral
     ;
 
 input

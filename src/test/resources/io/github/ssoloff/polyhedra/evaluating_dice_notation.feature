@@ -21,4 +21,6 @@ Scenario Outline: Evaluating arithmetic expressions with constants
         | expression | result value |
         | 4 + 3      | 7            |
         | 3 + 4      | 7            |
+        | 4 - 3      | 1            |
+        | 3 - 4      | -1           |
 

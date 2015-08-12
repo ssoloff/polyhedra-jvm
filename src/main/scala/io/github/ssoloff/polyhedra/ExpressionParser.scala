@@ -35,7 +35,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
 object ExpressionParser {
   // $COVERAGE-OFF$
   private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[Double]] {
-    override def visitAdd(ctx: InternalExpressionParser.AddContext): Expression[Double] =
+    override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
       new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.literal()))
 
     override def visitEvaluate(ctx: InternalExpressionParser.EvaluateContext): Expression[Double] =
@@ -43,6 +43,9 @@ object ExpressionParser {
 
     override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
+
+    override def visitSubtraction(ctx: InternalExpressionParser.SubtractionContext): Expression[Double] =
+      new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.literal()))
   }
   // $COVERAGE-ON$
 
@@ -86,7 +89,7 @@ object ExpressionParser {
       val visitor = new ExpressionVisitor
       visitor.visit(tree)
     } catch {
-      case e: ParseCancellationException => throw new IllegalArgumentException(s"failed to parse '$source'", e)
+      case e: ParseCancellationException => throw new IllegalArgumentException(s"invalid expression '$source'", e)
     }
   }
 }

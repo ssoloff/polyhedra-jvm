@@ -92,6 +92,14 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
       }
 
       describe("unary operators") {
+        it("should parse negative") {
+          val source = "-1"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new NegativeExpression(one))
+        }
+
         it("should parse positive") {
           val source = "+1"
 

@@ -53,6 +53,9 @@ object ExpressionParser {
     override def visitMultiplication(ctx: InternalExpressionParser.MultiplicationContext): Expression[Double] =
       new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
 
+    override def visitNegative(ctx: InternalExpressionParser.NegativeContext): Expression[Double] =
+      new NegativeExpression(visit(ctx.literal()))
+
     override def visitPositive(ctx: InternalExpressionParser.PositiveContext): Expression[Double] =
       new PositiveExpression(visit(ctx.literal()))
 

@@ -53,7 +53,8 @@ multiplicative_expression
     ;
 
 unary_expression
-    : PLUS literal # Positive
-    | literal      # ToLiteral
+    : PLUS literal  # Positive
+    | MINUS literal # Negative
+    | literal       # ToLiteral
     ;
 

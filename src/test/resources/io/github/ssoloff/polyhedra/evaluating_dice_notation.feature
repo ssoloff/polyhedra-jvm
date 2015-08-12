@@ -36,5 +36,6 @@ Scenario Outline: Evaluating expressions with unary operators
     Then the expression result value should be <result value>
     Examples:
         | expression | result value |
+        | -1         | -1           |
         | +1         | 1            |
 

@@ -33,7 +33,6 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
 /** Provides a set of method for parsing dice expressions.
   */
 object ExpressionParser {
-  // $COVERAGE-OFF$
   private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[_]] {
     private[this] val bag = new Bag
 
@@ -105,7 +104,6 @@ object ExpressionParser {
         visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]]
       )
   }
-  // $COVERAGE-ON$
 
   private[this] object ThrowingErrorListener extends BaseErrorListener {
     import org.antlr.v4.runtime.{RecognitionException, Recognizer}

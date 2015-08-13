@@ -28,6 +28,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
   val one = new ConstantExpression(1.0)
   val two = new ConstantExpression(2.0)
   val three = new ConstantExpression(3.0)
+  val bag = new Bag
 
   describe("ExpressionParser") {
     describe(".parse") {
@@ -70,6 +71,22 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           val expression = ExpressionParser.parse(source)
 
           expression should equal (new ArrayExpression(List(one, two)))
+        }
+
+        it("should parse a die literal") {
+          val source = "d6"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new DieExpression(bag.d(6))) // scalastyle:ignore magic.number
+        }
+
+        it("should parse a percentile die literal") {
+          val source = "d%"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new DieExpression(bag.d(100))) // scalastyle:ignore magic.number
         }
       }
 

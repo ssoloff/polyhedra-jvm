@@ -22,6 +22,7 @@
 
 grammar Expression;
 
+DIE_LITERAL     : 'd'([1-9][0-9]*|'%');
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
@@ -57,7 +58,8 @@ expression_list
     ;
 
 literal
-    : INTEGER_LITERAL # IntegerLiteral
+    : DIE_LITERAL     # DieLiteral
+    | INTEGER_LITERAL # IntegerLiteral
     ;
 
 multiplicative_expression

@@ -53,5 +53,6 @@ Scenario Outline: Evaluating expressions that result in non-finite values
     Then an exception should be thrown
     Examples:
         | expression |
+        | d6         |
         | [1, 2, 3]  |
 

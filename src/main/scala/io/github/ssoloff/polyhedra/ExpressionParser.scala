@@ -35,6 +35,8 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
 object ExpressionParser {
   // $COVERAGE-OFF$
   private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[_]] {
+    private[this] val bag = new Bag
+
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
       new AdditionExpression(
         visit(ctx.additive_expression()).asInstanceOf[Expression[Double]],
@@ -43,6 +45,15 @@ object ExpressionParser {
 
     override def visitArrayLiteral(ctx: InternalExpressionParser.ArrayLiteralContext): ArrayExpression[_] =
       visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]]
+
+    override def visitDieLiteral(ctx: InternalExpressionParser.DieLiteralContext): DieExpression = {
+      val literal = ctx.DIE_LITERAL().getText()
+      val sides = literal.tail match {
+        case "%" => 100 // scalastyle:ignore magic.number
+        case x => x.toInt
+      }
+      new DieExpression(bag.d(sides))
+    }
 
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
       new DivisionExpression(

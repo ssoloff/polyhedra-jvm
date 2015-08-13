@@ -29,9 +29,11 @@ import org.scalatest.{Matchers, OptionValues}
 final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with OptionValues {
   var expressionResultException: Option[Exception] = None
   var expressionResultValue: Option[Double] = None
-  var expressionText = ""
+  var expressionText: String = ""
 
   Given("""^the expression "([^"]*)"$""") { (expressionText: String) =>
+    expressionResultException = None
+    expressionResultValue = None
     this.expressionText = expressionText
   }
 
@@ -44,7 +46,7 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with O
   }
 
   Then("""^an exception should be thrown$""") { () =>
-    expressionResultException should be ('defined)
+    expressionResultException.value shouldBe a [IllegalArgumentException] // scalastyle:ignore no.whitespace.before.left.bracket
   }
 
   Then("""^the expression result value should be (.*)$""") { (expressionResultValueAsString: String) =>

@@ -34,36 +34,65 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
   */
 object ExpressionParser {
   // $COVERAGE-OFF$
-  private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[Double]] {
+  private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[_]] {
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
-      new AdditionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
+      new AdditionExpression(
+        visit(ctx.additive_expression()).asInstanceOf[Expression[Double]],
+        visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]]
+      )
+
+    override def visitArrayLiteral(ctx: InternalExpressionParser.ArrayLiteralContext): ArrayExpression[_] =
+      visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]]
 
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
-      new DivisionExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
+      new DivisionExpression(
+        visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+        visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+      )
 
-    override def visitGroup(ctx: InternalExpressionParser.GroupContext): Expression[Double] =
+    override def visitEmptyExpressionList(ctx: InternalExpressionParser.EmptyExpressionListContext): ArrayExpression[_] =
+      new ArrayExpression(Nil)
+
+    override def visitGroup(ctx: InternalExpressionParser.GroupContext): Expression[_] =
       new GroupExpression(visit(ctx.expression()))
 
     override def visitIntegerLiteral(ctx: InternalExpressionParser.IntegerLiteralContext): Expression[Double] =
       new ConstantExpression(ctx.INTEGER_LITERAL().getText().toDouble)
 
     override def visitModulo(ctx: InternalExpressionParser.ModuloContext): Expression[Double] =
-      new ModuloExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
+      new ModuloExpression(
+        visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+        visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+      )
+
+    override def visitMultiElementExpressionList(ctx: InternalExpressionParser.MultiElementExpressionListContext): ArrayExpression[_] = {
+      val front = visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]]
+      new ArrayExpression(front.expressions :+ visit(ctx.expression()))
+    }
 
     override def visitMultiplication(ctx: InternalExpressionParser.MultiplicationContext): Expression[Double] =
-      new MultiplicationExpression(visit(ctx.multiplicative_expression()), visit(ctx.unary_expression()))
+      new MultiplicationExpression(
+        visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+        visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+      )
 
     override def visitNegative(ctx: InternalExpressionParser.NegativeContext): Expression[Double] =
-      new NegativeExpression(visit(ctx.primary_expression()))
+      new NegativeExpression(visit(ctx.primary_expression()).asInstanceOf[Expression[Double]])
 
     override def visitPositive(ctx: InternalExpressionParser.PositiveContext): Expression[Double] =
-      new PositiveExpression(visit(ctx.primary_expression()))
+      new PositiveExpression(visit(ctx.primary_expression()).asInstanceOf[Expression[Double]])
 
-    override def visitProgram(ctx: InternalExpressionParser.ProgramContext): Expression[Double] =
+    override def visitProgram(ctx: InternalExpressionParser.ProgramContext): Expression[_] =
       visit(ctx.expression())
 
+    override def visitSingleElementExpressionList(ctx: InternalExpressionParser.SingleElementExpressionListContext): ArrayExpression[_] =
+      new ArrayExpression(List(visit(ctx.expression())))
+
     override def visitSubtraction(ctx: InternalExpressionParser.SubtractionContext): Expression[Double] =
-      new SubtractionExpression(visit(ctx.additive_expression()), visit(ctx.multiplicative_expression()))
+      new SubtractionExpression(
+        visit(ctx.additive_expression()).asInstanceOf[Expression[Double]],
+        visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]]
+      )
   }
   // $COVERAGE-ON$
 
@@ -90,7 +119,7 @@ object ExpressionParser {
     * @throws java.lang.IllegalArgumentException
     *   If {@code source} is not a valid dice expression.
     */
-  def parse(source: String): Expression[Double] = {
+  def parse(source: String): Expression[_] = {
     try {
       val input = new ANTLRInputStream(source)
 

@@ -47,3 +47,11 @@ Scenario Outline: Evaluating expressions with unary operators
         | -1         | -1           |
         | +1         | 1            |
 
+Scenario Outline: Evaluating expressions that result in non-finite values
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then an exception should be thrown
+    Examples:
+        | expression |
+        | [1, 2, 3]  |
+

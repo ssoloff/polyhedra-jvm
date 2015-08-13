@@ -36,9 +36,13 @@ object Polyhedra {
     *   If {@code expressionText} is not a valid dice expression.
     */
   def evaluate(expressionText: String): Double = {
-    val expression = ExpressionParser.parse(expressionText)
-    val expressionResult = expression.evaluate()
-    expressionResult.value
+    try {
+      val expression = ExpressionParser.parse(expressionText)
+      val expressionResult = expression.evaluate()
+      expressionResult.value.asInstanceOf[Double]
+    } catch {
+      case e: Exception => throw new IllegalArgumentException(s"unable to evaluate '$expressionText'", e)
+    }
   }
 }
 

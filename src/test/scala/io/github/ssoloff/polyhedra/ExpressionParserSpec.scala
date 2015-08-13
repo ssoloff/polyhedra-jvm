@@ -47,6 +47,18 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           expression should equal (new ConstantExpression(42.0))
         }
+
+        it("should parse an array literal with zero elements") {
+          ExpressionParser.parse("[]") should equal (new ArrayExpression(Nil))
+        }
+
+        it("should parse an array literal with one element") {
+          ExpressionParser.parse("[1]") should equal (new ArrayExpression(List(one)))
+        }
+
+        it("should parse an array literal with two elements") {
+          ExpressionParser.parse("[1, 2]") should equal (new ArrayExpression(List(one, two)))
+        }
       }
 
       describe("arithmetic operators") {

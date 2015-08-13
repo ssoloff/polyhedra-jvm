@@ -25,13 +25,16 @@ grammar Expression;
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
-LPAREN  : '(';
-MINUS   : '-';
-PERCENT : '%';
-PLUS    : '+';
-RPAREN  : ')';
-SLASH   : '/';
-STAR    : '*';
+COMMA        : ',';
+LPAREN       : '(';
+LSQUAREBRACE : '[';
+MINUS        : '-';
+PERCENT      : '%';
+PLUS         : '+';
+RPAREN       : ')';
+RSQUAREBRACE : ']';
+SLASH        : '/';
+STAR         : '*';
 
 additive_expression
     : additive_expression PLUS multiplicative_expression  # Addition
@@ -39,8 +42,18 @@ additive_expression
     | multiplicative_expression                           # ToMultiplicativeExpression
     ;
 
+array_literal
+    : LSQUAREBRACE expression_list RSQUAREBRACE # ArrayLiteral
+    ;
+
 expression
     : additive_expression # ToAdditiveExpression
+    ;
+
+expression_list
+    : /* empty */                      # EmptyExpressionList
+    | expression                       # SingleElementExpressionList
+    | expression_list COMMA expression # MultiElementExpressionList
     ;
 
 literal
@@ -56,6 +69,7 @@ multiplicative_expression
 
 primary_expression
     : literal                  # ToLiteral
+    | array_literal            # ToArrayLiteral
     | LPAREN expression RPAREN # Group
     ;
 

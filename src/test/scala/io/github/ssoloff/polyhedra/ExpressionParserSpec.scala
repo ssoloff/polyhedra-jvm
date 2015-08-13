@@ -49,15 +49,27 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should parse an array literal with zero elements") {
-          ExpressionParser.parse("[]") should equal (new ArrayExpression(Nil))
+          val source = "[]"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new ArrayExpression(Nil))
         }
 
         it("should parse an array literal with one element") {
-          ExpressionParser.parse("[1]") should equal (new ArrayExpression(List(one)))
+          val source = "[1]"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new ArrayExpression(List(one)))
         }
 
         it("should parse an array literal with two elements") {
-          ExpressionParser.parse("[1, 2]") should equal (new ArrayExpression(List(one, two)))
+          val source = "[1, 2]"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new ArrayExpression(List(one, two)))
         }
       }
 

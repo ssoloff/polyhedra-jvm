@@ -51,7 +51,9 @@ object ExpressionParser {
       *   If a function with the specified name does not exist.
       */
     private[this] def lookupFunction(name: String): Seq[_] => _ =
-      context.functions.get(name).getOrElse(throw new IllegalArgumentException(s"unknown function '$name'"))
+      context.functions.get(name)
+        .orElse(ExpressionFunctions(name))
+        .getOrElse(throw new IllegalArgumentException(s"unknown function '$name'"))
 
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
       new AdditionExpression(

@@ -31,7 +31,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
   val bag = new Bag
 
   describe("ExpressionParser") {
-    describe(".parse") {
+    describe("#parse") {
       describe("when source is empty") {
         it("should throw an exception") {
           val source = ""
@@ -241,6 +241,52 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           val expression = ExpressionParser.parse(source, context)
 
           expression should equal (new FunctionCallExpression("f", f, List(one, two)))
+        }
+      }
+
+      describe("built-in functions") {
+        describe("when context contains a function with the same name as a built-in function") {
+          it("should use the function from the context") {
+            val source = "ceil(1)"
+            val ceil = (args: Seq[_]) => 42.0
+            val context = new ExpressionParser.Context(bag, Map("ceil" -> ceil))
+
+            val expression = ExpressionParser.parse(source, context)
+
+            expression.evaluate().value should equal (42.0)
+          }
+        }
+
+        it("should parse the built-in ceil() function") {
+          val source = "ceil(1)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(one)))
+        }
+
+        it("should parse the built-in floor() function") {
+          val source = "floor(1)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(one)))
+        }
+
+        it("should parse the built-in round() function") {
+          val source = "round(1)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(one)))
+        }
+
+        it("should parse the built-in trunc() function") {
+          val source = "trunc(1)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(one)))
         }
       }
     }

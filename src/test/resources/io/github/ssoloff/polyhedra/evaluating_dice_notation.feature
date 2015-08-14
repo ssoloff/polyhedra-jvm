@@ -30,6 +30,18 @@ Scenario Outline: Evaluating arithmetic expressions with constants
         | 4 % 3      | 1                  |
         | 3 % 4      | 3                  |
 
+Scenario Outline: Rounding fractional values
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then the expression result value should be <result value>
+    Examples:
+        | expression   | result value |
+        | ceil(1 / 2)  | 1            |
+        | floor(1 / 2) | 0            |
+        | round(1 / 3) | 0            |
+        | round(1 / 2) | 1            |
+        | trunc(1 / 2) | 0            |
+
 Scenario Outline: Evaluating grouped expressions
     Given the expression "<expression>"
     When the expression is evaluated
@@ -55,4 +67,5 @@ Scenario Outline: Evaluating expressions that result in non-finite values
         | expression |
         | d6         |
         | [1, 2, 3]  |
+        | round(d6)  |
 

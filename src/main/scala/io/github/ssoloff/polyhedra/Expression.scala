@@ -209,7 +209,7 @@ final class DivisionExpression(
 final class FunctionCallExpression[T, R](
     val name: String,
     val func: Seq[T] => R,
-    val argumentListExpressions: List[Expression[T]]) extends Expression[R] {
+    val argumentListExpressions: Seq[Expression[T]]) extends Expression[R] {
   override def equals(other: Any): Boolean = other match {
     case that: FunctionCallExpression[T, R] => argumentListExpressions == that.argumentListExpressions &&
       func == that.func &&

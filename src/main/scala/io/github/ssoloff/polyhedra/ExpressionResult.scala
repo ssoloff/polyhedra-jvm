@@ -208,7 +208,7 @@ final class DivisionExpressionResult(
 final class FunctionCallExpressionResult[A](
     returnValue: A,
     val name: String,
-    val argumentListExpressionResults: List[ExpressionResult[_]]) extends ExpressionResult[A] {
+    val argumentListExpressionResults: Seq[ExpressionResult[_]]) extends ExpressionResult[A] {
   override def equals(other: Any): Boolean = other match {
     case that: FunctionCallExpressionResult[A] => argumentListExpressionResults == that.argumentListExpressionResults &&
       name == that.name &&

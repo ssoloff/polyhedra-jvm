@@ -204,6 +204,45 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           )
         }
       }
+
+      describe("function calls") {
+        val f = (args: Seq[_]) => args.asInstanceOf[Seq[Double]].sum
+
+        describe("when function is unknown") {
+          it("should throw an exception") {
+            val source = "f()"
+
+            an [IllegalArgumentException] should be thrownBy (ExpressionParser.parse(source)) // scalastyle:ignore no.whitespace.before.left.bracket
+          }
+        }
+
+        it("should parse a function call with zero arguments") {
+          val source = "f()"
+          val context = new ExpressionParser.Context(bag, Map("f" -> f))
+
+          val expression = ExpressionParser.parse(source, context)
+
+          expression should equal (new FunctionCallExpression("f", f, Nil))
+        }
+
+        it("should parse a function call with one argument") {
+          val source = "f(1)"
+          val context = new ExpressionParser.Context(bag, Map("f" -> f))
+
+          val expression = ExpressionParser.parse(source, context)
+
+          expression should equal (new FunctionCallExpression("f", f, List(one)))
+        }
+
+        it("should parse a function call with two arguments") {
+          val source = "f(1, 2)"
+          val context = new ExpressionParser.Context(bag, Map("f" -> f))
+
+          val expression = ExpressionParser.parse(source, context)
+
+          expression should equal (new FunctionCallExpression("f", f, List(one, two)))
+        }
+      }
     }
   }
 }

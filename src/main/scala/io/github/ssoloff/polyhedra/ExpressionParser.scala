@@ -33,8 +33,25 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
 /** Provides a set of method for parsing dice expressions.
   */
 object ExpressionParser {
-  private[this] class ExpressionVisitor extends InternalExpressionBaseVisitor[Expression[_]] {
-    private[this] val bag = new Bag
+  private[this] class ExpressionVisitor(context: Context) extends InternalExpressionBaseVisitor[Expression[_]] {
+    /** Returns the function with the specified name.
+      *
+      * <p>
+      * This method first looks up the function in the expression parser
+      * context.  If it does not exist, it then looks up the function in the
+      * collection of built-in functions.  Otherwise, it throws an exception.
+      * </p>
+      *
+      * @param name
+      *   The function name.
+      *
+      * @return The function.
+      *
+      * @throws java.lang.IllegalArgumentException
+      *   If a function with the specified name does not exist.
+      */
+    private[this] def lookupFunction(name: String): Seq[_] => _ =
+      context.functions.get(name).getOrElse(throw new IllegalArgumentException(s"unknown function '$name'"))
 
     override def visitAddition(ctx: InternalExpressionParser.AdditionContext): Expression[Double] =
       new AdditionExpression(
@@ -51,7 +68,7 @@ object ExpressionParser {
         case "%" => 100 // scalastyle:ignore magic.number
         case x => x.toInt
       }
-      new DieExpression(bag.d(sides))
+      new DieExpression(context.bag.d(sides))
     }
 
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
@@ -62,6 +79,13 @@ object ExpressionParser {
 
     override def visitEmptyExpressionList(ctx: InternalExpressionParser.EmptyExpressionListContext): ArrayExpression[_] =
       new ArrayExpression(Nil)
+
+    override def visitFunctionCall(ctx: InternalExpressionParser.FunctionCallContext): Expression[_] = {
+      val name = ctx.IDENTIFIER().getText()
+      val func = lookupFunction(name)
+      val argumentListExpressions = visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]].expressions
+      new FunctionCallExpression(name, func, argumentListExpressions)
+    }
 
     override def visitGroup(ctx: InternalExpressionParser.GroupContext): Expression[_] =
       new GroupExpression(visit(ctx.expression()))
@@ -118,17 +142,39 @@ object ExpressionParser {
       throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg)
   }
 
+  /** The execution context for an expression parser.
+    *
+    * @constructor Creates a new expression parser context.
+    *
+    * @param bag
+    *   The dice bag used by the parser whenever a die literal is encountered.
+    * @param functions
+    *   A map used by the parser to lookup function implementations when a
+    *   function call is encountered.  The functions in this object override
+    *   any function with the same name in the parser's default function list.
+    */
+  final class Context(
+    val bag: Bag,
+    val functions: Map[String, Seq[_] => _]
+  )
+
   /** Parses the specified dice expression text.
     *
     * @param source
     *   The dice expression text to parse.
+    * @param context
+    *   The expression parser context.  If not specified, uses a default dice
+    *   bag and includes no additional function implementations.
     *
     * @return The parsed expression.
     *
     * @throws java.lang.IllegalArgumentException
     *   If {@code source} is not a valid dice expression.
     */
-  def parse(source: String): Expression[_] = {
+  def parse(
+      source: String,
+      context: Context = new Context(new Bag, Map())
+      ): Expression[_] = {
     try {
       val input = new ANTLRInputStream(source)
 
@@ -142,7 +188,7 @@ object ExpressionParser {
       parser.addErrorListener(ThrowingErrorListener)
       val tree = parser.program()
 
-      val visitor = new ExpressionVisitor
+      val visitor = new ExpressionVisitor(context)
       visitor.visit(tree)
     } catch {
       case e: ParseCancellationException => throw new IllegalArgumentException(s"invalid expression '$source'", e)

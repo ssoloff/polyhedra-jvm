@@ -23,6 +23,7 @@
 grammar Expression;
 
 DIE_LITERAL     : 'd'([1-9][0-9]*|'%');
+IDENTIFIER      : [_A-Za-z][_0-9A-Za-z]*;
 INTEGER_LITERAL : [0-9]+;
 WS              : [ \t\r\n]+ -> skip;
 
@@ -57,6 +58,10 @@ expression_list
     | expression_list COMMA expression # MultiElementExpressionList
     ;
 
+function_call
+    : IDENTIFIER LPAREN expression_list RPAREN # FunctionCall
+    ;
+
 literal
     : DIE_LITERAL     # DieLiteral
     | INTEGER_LITERAL # IntegerLiteral
@@ -72,6 +77,7 @@ multiplicative_expression
 primary_expression
     : literal                  # ToLiteral
     | array_literal            # ToArrayLiteral
+    | function_call            # ToFunctionCall
     | LPAREN expression RPAREN # Group
     ;
 

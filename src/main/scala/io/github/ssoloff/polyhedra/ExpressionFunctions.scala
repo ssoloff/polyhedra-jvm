@@ -43,7 +43,7 @@ object ExpressionFunctions {
     * </p>
     *
     * <ul>
-    * <li>{@code x} - A number.</li>
+    * <li>{@code x} - A number. (`Double`)</li>
     * </ul>
     *
     * @param args
@@ -61,7 +61,7 @@ object ExpressionFunctions {
     * </p>
     *
     * <ul>
-    * <li>{@code x} - A number.</li>
+    * <li>{@code x} - A number. (`Double`)</li>
     * </ul>
     *
     * @param args
@@ -76,6 +76,7 @@ object ExpressionFunctions {
     "floor" -> floor,
     "roll" -> roll,
     "round" -> round,
+    "sum" -> sum,
     "trunc" -> trunc
   )
 
@@ -86,8 +87,8 @@ object ExpressionFunctions {
     * </p>
     *
     * <ul>
-    * <li>{@code count} - The number of dice to roll.</li>
-    * <li>{@code die} - The die to roll.</li>
+    * <li>{@code count} - The number of dice to roll. (`Double`)</li>
+    * <li>{@code die} - The die to roll. (`Die`)</li>
     * </ul>
     *
     * @param args
@@ -96,12 +97,12 @@ object ExpressionFunctions {
     * @return The collection of rolls.
     *
     * @throws java.lang.IllegalArgumentException
-    *   If `count` is not positive.
+    *   If `count` is less than one.
     */
   val roll = (args: Seq[_]) => {
-    val sides = args(0).asInstanceOf[Int]
+    val sides = args(0).asInstanceOf[Double].toInt
     val die = args(1).asInstanceOf[Die]
-    (1 to sides) map (_ => die.roll())
+    (1 to sides) map (_ => die.roll().toDouble)
   }
 
   /** Returns the value of the specified number rounded to the nearest integer.
@@ -117,7 +118,7 @@ object ExpressionFunctions {
     * </p>
     *
     * <ul>
-    * <li>{@code x} - A number.</li>
+    * <li>{@code x} - A number. (`Double`)</li>
     * </ul>
     *
     * @param args
@@ -126,6 +127,31 @@ object ExpressionFunctions {
     * @return The value of the specified number rounded to the nearest integer.
     */
   val round = (args: Seq[_]) => Math.round(args.head.asInstanceOf[Double]).toDouble
+
+  /**
+    * Returns the sum of the specified collection of numbers.
+    *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code values} - A collection of numbers. (`Seq[Double]`)</li>
+    * </ul>
+    *
+    * @param args
+    *   The function arguments.
+    *
+    * @return The sum of the specified collection of numbers.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *   If `values` contains less than one element.
+    */
+  val sum = (args: Seq[_]) => {
+    val values = args.head.asInstanceOf[Seq[Double]]
+    require(!values.isEmpty)
+    values reduce ((a, b) => a + b)
+  }
 
   /** Returns the integral part of the specified number by removing any
     * fractional digits.
@@ -140,7 +166,7 @@ object ExpressionFunctions {
     * </p>
     *
     * <ul>
-    * <li>{@code x} - A number.</li>
+    * <li>{@code x} - A number. (`Double`)</li>
     * </ul>
     *
     * @param args

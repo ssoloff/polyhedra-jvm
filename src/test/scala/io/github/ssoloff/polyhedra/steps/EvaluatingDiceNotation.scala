@@ -23,13 +23,18 @@
 package io.github.ssoloff.polyhedra.steps
 
 import cucumber.api.scala.{EN, ScalaDsl}
-import io.github.ssoloff.polyhedra.Polyhedra
+import io.github.ssoloff.polyhedra.{Bag, Die, ExpressionParser, Polyhedra, RandomNumberGenerators}
 import org.scalatest.{Matchers, OptionValues}
 
-final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with OptionValues {
+final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with OptionValues with RandomNumberGenerators {
   var expressionResultException: Option[Exception] = None
   var expressionResultValue: Option[Double] = None
   var expressionText: String = ""
+  var randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator
+
+  Given("""^a random number generator that always generates the maximum value$""") {
+    randomNumberGenerator = AlwaysMaximumRandomNumberGenerator
+  }
 
   Given("""^the expression "([^"]*)"$""") { (expressionText: String) =>
     expressionResultException = None
@@ -38,8 +43,9 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with O
   }
 
   When("""^the expression is evaluated$""") { () =>
+    val expressionParserContext = new ExpressionParser.Context(new Bag(randomNumberGenerator), Map())
     try {
-      expressionResultValue = Some(Polyhedra.evaluate(expressionText))
+      expressionResultValue = Some(Polyhedra.evaluate(expressionText, expressionParserContext))
     } catch {
       case e: Exception => expressionResultException = Some(e)
     }

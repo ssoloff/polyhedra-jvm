@@ -34,6 +34,35 @@ import org.antlr.v4.runtime.misc.ParseCancellationException
   */
 object ExpressionParser {
   private[this] class ExpressionVisitor(context: Context) extends InternalExpressionBaseVisitor[Expression[_]] {
+    /** Creates a new die expression from the specified die literal.
+      *
+      * @param literal
+      *   The die literal.
+      *
+      * @return A new die expression.
+      */
+    private[this] def createDieExpression(literal: String): DieExpression = {
+      val sides = literal.tail match {
+        case "%" => 100 // scalastyle:ignore magic.number
+        case x => x.toInt
+      }
+      new DieExpression(context.bag.d(sides))
+    }
+
+    /** Creates a new function call expression.
+      *
+      * @param name
+      *   The function name.
+      * @param argumentListExpressions
+      *   The collection of expressions used as the function arguments.
+      *
+      * @return A new function call expression.
+      */
+    private[this] def createFunctionCallExpression(name: String, argumentListExpressions: Seq[Expression[_]]): FunctionCallExpression[_, _] = {
+      val func = lookupFunction(name)
+      new FunctionCallExpression[Any, Any](name, func, argumentListExpressions)
+    }
+
     /** Returns the function with the specified name.
       *
       * <p>
@@ -64,13 +93,24 @@ object ExpressionParser {
     override def visitArrayLiteral(ctx: InternalExpressionParser.ArrayLiteralContext): ArrayExpression[_] =
       visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]]
 
+    override def visitDiceRollLiteral(ctx: InternalExpressionParser.DiceRollLiteralContext): Expression[_] = {
+      val literal = ctx.DICE_ROLL_LITERAL().getText()
+      val pattern = """^(\d+)(d[\d%]+)$""".r
+      literal match {
+        case pattern(rollCount, dieLiteral) => {
+          createFunctionCallExpression("sum", List(
+            createFunctionCallExpression("roll", List(
+              new ConstantExpression(rollCount.toDouble),
+              createDieExpression(dieLiteral)
+            ))
+          ))
+        }
+      }
+    }
+
     override def visitDieLiteral(ctx: InternalExpressionParser.DieLiteralContext): DieExpression = {
       val literal = ctx.DIE_LITERAL().getText()
-      val sides = literal.tail match {
-        case "%" => 100 // scalastyle:ignore magic.number
-        case x => x.toInt
-      }
-      new DieExpression(context.bag.d(sides))
+      createDieExpression(literal)
     }
 
     override def visitDivision(ctx: InternalExpressionParser.DivisionContext): Expression[Double] =
@@ -84,9 +124,8 @@ object ExpressionParser {
 
     override def visitFunctionCall(ctx: InternalExpressionParser.FunctionCallContext): Expression[_] = {
       val name = ctx.IDENTIFIER().getText()
-      val func = lookupFunction(name)
       val argumentListExpressions = visit(ctx.expression_list()).asInstanceOf[ArrayExpression[_]].expressions
-      new FunctionCallExpression(name, func, argumentListExpressions)
+      createFunctionCallExpression(name, argumentListExpressions)
     }
 
     override def visitGroup(ctx: InternalExpressionParser.GroupContext): Expression[_] =
@@ -160,13 +199,21 @@ object ExpressionParser {
     val functions: Map[String, Seq[_] => _]
   )
 
+  /** The default expression parser context.
+    *
+    * <p>
+    * Uses a default dice bag and includes no additional function implementations.
+    * </p>
+    */
+  final val DefaultContext = new Context(new Bag, Map())
+
   /** Parses the specified dice expression text.
     *
     * @param source
     *   The dice expression text to parse.
     * @param context
-    *   The expression parser context.  If not specified, uses a default dice
-    *   bag and includes no additional function implementations.
+    *   The expression parser context.  If not specified, uses the default
+    *   context.
     *
     * @return The parsed expression.
     *
@@ -175,7 +222,7 @@ object ExpressionParser {
     */
   def parse(
       source: String,
-      context: Context = new Context(new Bag, Map())
+      context: Context = DefaultContext
       ): Expression[_] = {
     try {
       val input = new ANTLRInputStream(source)

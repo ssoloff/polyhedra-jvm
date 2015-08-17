@@ -29,15 +29,21 @@ object Polyhedra {
     *
     * @param expressionText
     *   The dice expression to evaluate.
+    * @param expressionParserContext
+    *   The expression parser context.  If not specified, the default
+    *   expression parser context will be used.
     *
     * @return The value of the evaluated expression.
     *
     * @throws java.lang.IllegalArgumentException
     *   If {@code expressionText} is not a valid dice expression.
     */
-  def evaluate(expressionText: String): Double = {
+  def evaluate(
+      expressionText: String,
+      expressionParserContext: ExpressionParser.Context = ExpressionParser.DefaultContext
+      ): Double = {
     try {
-      val expression = ExpressionParser.parse(expressionText)
+      val expression = ExpressionParser.parse(expressionText, expressionParserContext)
       val expressionResult = expression.evaluate()
       expressionResult.value.asInstanceOf[Double]
     } catch {

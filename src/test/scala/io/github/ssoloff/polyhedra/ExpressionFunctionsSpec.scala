@@ -96,28 +96,30 @@ final class ExpressionFunctionsSpec extends FunSpec with Matchers with Dice {
   describe("#roll") {
     describe("when arguments contains less than two elements") {
       it("should throw an exception") {
-        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1))) // scalastyle:ignore no.whitespace.before.left.bracket
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1.0))) // scalastyle:ignore no.whitespace.before.left.bracket
       }
     }
 
-    describe("when count is not an Int") {
+    describe("when count is not a Double") {
       it("should throw an exception") {
-        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1.0, createDie(3)))) // scalastyle:ignore no.whitespace.before.left.bracket
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1, createDie(3)))) // scalastyle:ignore no.whitespace.before.left.bracket
       }
     }
 
     describe("when die is not a Die") {
       it("should throw an exception") {
-        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1, "d3"))) // scalastyle:ignore no.whitespace.before.left.bracket
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1.0, "d3"))) // scalastyle:ignore no.whitespace.before.left.bracket
       }
     }
 
-    it("should return collection of individual rolls") {
-      val d3 = createDieThatRollsEachSideSuccessively(3)
+    describe("when arguments contains count and die") {
+      it("should return collection of individual rolls") {
+        val d3 = createDieThatRollsEachSideSuccessively(3)
 
-      ExpressionFunctions.roll(List(1, d3)) should equal (List(1))
-      ExpressionFunctions.roll(List(2, d3)) should equal (List(2, 3))
-      ExpressionFunctions.roll(List(3, d3)) should equal (List(1, 2, 3))
+        ExpressionFunctions.roll(List(1.0, d3)) should equal (List(1.0))
+        ExpressionFunctions.roll(List(2.0, d3)) should equal (List(2.0, 3.0))
+        ExpressionFunctions.roll(List(3.0, d3)) should equal (List(1.0, 2.0, 3.0))
+      }
     }
   }
 
@@ -151,6 +153,34 @@ final class ExpressionFunctionsSpec extends FunSpec with Matchers with Dice {
           ExpressionFunctions.round(List(1.5)) should be (2.0)
           ExpressionFunctions.round(List(1.75)) should be (2.0)
         }
+      }
+    }
+  }
+
+  describe("#sum") {
+    describe("when arguments is empty") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.sum(Nil)) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    describe("when arguments contains a non-Seq[Double] value") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.sum(List(1.0))) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    describe("when arguments contains a Seq[Double] value that is empty") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.sum(List(Nil))) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    describe("when arguments contains a Seq[Double] value with one or elements") {
+      it("should return sum of values") {
+        ExpressionFunctions.sum(List(List(1.0))) should be (1.0)
+        ExpressionFunctions.sum(List(List(1.0, 2.0))) should be (3.0)
+        ExpressionFunctions.sum(List(List(1.0, 2.0, 3.0))) should be (6.0)
       }
     }
   }

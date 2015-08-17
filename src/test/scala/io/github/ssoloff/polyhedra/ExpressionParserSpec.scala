@@ -292,6 +292,19 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           expression should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(one)))
         }
 
+        it("should parse the built-in sum() function") {
+          val source = "sum(roll(2, d8))"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+            new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+              two,
+              new DieExpression(bag.d(8)) // scalastyle:ignore magic.number
+            ))
+          )))
+        }
+
         it("should parse the built-in trunc() function") {
           val source = "trunc(1)"
 

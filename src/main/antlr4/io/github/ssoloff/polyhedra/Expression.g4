@@ -22,10 +22,11 @@
 
 grammar Expression;
 
-DIE_LITERAL     : 'd'([1-9][0-9]*|'%');
-IDENTIFIER      : [_A-Za-z][_0-9A-Za-z]*;
-INTEGER_LITERAL : [0-9]+;
-WS              : [ \t\r\n]+ -> skip;
+DICE_ROLL_LITERAL : [1-9][0-9]*'d'([1-9][0-9]*|'%');
+DIE_LITERAL       : 'd'([1-9][0-9]*|'%');
+IDENTIFIER        : [_A-Za-z][_0-9A-Za-z]*;
+INTEGER_LITERAL   : [0-9]+;
+WS                : [ \t\r\n]+ -> skip;
 
 COMMA        : ',';
 LPAREN       : '(';
@@ -63,8 +64,9 @@ function_call
     ;
 
 literal
-    : DIE_LITERAL     # DieLiteral
-    | INTEGER_LITERAL # IntegerLiteral
+    : DICE_ROLL_LITERAL # DiceRollLiteral
+    | DIE_LITERAL       # DieLiteral
+    | INTEGER_LITERAL   # IntegerLiteral
     ;
 
 multiplicative_expression

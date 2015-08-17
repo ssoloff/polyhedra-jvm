@@ -38,8 +38,16 @@ object ExpressionFunctions {
   /** Returns the smallest integer greater than or equal to the specified
     * number.
     *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code x} - A number.</li>
+    * </ul>
+    *
     * @param args
-    *   The function arguments; must be a single {@code Double}.
+    *   The function arguments.
     *
     * @return The smallest integer greater than or equal to the specified
     *   number.
@@ -48,8 +56,16 @@ object ExpressionFunctions {
 
   /** Returns the largest integer less than or equal to the specified number.
     *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code x} - A number.</li>
+    * </ul>
+    *
     * @param args
-    *   The function arguments; must be a single {@code Double}.
+    *   The function arguments.
     *
     * @return The largest integer less than or equal to the specified number.
     */
@@ -58,9 +74,35 @@ object ExpressionFunctions {
   private[this] lazy val functions = Map(
     "ceil" -> ceil,
     "floor" -> floor,
+    "roll" -> roll,
     "round" -> round,
     "trunc" -> trunc
   )
+
+  /** Rolls one or more instances of the specified die.
+    *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code count} - The number of dice to roll.</li>
+    * <li>{@code die} - The die to roll.</li>
+    * </ul>
+    *
+    * @param args
+    *   The function arguments.
+    *
+    * @return The collection of rolls.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *   If `count` is not positive.
+    */
+  val roll = (args: Seq[_]) => {
+    val sides = args(0).asInstanceOf[Int]
+    val die = args(1).asInstanceOf[Die]
+    (1 to sides) map (_ => die.roll())
+  }
 
   /** Returns the value of the specified number rounded to the nearest integer.
     *
@@ -70,8 +112,16 @@ object ExpressionFunctions {
     * is less than 0.5, the argument is rounded to the next lower integer.
     * </p>
     *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code x} - A number.</li>
+    * </ul>
+    *
     * @param args
-    *   The function arguments; must be a single {@code Double}.
+    *   The function arguments.
     *
     * @return The value of the specified number rounded to the nearest integer.
     */
@@ -85,8 +135,16 @@ object ExpressionFunctions {
     * otherwise `trunc` is equivalent to `ceil`.
     * </p>
     *
+    * <p>
+    * The function arguments are
+    * </p>
+    *
+    * <ul>
+    * <li>{@code x} - A number.</li>
+    * </ul>
+    *
     * @param args
-    *   The function arguments; must be a single {@code Double}.
+    *   The function arguments.
     *
     * @return The integral part of the specified number.
     */

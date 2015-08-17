@@ -64,8 +64,9 @@ Scenario Outline: Evaluating expressions that result in non-finite values
     When the expression is evaluated
     Then an exception should be thrown
     Examples:
-        | expression |
-        | d6         |
-        | [1, 2, 3]  |
-        | round(d6)  |
+        | expression  |
+        | d6          |
+        | [1, 2, 3]   |
+        | round(d6)   |
+        | roll(3, d6) |
 

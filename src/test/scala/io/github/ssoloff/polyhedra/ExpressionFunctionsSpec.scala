@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionFunctionsSpec extends FunSpec with Matchers {
+final class ExpressionFunctionsSpec extends FunSpec with Matchers with Dice {
   describe("#ceil") {
     describe("when arguments is empty") {
       it("should throw an exception") {
@@ -90,6 +90,34 @@ final class ExpressionFunctionsSpec extends FunSpec with Matchers {
           ExpressionFunctions.floor(List(1.75)) should be (1.0)
         }
       }
+    }
+  }
+
+  describe("#roll") {
+    describe("when arguments contains less than two elements") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1))) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    describe("when count is not an Int") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1.0, createDie(3)))) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    describe("when die is not a Die") {
+      it("should throw an exception") {
+        an [Exception] should be thrownBy (ExpressionFunctions.roll(List(1, "d3"))) // scalastyle:ignore no.whitespace.before.left.bracket
+      }
+    }
+
+    it("should return collection of individual rolls") {
+      val d3 = createDieThatRollsEachSideSuccessively(3)
+
+      ExpressionFunctions.roll(List(1, d3)) should equal (List(1))
+      ExpressionFunctions.roll(List(2, d3)) should equal (List(2, 3))
+      ExpressionFunctions.roll(List(3, d3)) should equal (List(1, 2, 3))
     }
   }
 

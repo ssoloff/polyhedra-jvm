@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
 
-final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumberGenerators with EqualsVerifierSugar {
+final class ExpressionResultSpec extends FunSpec with Matchers with Dice with EqualsVerifierSugar {
   val three = new ConstantExpressionResult(3.0)
   val four = new ConstantExpressionResult(4.0)
 
@@ -84,10 +84,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     it("should be equatable") {
       (
         instancesOf [DieExpressionResult] // scalastyle:ignore no.whitespace.before.left.bracket
-          withPrefabValues(
-            new Die(1, DefaultRandomNumberGenerator),
-            new Die(2, DefaultRandomNumberGenerator)
-          )
+          withPrefabValues(createDie(1), createDie(2))
           should be (equatable)
       )
     }
@@ -95,7 +92,7 @@ final class ExpressionResultSpec extends FunSpec with Matchers with RandomNumber
     describe("#value") {
       it("should return die") {
         val sides = 6
-        val die = new Die(sides, DefaultRandomNumberGenerator)
+        val die = createDie(sides)
         val expressionResult = new DieExpressionResult(die)
 
         expressionResult.value.sides should equal (sides)

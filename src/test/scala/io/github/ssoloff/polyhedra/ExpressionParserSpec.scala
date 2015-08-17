@@ -273,6 +273,17 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           expression should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(one)))
         }
 
+        it("should parse the built-in roll() function") {
+          val source = "roll(3, d6)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+            three,
+            new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+          )))
+        }
+
         it("should parse the built-in round() function") {
           val source = "round(1)"
 

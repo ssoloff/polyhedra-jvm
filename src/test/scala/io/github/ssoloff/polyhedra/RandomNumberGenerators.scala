@@ -40,5 +40,30 @@ trait RandomNumberGenerators {
     * distribution.
     */
   final val DefaultRandomNumberGenerator = Random.nextDouble _
+
+  /** Creates a random number generator that will deterministically and
+    * repeatedly return values uniformly distributed in the range [0,1).
+    *
+    * @param steps
+    *   The number of steps in the range [0,1) to use.
+    *
+    * @return The random number generator.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *   If `steps` is not positive.
+    */
+  def createSuccessiveStepRandomNumberGenerator(steps: Int): Die.RandomNumberGenerator = {
+    require(steps > 0)
+    var callCount = 0
+    () => {
+      def randomNumberForStep(step: Int): Double = {
+        step.toDouble / steps.toDouble
+      }
+      val randomNumbers = (0 until steps) map randomNumberForStep
+      val randomNumber = randomNumbers(callCount)
+      callCount = (callCount + 1) % steps
+      randomNumber
+    }
+  }
 }
 

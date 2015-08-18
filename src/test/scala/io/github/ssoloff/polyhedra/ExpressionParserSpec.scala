@@ -88,6 +88,36 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           expression should equal (new DieExpression(bag.d(100))) // scalastyle:ignore magic.number
         }
+
+        it("should parse a dice roll literal") {
+          val source = "3d6"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(3.0),
+                new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+              ))
+            ))
+          )
+        }
+
+        it("should parse a percentile dice roll literal") {
+          val source = "2d%"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(2.0),
+                new DieExpression(bag.d(100)) // scalastyle:ignore magic.number
+              ))
+            ))
+          )
+        }
       }
 
       describe("arithmetic operators") {

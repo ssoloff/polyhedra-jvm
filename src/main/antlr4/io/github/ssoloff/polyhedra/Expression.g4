@@ -37,6 +37,10 @@ PLUS         : '+';
 RPAREN       : ')';
 RSQUAREBRACE : ']';
 SLASH        : '/';
+SLASH_MINUS  : '/-';
+SLASH_PLUS   : '/+';
+SLASH_SLASH  : '//';
+SLASH_TILDE  : '/~';
 STAR         : '*';
 
 additive_expression
@@ -70,10 +74,14 @@ literal
     ;
 
 multiplicative_expression
-    : multiplicative_expression STAR unary_expression    # Multiplication
-    | multiplicative_expression SLASH unary_expression   # Division
-    | multiplicative_expression PERCENT unary_expression # Modulo
-    | unary_expression                                   # ToUnaryExpression
+    : multiplicative_expression STAR unary_expression        # Multiplication
+    | multiplicative_expression SLASH unary_expression       # Division
+    | multiplicative_expression SLASH_MINUS unary_expression # DivisionAndRoundDown
+    | multiplicative_expression SLASH_PLUS unary_expression  # DivisionAndRoundUp
+    | multiplicative_expression SLASH_SLASH unary_expression # DivisionAndRoundTowardsZero
+    | multiplicative_expression SLASH_TILDE unary_expression # DivisionAndRound
+    | multiplicative_expression PERCENT unary_expression     # Modulo
+    | unary_expression                                       # ToUnaryExpression
     ;
 
 primary_expression

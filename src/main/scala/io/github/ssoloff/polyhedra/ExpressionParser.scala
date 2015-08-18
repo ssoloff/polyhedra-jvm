@@ -119,6 +119,38 @@ object ExpressionParser {
         visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
       )
 
+    override def visitDivisionAndRound(ctx: InternalExpressionParser.DivisionAndRoundContext): Expression[_] =
+      createFunctionCallExpression("round", List(
+        new DivisionExpression(
+          visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+          visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+        )
+      ))
+
+    override def visitDivisionAndRoundDown(ctx: InternalExpressionParser.DivisionAndRoundDownContext): Expression[_] =
+      createFunctionCallExpression("floor", List(
+        new DivisionExpression(
+          visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+          visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+        )
+      ))
+
+    override def visitDivisionAndRoundTowardsZero(ctx: InternalExpressionParser.DivisionAndRoundTowardsZeroContext): Expression[_] =
+      createFunctionCallExpression("trunc", List(
+        new DivisionExpression(
+          visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+          visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+        )
+      ))
+
+    override def visitDivisionAndRoundUp(ctx: InternalExpressionParser.DivisionAndRoundUpContext): Expression[_] =
+      createFunctionCallExpression("ceil", List(
+        new DivisionExpression(
+          visit(ctx.multiplicative_expression()).asInstanceOf[Expression[Double]],
+          visit(ctx.unary_expression()).asInstanceOf[Expression[Double]]
+        )
+      ))
+
     override def visitEmptyExpressionList(ctx: InternalExpressionParser.EmptyExpressionListContext): ArrayExpression[_] =
       new ArrayExpression(Nil)
 

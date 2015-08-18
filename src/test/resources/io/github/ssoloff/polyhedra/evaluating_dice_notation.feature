@@ -89,6 +89,19 @@ Scenario Outline: Evaluating grouped expressions
         | 3 * (2 + 1)   | 9            |
         | (3d6 + 1) * 2 | 38           |
 
+Scenario Outline: Evaluating division expressions with extended divide and round operators
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then the expression result value should be <result value>
+    Examples:
+        | expression | result value |
+        | 1 // 2     | 0            |
+        | 3d6 // 4   | 4            |
+        | 1 /~ 3     | 0            |
+        | 1 /~ 2     | 1            |
+        | 1 /- 2     | 0            |
+        | 1 /+ 2     | 1            |
+
 Scenario Outline: Evaluating expressions with unary operators
     Given the expression "<expression>"
     When the expression is evaluated

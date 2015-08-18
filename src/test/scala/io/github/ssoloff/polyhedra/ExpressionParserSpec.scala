@@ -132,6 +132,48 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
       }
 
+      describe("extended divide and round operators") {
+        it("should parse divide and round towards zero") {
+          val source = "1 // 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(
+            new DivisionExpression(one, two)
+          )))
+        }
+
+        it("should parse divide and round to nearest") {
+          val source = "1 /~ 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(
+            new DivisionExpression(one, two)
+          )))
+        }
+
+        it("should parse divide and round up") {
+          val source = "1 /+ 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
+            new DivisionExpression(one, two)
+          )))
+        }
+
+        it("should parse divide and round down") {
+          val source = "1 /- 2"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
+            new DivisionExpression(one, two)
+          )))
+        }
+      }
+
       describe("unary operators") {
         it("should parse negative") {
           val source = "-1"
@@ -202,6 +244,26 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               three
             )
           )
+        }
+
+        it("should give precedence to divide and round down operator over unary negative operator") {
+          ExpressionParser.parse("1/-2") should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
+            new DivisionExpression(one, two)
+          )))
+          ExpressionParser.parse("1/ -2") should equal (new DivisionExpression(
+            one,
+            new NegativeExpression(two)
+          ))
+        }
+
+        it("should give precedence to divide and round up operator over unary positive operator") {
+          ExpressionParser.parse("1/+2") should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
+            new DivisionExpression(one, two)
+          )))
+          ExpressionParser.parse("1/ +2") should equal (new DivisionExpression(
+            one,
+            new PositiveExpression(two)
+          ))
         }
       }
 

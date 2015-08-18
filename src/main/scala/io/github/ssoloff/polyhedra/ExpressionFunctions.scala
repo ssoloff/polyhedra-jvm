@@ -150,7 +150,7 @@ object ExpressionFunctions {
   val sum = (args: Seq[_]) => {
     val values = args.head.asInstanceOf[Seq[Double]]
     require(!values.isEmpty)
-    values reduce ((a, b) => a + b)
+    values reduce (_ + _)
   }
 
   /** Returns the integral part of the specified number by removing any

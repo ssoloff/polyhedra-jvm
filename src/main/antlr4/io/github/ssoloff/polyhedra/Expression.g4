@@ -22,7 +22,7 @@
 
 grammar Expression;
 
-DICE_ROLL_LITERAL : [1-9][0-9]*'d'([1-9][0-9]*|'%');
+DICE_ROLL_LITERAL : [1-9][0-9]*'d'([1-9][0-9]*|'%')([-+]([1-9][0-9]*)?[HL])?;
 DIE_LITERAL       : 'd'([1-9][0-9]*|'%');
 IDENTIFIER        : [_A-Za-z][_0-9A-Za-z]*;
 INTEGER_LITERAL   : [0-9]+;

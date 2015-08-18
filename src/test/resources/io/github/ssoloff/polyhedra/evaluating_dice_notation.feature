@@ -54,6 +54,25 @@ Scenario Outline: Evaluating dice rolls
         | 1d%              | 100          |
         | sum(roll(2, d8)) | 16           |
 
+Scenario Outline: Evaluating modified dice rolls
+    Given the expression "<expression>"
+    When the expression is evaluated
+    Then the expression result value should be <result value>
+    Examples:
+        | expression                          | result value |
+        | 2d6+L                               | 18           |
+        | 2d6+2L                              | 24           |
+        | 2d6+H                               | 18           |
+        | 2d6+2H                              | 24           |
+        | 3d6-L                               | 12           |
+        | 3d6-2L                              | 6            |
+        | 3d6-H                               | 12           |
+        | 3d6-2H                              | 6            |
+        | sum(cloneLowestRolls([1, 6], 1))    | 8            |
+        | sum(cloneHighestRolls([1, 6], 1))   | 13           |
+        | sum(dropLowestRolls([1, 3, 6], 1))  | 9            |
+        | sum(dropHighestRolls([1, 3, 6], 1)) | 4            |
+
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given the expression "<expression>"
     When the expression is evaluated
@@ -66,6 +85,8 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
         | 3d6 / 4    | 4.5          |
         | 3d6 % 4    | 2            |
         | 1d% % 3    | 1            |
+        | 2d6-L - 1  | 5            |
+        | 1d6+L + 1  | 13           |
 
 Scenario Outline: Rounding fractional values
     Given the expression "<expression>"

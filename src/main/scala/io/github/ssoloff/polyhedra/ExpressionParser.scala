@@ -63,6 +63,31 @@ object ExpressionParser {
       new FunctionCallExpression[Any, Any](name, func, argumentListExpressions)
     }
 
+    /** Returns the name of the function to use for the specified roll
+      * modifier.
+      *
+      * @param rollModifierOperation
+      *   The roll modifier operation: "+" for clone or "-" for drop.
+      * @param rollModifierDieType
+      *   The roll modifier die type: "H" for highest rolls or "L" for lowest
+      *   rolls.
+      *
+      * @return The name of the function to use for the specified roll
+      *   modifier.
+      */
+    private[this] def getRollModifierFunctionName(rollModifierOperation: String, rollModifierDieType: String): String = {
+      rollModifierOperation match {
+        case "+" => rollModifierDieType match {
+          case "H" => "cloneHighestRolls"
+          case "L" => "cloneLowestRolls"
+        }
+        case "-" => rollModifierDieType match {
+          case "H" => "dropHighestRolls"
+          case "L" => "dropLowestRolls"
+        }
+      }
+    }
+
     /** Returns the function with the specified name.
       *
       * <p>
@@ -95,15 +120,25 @@ object ExpressionParser {
 
     override def visitDiceRollLiteral(ctx: InternalExpressionParser.DiceRollLiteralContext): Expression[_] = {
       val literal = ctx.DICE_ROLL_LITERAL().getText()
-      val pattern = """^(\d+)(d[\d%]+)$""".r
+      val pattern = """^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$""".r
       literal match {
-        case pattern(rollCount, dieLiteral) => {
-          createFunctionCallExpression("sum", List(
-            createFunctionCallExpression("roll", List(
-              new ConstantExpression(rollCount.toDouble),
-              createDieExpression(dieLiteral)
-            ))
+        case pattern(rollCount, dieLiteral, rollModifier, rollModifierOperation, rollModifierCountAsString, rollModifierDieType) => {
+          var rollExpression = createFunctionCallExpression("roll", List(
+            new ConstantExpression(rollCount.toDouble),
+            createDieExpression(dieLiteral)
           ))
+          val rollModifierCount = rollModifierCountAsString match {
+            case x: String if !x.isEmpty => x.toDouble
+            case _ => 1.0
+          }
+          if (rollModifier != null) { // scalastyle:ignore null
+            val rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
+            rollExpression = createFunctionCallExpression(rollModifierFunctionName, List(
+              rollExpression,
+              new ConstantExpression(rollModifierCount.toDouble)
+            ))
+          }
+          createFunctionCallExpression("sum", List(rollExpression))
         }
       }
     }

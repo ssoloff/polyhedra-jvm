@@ -118,6 +118,106 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
             ))
           )
         }
+
+        it("should parse a dice roll and clone highest literal") {
+          ExpressionParser.parse("4d6+H") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(1.0)
+              ))
+            ))
+          )
+          ExpressionParser.parse("4d6+2H") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(2.0)
+              ))
+            ))
+          )
+        }
+
+        it("should parse a dice roll and clone lowest literal") {
+          ExpressionParser.parse("4d6+L") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(1.0)
+              ))
+            ))
+          )
+          ExpressionParser.parse("4d6+2L") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(2.0)
+              ))
+            ))
+          )
+        }
+
+        it("should parse a dice roll and drop highest literal") {
+          ExpressionParser.parse("4d6-H") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(1.0)
+              ))
+            ))
+          )
+          ExpressionParser.parse("4d6-2H") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(2.0)
+              ))
+            ))
+          )
+        }
+
+        it("should parse a dice roll and drop lowest literal") {
+          ExpressionParser.parse("4d6-L") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(1.0)
+              ))
+            ))
+          )
+          ExpressionParser.parse("4d6-2L") should equal (
+            new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+              new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
+                new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                  new ConstantExpression(4.0),
+                  new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+                )),
+                new ConstantExpression(2.0)
+              ))
+            ))
+          )
+        }
       }
 
       describe("arithmetic operators") {
@@ -355,6 +455,70 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
           val expression = ExpressionParser.parse(source)
 
           expression should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(one)))
+        }
+
+        it("should parse the built-in cloneHighestRolls() function") {
+          val source = "cloneHighestRolls(roll(3, d6), 2)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(3.0),
+                new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+              )),
+              new ConstantExpression(2.0)
+            ))
+          )
+        }
+
+        it("should parse the built-in cloneLowestRolls() function") {
+          val source = "cloneLowestRolls(roll(3, d6), 2)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(3.0),
+                new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+              )),
+              new ConstantExpression(2.0)
+            ))
+          )
+        }
+
+        it("should parse the built-in dropHighestRolls() function") {
+          val source = "dropHighestRolls(roll(3, d6), 2)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(3.0),
+                new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+              )),
+              new ConstantExpression(2.0)
+            ))
+          )
+        }
+
+        it("should parse the built-in dropLowestRolls() function") {
+          val source = "dropLowestRolls(roll(3, d6), 2)"
+
+          val expression = ExpressionParser.parse(source)
+
+          expression should equal (
+            new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
+              new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+                new ConstantExpression(3.0),
+                new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
+              )),
+              new ConstantExpression(2.0)
+            ))
+          )
         }
 
         it("should parse the built-in floor() function") {

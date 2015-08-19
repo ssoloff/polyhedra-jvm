@@ -28,7 +28,7 @@ import io.github.ssoloff.polyhedra.internal.{
   ExpressionParser => InternalExpressionParser
 }
 import org.antlr.v4.runtime.{ANTLRInputStream, BaseErrorListener, CommonTokenStream}
-import org.antlr.v4.runtime.misc.ParseCancellationException
+import scala.util.{Failure, Success, Try}
 
 /** Provides a set of method for parsing dice expressions.
   */
@@ -239,6 +239,7 @@ object ExpressionParser {
 
   private[this] object ThrowingErrorListener extends BaseErrorListener {
     import org.antlr.v4.runtime.{RecognitionException, Recognizer}
+    import org.antlr.v4.runtime.misc.ParseCancellationException
 
     override def syntaxError(
         recognizer: Recognizer[_, _],
@@ -282,15 +283,13 @@ object ExpressionParser {
     *   The expression parser context.  If not specified, uses the default
     *   context.
     *
-    * @return The parsed expression.
-    *
-    * @throws java.lang.IllegalArgumentException
-    *   If {@code source} is not a valid dice expression.
+    * @return The parsed expression if successful or an exception if the
+    *   expression could not be parsed.
     */
   def parse(
       source: String,
       context: Context = DefaultContext
-      ): Expression[_] = {
+      ): Try[Expression[_]] = {
     try {
       val input = new ANTLRInputStream(source)
 
@@ -305,9 +304,9 @@ object ExpressionParser {
       val tree = parser.program()
 
       val visitor = new ExpressionVisitor(context)
-      visitor.visit(tree)
+      Success(visitor.visit(tree))
     } catch {
-      case e: ParseCancellationException => throw new IllegalArgumentException(s"invalid expression '$source'", e)
+      case e: Exception => Failure(new IllegalArgumentException(s"invalid expression '$source'", e))
     }
   }
 }

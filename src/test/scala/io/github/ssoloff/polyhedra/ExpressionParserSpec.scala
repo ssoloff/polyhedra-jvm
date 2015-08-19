@@ -22,9 +22,9 @@
 
 package io.github.ssoloff.polyhedra
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FunSpec, Matchers, TryValues}
 
-final class ExpressionParserSpec extends FunSpec with Matchers {
+final class ExpressionParserSpec extends FunSpec with Matchers with TryValues {
   val one = new ConstantExpression(1.0)
   val two = new ConstantExpression(2.0)
   val three = new ConstantExpression(3.0)
@@ -33,10 +33,10 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
   describe("ExpressionParser") {
     describe("#parse") {
       describe("when source is empty") {
-        it("should throw an exception") {
+        it("should return an exception") {
           val source = ""
 
-          an [IllegalArgumentException] should be thrownBy ExpressionParser.parse(source) // scalastyle:ignore no.whitespace.before.left.bracket
+          ExpressionParser.parse(source).failure.exception shouldBe an [IllegalArgumentException] // scalastyle:ignore no.whitespace.before.left.bracket
         }
       }
 
@@ -46,7 +46,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new ConstantExpression(42.0))
+          expression.success.value should equal (new ConstantExpression(42.0))
         }
 
         it("should parse an array literal with zero elements") {
@@ -54,7 +54,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new ArrayExpression(Nil))
+          expression.success.value should equal (new ArrayExpression(Nil))
         }
 
         it("should parse an array literal with one element") {
@@ -62,7 +62,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new ArrayExpression(List(one)))
+          expression.success.value should equal (new ArrayExpression(List(one)))
         }
 
         it("should parse an array literal with two elements") {
@@ -70,7 +70,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new ArrayExpression(List(one, two)))
+          expression.success.value should equal (new ArrayExpression(List(one, two)))
         }
 
         it("should parse a die literal") {
@@ -78,7 +78,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new DieExpression(bag.d(6))) // scalastyle:ignore magic.number
+          expression.success.value should equal (new DieExpression(bag.d(6))) // scalastyle:ignore magic.number
         }
 
         it("should parse a percentile die literal") {
@@ -86,7 +86,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new DieExpression(bag.d(100))) // scalastyle:ignore magic.number
+          expression.success.value should equal (new DieExpression(bag.d(100))) // scalastyle:ignore magic.number
         }
 
         it("should parse a dice roll literal") {
@@ -94,7 +94,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(3.0),
@@ -109,7 +109,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(2.0),
@@ -120,7 +120,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should parse a dice roll and clone highest literal") {
-          ExpressionParser.parse("4d6+H") should equal (
+          ExpressionParser.parse("4d6+H").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -131,7 +131,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               ))
             ))
           )
-          ExpressionParser.parse("4d6+2H") should equal (
+          ExpressionParser.parse("4d6+2H").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -145,7 +145,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should parse a dice roll and clone lowest literal") {
-          ExpressionParser.parse("4d6+L") should equal (
+          ExpressionParser.parse("4d6+L").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -156,7 +156,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               ))
             ))
           )
-          ExpressionParser.parse("4d6+2L") should equal (
+          ExpressionParser.parse("4d6+2L").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -170,7 +170,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should parse a dice roll and drop highest literal") {
-          ExpressionParser.parse("4d6-H") should equal (
+          ExpressionParser.parse("4d6-H").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -181,7 +181,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               ))
             ))
           )
-          ExpressionParser.parse("4d6-2H") should equal (
+          ExpressionParser.parse("4d6-2H").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -195,7 +195,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should parse a dice roll and drop lowest literal") {
-          ExpressionParser.parse("4d6-L") should equal (
+          ExpressionParser.parse("4d6-L").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -206,7 +206,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               ))
             ))
           )
-          ExpressionParser.parse("4d6-2L") should equal (
+          ExpressionParser.parse("4d6-2L").success.value should equal (
             new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
               new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
                 new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
@@ -226,7 +226,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new AdditionExpression(one, two))
+          expression.success.value should equal (new AdditionExpression(one, two))
         }
 
         it("should parse the subtraction of two constants") {
@@ -234,7 +234,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new SubtractionExpression(one, two))
+          expression.success.value should equal (new SubtractionExpression(one, two))
         }
 
         it("should parse the multiplication of two constants") {
@@ -242,7 +242,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new MultiplicationExpression(one, two))
+          expression.success.value should equal (new MultiplicationExpression(one, two))
         }
 
         it("should parse the division of two constants") {
@@ -250,7 +250,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new DivisionExpression(one, two))
+          expression.success.value should equal (new DivisionExpression(one, two))
         }
 
         it("should parse the modulo of two constants") {
@@ -258,7 +258,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new ModuloExpression(three, two))
+          expression.success.value should equal (new ModuloExpression(three, two))
         }
       }
 
@@ -268,7 +268,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(
+          expression.success.value should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(
             new DivisionExpression(one, two)
           )))
         }
@@ -278,7 +278,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(
+          expression.success.value should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(
             new DivisionExpression(one, two)
           )))
         }
@@ -288,7 +288,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
+          expression.success.value should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
             new DivisionExpression(one, two)
           )))
         }
@@ -298,7 +298,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
+          expression.success.value should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
             new DivisionExpression(one, two)
           )))
         }
@@ -310,7 +310,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new NegativeExpression(one))
+          expression.success.value should equal (new NegativeExpression(one))
         }
 
         it("should parse positive") {
@@ -318,7 +318,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new PositiveExpression(one))
+          expression.success.value should equal (new PositiveExpression(one))
         }
       }
 
@@ -328,7 +328,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new AdditionExpression(
               new MultiplicationExpression(three, one),
               new MultiplicationExpression(one, three)
@@ -337,13 +337,13 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should allow grouping to override operator precedence") {
-          ExpressionParser.parse("(3 * 1) + (1 * 3)") should equal (
+          ExpressionParser.parse("(3 * 1) + (1 * 3)").success.value should equal (
             new AdditionExpression(
               new GroupExpression(new MultiplicationExpression(three, one)),
               new GroupExpression(new MultiplicationExpression(one, three))
             )
           )
-          ExpressionParser.parse("3 * (1 + 1) * 3") should equal (
+          ExpressionParser.parse("3 * (1 + 1) * 3").success.value should equal (
             new MultiplicationExpression(
               new MultiplicationExpression(
                 three,
@@ -352,7 +352,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               three
             )
           )
-          ExpressionParser.parse("3 * ((1 + 1) * 3)") should equal (
+          ExpressionParser.parse("3 * ((1 + 1) * 3)").success.value should equal (
             new MultiplicationExpression(
               three,
               new GroupExpression(
@@ -363,7 +363,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
               )
             )
           )
-          ExpressionParser.parse("(3 * (1 + 1)) * 3") should equal (
+          ExpressionParser.parse("(3 * (1 + 1)) * 3").success.value should equal (
             new MultiplicationExpression(
               new GroupExpression(
                 new MultiplicationExpression(
@@ -377,20 +377,20 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         }
 
         it("should give precedence to divide and round down operator over unary negative operator") {
-          ExpressionParser.parse("1/-2") should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
+          ExpressionParser.parse("1/-2").success.value should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(
             new DivisionExpression(one, two)
           )))
-          ExpressionParser.parse("1/ -2") should equal (new DivisionExpression(
+          ExpressionParser.parse("1/ -2").success.value should equal (new DivisionExpression(
             one,
             new NegativeExpression(two)
           ))
         }
 
         it("should give precedence to divide and round up operator over unary positive operator") {
-          ExpressionParser.parse("1/+2") should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
+          ExpressionParser.parse("1/+2").success.value should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(
             new DivisionExpression(one, two)
           )))
-          ExpressionParser.parse("1/ +2") should equal (new DivisionExpression(
+          ExpressionParser.parse("1/ +2").success.value should equal (new DivisionExpression(
             one,
             new PositiveExpression(two)
           ))
@@ -401,10 +401,10 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
         val f = (args: Seq[_]) => args.asInstanceOf[Seq[Double]].sum
 
         describe("when function is unknown") {
-          it("should throw an exception") {
+          it("should return an exception") {
             val source = "f()"
 
-            an [IllegalArgumentException] should be thrownBy (ExpressionParser.parse(source)) // scalastyle:ignore no.whitespace.before.left.bracket
+            ExpressionParser.parse(source).failure.exception shouldBe an [IllegalArgumentException] // scalastyle:ignore no.whitespace.before.left.bracket
           }
         }
 
@@ -414,7 +414,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source, context)
 
-          expression should equal (new FunctionCallExpression("f", f, Nil))
+          expression.success.value should equal (new FunctionCallExpression("f", f, Nil))
         }
 
         it("should parse a function call with one argument") {
@@ -423,7 +423,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source, context)
 
-          expression should equal (new FunctionCallExpression("f", f, List(one)))
+          expression.success.value should equal (new FunctionCallExpression("f", f, List(one)))
         }
 
         it("should parse a function call with two arguments") {
@@ -432,7 +432,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source, context)
 
-          expression should equal (new FunctionCallExpression("f", f, List(one, two)))
+          expression.success.value should equal (new FunctionCallExpression("f", f, List(one, two)))
         }
       }
 
@@ -445,7 +445,8 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
             val expression = ExpressionParser.parse(source, context)
 
-            expression.evaluate().value should equal (42.0)
+            val expressionResultValue = expression map (_.evaluate()) map (_.value)
+            expressionResultValue.success.value should equal (42.0)
           }
         }
 
@@ -454,7 +455,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(one)))
+          expression.success.value should equal (new FunctionCallExpression("ceil", ExpressionFunctions.ceil, List(one)))
         }
 
         it("should parse the built-in cloneHighestRolls() function") {
@@ -462,7 +463,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("cloneHighestRolls", ExpressionFunctions.cloneHighestRolls, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(3.0),
@@ -478,7 +479,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("cloneLowestRolls", ExpressionFunctions.cloneLowestRolls, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(3.0),
@@ -494,7 +495,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("dropHighestRolls", ExpressionFunctions.dropHighestRolls, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(3.0),
@@ -510,7 +511,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (
+          expression.success.value should equal (
             new FunctionCallExpression("dropLowestRolls", ExpressionFunctions.dropLowestRolls, List(
               new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
                 new ConstantExpression(3.0),
@@ -526,7 +527,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(one)))
+          expression.success.value should equal (new FunctionCallExpression("floor", ExpressionFunctions.floor, List(one)))
         }
 
         it("should parse the built-in roll() function") {
@@ -534,7 +535,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
+          expression.success.value should equal (new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
             three,
             new DieExpression(bag.d(6)) // scalastyle:ignore magic.number
           )))
@@ -545,7 +546,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(one)))
+          expression.success.value should equal (new FunctionCallExpression("round", ExpressionFunctions.round, List(one)))
         }
 
         it("should parse the built-in sum() function") {
@@ -553,7 +554,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
+          expression.success.value should equal (new FunctionCallExpression("sum", ExpressionFunctions.sum, List(
             new FunctionCallExpression("roll", ExpressionFunctions.roll, List(
               two,
               new DieExpression(bag.d(8)) // scalastyle:ignore magic.number
@@ -566,7 +567,7 @@ final class ExpressionParserSpec extends FunSpec with Matchers {
 
           val expression = ExpressionParser.parse(source)
 
-          expression should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(one)))
+          expression.success.value should equal (new FunctionCallExpression("trunc", ExpressionFunctions.trunc, List(one)))
         }
       }
     }

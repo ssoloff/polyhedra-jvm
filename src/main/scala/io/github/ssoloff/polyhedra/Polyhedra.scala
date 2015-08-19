@@ -42,7 +42,7 @@ object Polyhedra {
       expressionText: String,
       expressionParserContext: ExpressionParser.Context = ExpressionParser.DefaultContext
       ): Try[Double] = {
-    val expression = Try(ExpressionParser.parse(expressionText, expressionParserContext))
+    val expression = ExpressionParser.parse(expressionText, expressionParserContext)
     val expressionResult = expression map (_.evaluate())
     expressionResult map (_.value.asInstanceOf[Double])
   }

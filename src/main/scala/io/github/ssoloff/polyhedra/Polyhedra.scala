@@ -22,6 +22,8 @@
 
 package io.github.ssoloff.polyhedra
 
+import scala.util.Try
+
 /** Provides a set of operations for using the dice notation library.
   */
 object Polyhedra {
@@ -33,22 +35,16 @@ object Polyhedra {
     *   The expression parser context.  If not specified, the default
     *   expression parser context will be used.
     *
-    * @return The value of the evaluated expression.
-    *
-    * @throws java.lang.IllegalArgumentException
-    *   If {@code expressionText} is not a valid dice expression.
+    * @return The value of the evaluated expression if successful or an
+    *   exception if the expression could not be evaluated.
     */
   def evaluate(
       expressionText: String,
       expressionParserContext: ExpressionParser.Context = ExpressionParser.DefaultContext
-      ): Double = {
-    try {
-      val expression = ExpressionParser.parse(expressionText, expressionParserContext)
-      val expressionResult = expression.evaluate()
-      expressionResult.value.asInstanceOf[Double]
-    } catch {
-      case e: Exception => throw new IllegalArgumentException(s"unable to evaluate '$expressionText'", e)
-    }
+      ): Try[Double] = {
+    val expression = Try(ExpressionParser.parse(expressionText, expressionParserContext))
+    val expressionResult = expression map (_.evaluate())
+    expressionResult map (_.value.asInstanceOf[Double])
   }
 }
 

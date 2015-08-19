@@ -24,11 +24,11 @@ package io.github.ssoloff.polyhedra.steps
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import io.github.ssoloff.polyhedra.{Bag, Die, ExpressionParser, Polyhedra, RandomNumberGenerators}
-import org.scalatest.{Matchers, OptionValues}
+import org.scalatest.{Matchers, TryValues}
+import scala.util.Try
 
-final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with OptionValues with RandomNumberGenerators {
-  var expressionResultException: Option[Exception] = None
-  var expressionResultValue: Option[Double] = None
+final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with TryValues with RandomNumberGenerators {
+  var expressionResultValue: Try[Double] = Try(0.0)
   var expressionText: String = ""
   var randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator
 
@@ -37,26 +37,20 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with O
   }
 
   Given("""^the expression "([^"]*)"$""") { (expressionText: String) =>
-    expressionResultException = None
-    expressionResultValue = None
     this.expressionText = expressionText
   }
 
   When("""^the expression is evaluated$""") { () =>
     val expressionParserContext = new ExpressionParser.Context(new Bag(randomNumberGenerator), Map())
-    try {
-      expressionResultValue = Some(Polyhedra.evaluate(expressionText, expressionParserContext))
-    } catch {
-      case e: Exception => expressionResultException = Some(e)
-    }
+    expressionResultValue = Polyhedra.evaluate(expressionText, expressionParserContext)
   }
 
-  Then("""^an exception should be thrown$""") { () =>
-    expressionResultException.value shouldBe a [IllegalArgumentException] // scalastyle:ignore no.whitespace.before.left.bracket
+  Then("""^an exception should be raised$""") { () =>
+    expressionResultValue.failure.exception shouldBe a [Exception] // scalastyle:ignore no.whitespace.before.left.bracket
   }
 
   Then("""^the expression result value should be (.*)$""") { (expressionResultValueAsString: String) =>
-    expressionResultValue.value should equal (expressionResultValueAsString.toDouble)
+    expressionResultValue.success.value should equal (expressionResultValueAsString.toDouble)
   }
 }
 

@@ -9,7 +9,7 @@ Background: The library produces deterministic results
 Scenario: Evaluating malformed expressions
     Given the expression "<<INVALID>>"
     When the expression is evaluated
-    Then an exception should be raised
+    Then an exception should be returned
 
 Scenario: Evaluating constants
     Given the expression "5"
@@ -136,7 +136,7 @@ Scenario Outline: Evaluating expressions with unary operators
 Scenario Outline: Evaluating expressions that result in non-finite values
     Given the expression "<expression>"
     When the expression is evaluated
-    Then an exception should be raised
+    Then an exception should be returned
     Examples:
         | expression  |
         | d6          |

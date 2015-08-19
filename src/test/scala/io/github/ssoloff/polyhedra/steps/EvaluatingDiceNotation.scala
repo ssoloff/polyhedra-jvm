@@ -45,7 +45,7 @@ final class EvaluatingDiceNotation extends ScalaDsl with EN with Matchers with T
     expressionResultValue = Polyhedra.evaluate(expressionText, expressionParserContext)
   }
 
-  Then("""^an exception should be raised$""") { () =>
+  Then("""^an exception should be returned$""") { () =>
     expressionResultValue.failure.exception shouldBe a [Exception] // scalastyle:ignore no.whitespace.before.left.bracket
   }
 

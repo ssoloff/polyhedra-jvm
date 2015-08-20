@@ -22,6 +22,8 @@
 
 package io.github.ssoloff.polyhedra
 
+import org.apache.commons.lang3.builder.HashCodeBuilder
+
 /** A die.
   *
   * @constructor Creates a new die with the specified number of sides.
@@ -44,6 +46,13 @@ final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator
     */
   def apply(): Int = roll()
 
+  override def equals(other: Any): Boolean = other match {
+    case that: Die => sides == that.sides
+    case _ => false
+  }
+
+  override def hashCode(): Int = new HashCodeBuilder().append(sides).toHashCode
+
   /** Returns the result of rolling the die.
     *
     * @return The result of rolling the die: a value in the range `[1, [[sides]]]`.
@@ -52,8 +61,8 @@ final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator
 
   // $COVERAGE-OFF$
   override def toString: String = "Die(" +
-    s"sides=$sides" +
-    s", randomNumberGenerator=$randomNumberGenerator" +
+    s"randomNumberGenerator=$randomNumberGenerator" +
+    s", sides=$sides" +
     ")"
   // $COVERAGE-ON$
 }

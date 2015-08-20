@@ -24,13 +24,17 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers}
 
-final class DieSpec extends FunSpec with Matchers with RandomNumberGenerators {
+final class DieSpec extends FunSpec with Matchers with RandomNumberGenerators with EqualsVerifierSugar {
   private[this] final val Sides = 6
 
   private[this] final def createDie(randomNumberGenerator: Die.RandomNumberGenerator = DefaultRandomNumberGenerator): Die =
     new Die(Sides, randomNumberGenerator)
 
   describe("Die") {
+    it("should be equatable") {
+      instancesOf [Die] should be (equatable) // scalastyle:ignore no.whitespace.before.left.bracket
+    }
+
     describe("#Die") {
       describe("when sides less than one") {
         it("should throw an exception") {

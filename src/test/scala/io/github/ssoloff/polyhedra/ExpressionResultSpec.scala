@@ -90,11 +90,10 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return die") {
-        val sides = 6
-        val die = createDie(sides)
+        val die = createDie(1)
         val expressionResult = new DieExpressionResult(die)
 
-        expressionResult.value.sides should equal (sides)
+        expressionResult.value should equal (die)
       }
     }
   }

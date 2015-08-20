@@ -132,11 +132,11 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
   */
 final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
   override def equals(other: Any): Boolean = other match {
-    case that: DieExpressionResult => value.sides == that.value.sides
+    case that: DieExpressionResult => value == that.value
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(value.sides).toHashCode
+  override def hashCode(): Int = new HashCodeBuilder().append(value).toHashCode
 
   // $COVERAGE-OFF$
   override def toString: String = "DieExpressionResult(" +

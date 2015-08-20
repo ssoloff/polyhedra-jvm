@@ -55,12 +55,10 @@ final class AdditionExpression(
     case _ => false
   }
 
-  override def evaluate(): AdditionExpressionResult = {
-    val augendExpressionResult = augendExpression.evaluate()
-    val addendExpressionResult = addendExpression.evaluate()
-    val sum = augendExpressionResult.value + addendExpressionResult.value
-    new AdditionExpressionResult(sum, augendExpressionResult, addendExpressionResult)
-  }
+  override def evaluate(): AdditionExpressionResult = new AdditionExpressionResult(
+    augendExpression.evaluate(),
+    addendExpression.evaluate()
+  )
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(addendExpression)
@@ -170,12 +168,10 @@ final class DivisionExpression(
     case _ => false
   }
 
-  override def evaluate(): DivisionExpressionResult = {
-    val dividendExpressionResult = dividendExpression.evaluate()
-    val divisorExpressionResult = divisorExpression.evaluate()
-    val quotient = dividendExpressionResult.value / divisorExpressionResult.value
-    new DivisionExpressionResult(quotient, dividendExpressionResult, divisorExpressionResult)
-  }
+  override def evaluate(): DivisionExpressionResult = new DivisionExpressionResult(
+    dividendExpression.evaluate(),
+    divisorExpression.evaluate()
+  )
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(dividendExpression)
@@ -286,12 +282,10 @@ final class ModuloExpression(
     case _ => false
   }
 
-  override def evaluate(): ModuloExpressionResult = {
-    val dividendExpressionResult = dividendExpression.evaluate()
-    val divisorExpressionResult = divisorExpression.evaluate()
-    val remainder = dividendExpressionResult.value % divisorExpressionResult.value
-    new ModuloExpressionResult(remainder, dividendExpressionResult, divisorExpressionResult)
-  }
+  override def evaluate(): ModuloExpressionResult = new ModuloExpressionResult(
+    dividendExpression.evaluate(),
+    divisorExpression.evaluate()
+  )
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(dividendExpression)
@@ -324,12 +318,10 @@ final class MultiplicationExpression(
     case _ => false
   }
 
-  override def evaluate(): MultiplicationExpressionResult = {
-    val multiplicandExpressionResult = multiplicandExpression.evaluate()
-    val multiplierExpressionResult = multiplierExpression.evaluate()
-    val product = multiplicandExpressionResult.value * multiplierExpressionResult.value
-    new MultiplicationExpressionResult(product, multiplicandExpressionResult, multiplierExpressionResult)
-  }
+  override def evaluate(): MultiplicationExpressionResult = new MultiplicationExpressionResult(
+    multiplicandExpression.evaluate(),
+    multiplierExpression.evaluate()
+  )
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(multiplicandExpression)
@@ -414,12 +406,10 @@ final class SubtractionExpression(
     case _ => false
   }
 
-  override def evaluate(): SubtractionExpressionResult = {
-    val minuendExpressionResult = minuendExpression.evaluate()
-    val subtrahendExpressionResult = subtrahendExpression.evaluate()
-    val difference = minuendExpressionResult.value - subtrahendExpressionResult.value
-    new SubtractionExpressionResult(difference, minuendExpressionResult, subtrahendExpressionResult)
-  }
+  override def evaluate(): SubtractionExpressionResult = new SubtractionExpressionResult(
+    minuendExpression.evaluate(),
+    subtrahendExpression.evaluate()
+  )
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(minuendExpression)

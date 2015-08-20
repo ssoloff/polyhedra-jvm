@@ -39,28 +39,23 @@ sealed abstract class ExpressionResult[+A] {
   *
   * @constructor Creates a new addition expression result.
   *
-  * @param sum
-  *   The sum of the augend and the addend.
   * @param augendExpressionResult
   *   The augend expression result.
   * @param addendExpressionResult
   *   The addend expression result.
   */
 final class AdditionExpressionResult(
-    sum: Double,
     val augendExpressionResult: ExpressionResult[Double],
     val addendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override def equals(other: Any): Boolean = other match {
     case that: AdditionExpressionResult => addendExpressionResult == that.addendExpressionResult &&
-      augendExpressionResult == that.augendExpressionResult &&
-      value.compareTo(that.value) == 0
+      augendExpressionResult == that.augendExpressionResult
     case _ => false
   }
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(addendExpressionResult)
     .append(augendExpressionResult)
-    .append(value)
     .toHashCode
 
   // $COVERAGE-OFF$
@@ -71,7 +66,7 @@ final class AdditionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = sum
+  override lazy val value: Double = augendExpressionResult.value + addendExpressionResult.value
 }
 
 /** The result of an array expression.
@@ -101,7 +96,7 @@ final class ArrayExpressionResult[A](val expressionResults: Seq[ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override val value: Seq[A] = expressionResults.map(_.value)
+  override lazy val value: Seq[A] = expressionResults.map(_.value)
 }
 
 /** An result of a constant expression.
@@ -156,28 +151,23 @@ final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
   *
   * @constructor Creates a new division expression result.
   *
-  * @param quotient
-  *   The quotient of the dividend and the divisor.
   * @param dividendExpressionResult
   *   The dividend expression result.
   * @param divisorExpressionResult
   *   The divisor expression result.
   */
 final class DivisionExpressionResult(
-    quotient: Double,
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override def equals(other: Any): Boolean = other match {
     case that: DivisionExpressionResult => dividendExpressionResult == that.dividendExpressionResult &&
-      divisorExpressionResult == that.divisorExpressionResult &&
-      value.compareTo(that.value) == 0
+      divisorExpressionResult == that.divisorExpressionResult
     case _ => false
   }
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(dividendExpressionResult)
     .append(divisorExpressionResult)
-    .append(value)
     .toHashCode
 
   // $COVERAGE-OFF$
@@ -188,7 +178,7 @@ final class DivisionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = quotient
+  override lazy val value: Double = dividendExpressionResult.value / divisorExpressionResult.value
 }
 
 /** The result of an expression that calls a function.
@@ -258,35 +248,30 @@ final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override val value: A = childExpressionResult.value
+  override lazy val value: A = childExpressionResult.value
 }
 
 /** The result of an expression that modulos two expressions.
   *
   * @constructor Creates a new modulo expression result.
   *
-  * @param remainder
-  *   The remainder of the division of the dividend and the divisor.
   * @param dividendExpressionResult
   *   The dividend expression result.
   * @param divisorExpressionResult
   *   The divisor expression result.
   */
 final class ModuloExpressionResult(
-    remainder: Double,
     val dividendExpressionResult: ExpressionResult[Double],
     val divisorExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override def equals(other: Any): Boolean = other match {
     case that: ModuloExpressionResult => dividendExpressionResult == that.dividendExpressionResult &&
-      divisorExpressionResult == that.divisorExpressionResult &&
-      value.compareTo(that.value) == 0
+      divisorExpressionResult == that.divisorExpressionResult
     case _ => false
   }
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(dividendExpressionResult)
     .append(divisorExpressionResult)
-    .append(value)
     .toHashCode
 
   // $COVERAGE-OFF$
@@ -297,35 +282,30 @@ final class ModuloExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = remainder
+  override lazy val value: Double = dividendExpressionResult.value % divisorExpressionResult.value
 }
 
 /** The result of an expression that multiplies two expressions.
   *
   * @constructor Creates a new multiplication expression result.
   *
-  * @param product
-  *   The product of the multiplicand and the multiplier.
   * @param multiplicandExpressionResult
   *   The multiplicand expression result.
   * @param multiplierExpressionResult
   *   The multiplier expression result.
   */
 final class MultiplicationExpressionResult(
-    product: Double,
     val multiplicandExpressionResult: ExpressionResult[Double],
     val multiplierExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override def equals(other: Any): Boolean = other match {
     case that: MultiplicationExpressionResult => multiplicandExpressionResult == that.multiplicandExpressionResult &&
-      multiplierExpressionResult == that.multiplierExpressionResult &&
-      value.compareTo(that.value) == 0
+      multiplierExpressionResult == that.multiplierExpressionResult
     case _ => false
   }
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(multiplicandExpressionResult)
     .append(multiplierExpressionResult)
-    .append(value)
     .toHashCode
 
   // $COVERAGE-OFF$
@@ -336,7 +316,7 @@ final class MultiplicationExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = product
+  override lazy val value: Double = multiplicandExpressionResult.value * multiplierExpressionResult.value
 }
 
 /** The result of an expression that negates another expression.
@@ -361,7 +341,7 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = -childExpressionResult.value
+  override lazy val value: Double = -childExpressionResult.value
 }
 
 /** The result of an expression that applies another expression.
@@ -386,35 +366,30 @@ final class PositiveExpressionResult(val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = childExpressionResult.value
+  override lazy val value: Double = childExpressionResult.value
 }
 
 /** The result of an expression that subtracts two expressions.
   *
   * @constructor Creates a new subtraction expression result.
   *
-  * @param difference
-  *   The difference between the minuend and the subtrahend.
   * @param minuendExpressionResult
   *   The minuend expression result.
   * @param subtrahendExpressionResult
   *   The subtrahend expression result.
   */
 final class SubtractionExpressionResult(
-    difference: Double,
     val minuendExpressionResult: ExpressionResult[Double],
     val subtrahendExpressionResult: ExpressionResult[Double]) extends ExpressionResult[Double] {
   override def equals(other: Any): Boolean = other match {
     case that: SubtractionExpressionResult => minuendExpressionResult == that.minuendExpressionResult &&
-      subtrahendExpressionResult == that.subtrahendExpressionResult &&
-      value.compareTo(that.value) == 0
+      subtrahendExpressionResult == that.subtrahendExpressionResult
     case _ => false
   }
 
   override def hashCode(): Int = new HashCodeBuilder()
     .append(minuendExpressionResult)
     .append(subtrahendExpressionResult)
-    .append(value)
     .toHashCode
 
   // $COVERAGE-OFF$
@@ -425,6 +400,6 @@ final class SubtractionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = difference
+  override lazy val value: Double = minuendExpressionResult.value - subtrahendExpressionResult.value
 }
 

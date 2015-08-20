@@ -35,10 +35,9 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return sum") {
-        val sum = 7.0
-        val expressionResult = new AdditionExpressionResult(sum, four, three)
+        val expressionResult = new AdditionExpressionResult(four, three)
 
-        expressionResult.value should equal (sum)
+        expressionResult.value should equal (7.0)
       }
     }
   }
@@ -107,10 +106,9 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return quotient") {
-        val quotient = 0.75
-        val expressionResult = new DivisionExpressionResult(quotient, three, four)
+        val expressionResult = new DivisionExpressionResult(three, four)
 
-        expressionResult.value should equal (quotient)
+        expressionResult.value should equal (0.75)
       }
     }
   }
@@ -158,10 +156,9 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return remainder") {
-        val remainder = 1.0
-        val expressionResult = new ModuloExpressionResult(remainder, four, three)
+        val expressionResult = new ModuloExpressionResult(four, three)
 
-        expressionResult.value should equal (remainder)
+        expressionResult.value should equal (1.0)
       }
     }
   }
@@ -173,10 +170,9 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return product") {
-        val product = 12.0
-        val expressionResult = new MultiplicationExpressionResult(product, four, three)
+        val expressionResult = new MultiplicationExpressionResult(four, three)
 
-        expressionResult.value should equal (product)
+        expressionResult.value should equal (12.0)
       }
     }
   }
@@ -216,10 +212,9 @@ final class ExpressionResultSpec extends FunSpec with Matchers with Dice with Eq
 
     describe("#value") {
       it("should return difference") {
-        val difference = 1.0
-        val expressionResult = new SubtractionExpressionResult(difference, four, three)
+        val expressionResult = new SubtractionExpressionResult(four, three)
 
-        expressionResult.value should equal (difference)
+        expressionResult.value should equal (1.0)
       }
     }
   }

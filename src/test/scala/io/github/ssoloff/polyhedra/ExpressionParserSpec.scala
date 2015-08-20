@@ -24,7 +24,7 @@ package io.github.ssoloff.polyhedra
 
 import org.scalatest.{FunSpec, Matchers, TryValues}
 
-final class ExpressionParserSpec extends FunSpec with Matchers with TryValues {
+final class ExpressionParserSpec extends FunSpec with Matchers with TryValues with RandomNumberGenerators {
   val one = new ConstantExpression(1.0)
   val two = new ConstantExpression(2.0)
   val three = new ConstantExpression(3.0)
@@ -35,6 +35,18 @@ final class ExpressionParserSpec extends FunSpec with Matchers with TryValues {
       describe("when source is empty") {
         it("should return an exception") {
           ExpressionParser.parse("").failure.exception shouldBe an [IllegalArgumentException] // scalastyle:ignore no.whitespace.before.left.bracket
+        }
+      }
+
+      describe("when a custom context is specified") {
+        it("should use the dice bag in the context") {
+          val bag = new Bag(AlwaysMinimumRandomNumberGenerator)
+          val context = new ExpressionParser.Context(bag, Map())
+
+          val expression = ExpressionParser.parse("3d6", context)
+
+          val expressionResultValue = expression map (_.evaluate()) map (_.value)
+          expressionResultValue.success.value should equal (3.0)
         }
       }
 

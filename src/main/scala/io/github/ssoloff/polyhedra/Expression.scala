@@ -55,7 +55,7 @@ final class AdditionExpression(
     case _ => false
   }
 
-  override def evaluate(): AdditionExpressionResult = new AdditionExpressionResult(
+  def evaluate(): AdditionExpressionResult = new AdditionExpressionResult(
     augendExpression.evaluate(),
     addendExpression.evaluate()
   )
@@ -89,7 +89,7 @@ final class ArrayExpression[A](val expressions: Seq[Expression[A]]) extends Expr
     case _ => false
   }
 
-  override def evaluate(): ArrayExpressionResult[A] = {
+  def evaluate(): ArrayExpressionResult[A] = {
     new ArrayExpressionResult(expressions.map(_.evaluate()))
   }
 
@@ -115,7 +115,7 @@ final class ConstantExpression(val constant: Double) extends Expression[Double] 
     case _ => false
   }
 
-  override def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
+  def evaluate(): ConstantExpressionResult = new ConstantExpressionResult(constant)
 
   override def hashCode(): Int = new HashCodeBuilder().append(constant).toHashCode
 
@@ -139,7 +139,7 @@ final class DieExpression(val die: Die) extends Expression[Die] {
     case _ => false
   }
 
-  override def evaluate(): DieExpressionResult = new DieExpressionResult(die)
+  def evaluate(): DieExpressionResult = new DieExpressionResult(die)
 
   override def hashCode(): Int = new HashCodeBuilder().append(die).toHashCode
 
@@ -168,7 +168,7 @@ final class DivisionExpression(
     case _ => false
   }
 
-  override def evaluate(): DivisionExpressionResult = new DivisionExpressionResult(
+  def evaluate(): DivisionExpressionResult = new DivisionExpressionResult(
     dividendExpression.evaluate(),
     divisorExpression.evaluate()
   )
@@ -213,7 +213,7 @@ final class FunctionCallExpression[T, R](
     case _ => false
   }
 
-  override def evaluate(): FunctionCallExpressionResult[R] = {
+  def evaluate(): FunctionCallExpressionResult[R] = {
     val argumentListExpressionResults = argumentListExpressions map (_.evaluate())
     val argumentList = argumentListExpressionResults map (_.value)
     val returnValue = func(argumentList)
@@ -251,7 +251,7 @@ final class GroupExpression[A](val childExpression: Expression[A]) extends Expre
     case _ => false
   }
 
-  override def evaluate(): GroupExpressionResult[A] = {
+  def evaluate(): GroupExpressionResult[A] = {
     new GroupExpressionResult(childExpression.evaluate())
   }
 
@@ -282,7 +282,7 @@ final class ModuloExpression(
     case _ => false
   }
 
-  override def evaluate(): ModuloExpressionResult = new ModuloExpressionResult(
+  def evaluate(): ModuloExpressionResult = new ModuloExpressionResult(
     dividendExpression.evaluate(),
     divisorExpression.evaluate()
   )
@@ -318,7 +318,7 @@ final class MultiplicationExpression(
     case _ => false
   }
 
-  override def evaluate(): MultiplicationExpressionResult = new MultiplicationExpressionResult(
+  def evaluate(): MultiplicationExpressionResult = new MultiplicationExpressionResult(
     multiplicandExpression.evaluate(),
     multiplierExpression.evaluate()
   )
@@ -349,7 +349,7 @@ final class NegativeExpression(val childExpression: Expression[Double]) extends 
     case _ => false
   }
 
-  override def evaluate(): NegativeExpressionResult = {
+  def evaluate(): NegativeExpressionResult = {
     new NegativeExpressionResult(childExpression.evaluate())
   }
 
@@ -375,7 +375,7 @@ final class PositiveExpression(val childExpression: Expression[Double]) extends 
     case _ => false
   }
 
-  override def evaluate(): PositiveExpressionResult = {
+  def evaluate(): PositiveExpressionResult = {
     new PositiveExpressionResult(childExpression.evaluate())
   }
 
@@ -406,7 +406,7 @@ final class SubtractionExpression(
     case _ => false
   }
 
-  override def evaluate(): SubtractionExpressionResult = new SubtractionExpressionResult(
+  def evaluate(): SubtractionExpressionResult = new SubtractionExpressionResult(
     minuendExpression.evaluate(),
     subtrahendExpression.evaluate()
   )

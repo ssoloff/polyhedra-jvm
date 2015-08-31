@@ -66,7 +66,7 @@ final class AdditionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = augendExpressionResult.value + addendExpressionResult.value
+  lazy val value: Double = augendExpressionResult.value + addendExpressionResult.value
 }
 
 /** The result of an array expression.
@@ -96,7 +96,7 @@ final class ArrayExpressionResult[A](val expressionResults: Seq[ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Seq[A] = expressionResults.map(_.value)
+  lazy val value: Seq[A] = expressionResults.map(_.value)
 }
 
 /** An result of a constant expression.
@@ -120,7 +120,7 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
     ")"
   // $COVERAGE-ON$
 
-  override val value: Double = constant
+  val value: Double = constant
 }
 
 /** The result of a die expression.
@@ -144,7 +144,7 @@ final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
     ")"
   // $COVERAGE-ON$
 
-  override val value: Die = die
+  val value: Die = die
 }
 
 /** The result of an expression that divides two expressions.
@@ -178,7 +178,7 @@ final class DivisionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = dividendExpressionResult.value / divisorExpressionResult.value
+  lazy val value: Double = dividendExpressionResult.value / divisorExpressionResult.value
 }
 
 /** The result of an expression that calls a function.
@@ -220,7 +220,7 @@ final class FunctionCallExpressionResult[A](
     ")"
   // $COVERAGE-ON$
 
-  override val value: A = returnValue
+  val value: A = returnValue
 }
 
 /** The result of an expression that groups another expression.
@@ -248,7 +248,7 @@ final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: A = childExpressionResult.value
+  lazy val value: A = childExpressionResult.value
 }
 
 /** The result of an expression that modulos two expressions.
@@ -282,7 +282,7 @@ final class ModuloExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = dividendExpressionResult.value % divisorExpressionResult.value
+  lazy val value: Double = dividendExpressionResult.value % divisorExpressionResult.value
 }
 
 /** The result of an expression that multiplies two expressions.
@@ -316,7 +316,7 @@ final class MultiplicationExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = multiplicandExpressionResult.value * multiplierExpressionResult.value
+  lazy val value: Double = multiplicandExpressionResult.value * multiplierExpressionResult.value
 }
 
 /** The result of an expression that negates another expression.
@@ -341,7 +341,7 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = -childExpressionResult.value
+  lazy val value: Double = -childExpressionResult.value
 }
 
 /** The result of an expression that applies another expression.
@@ -366,7 +366,7 @@ final class PositiveExpressionResult(val childExpressionResult: ExpressionResult
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = childExpressionResult.value
+  lazy val value: Double = childExpressionResult.value
 }
 
 /** The result of an expression that subtracts two expressions.
@@ -400,6 +400,6 @@ final class SubtractionExpressionResult(
     ")"
   // $COVERAGE-ON$
 
-  override lazy val value: Double = minuendExpressionResult.value - subtrahendExpressionResult.value
+  lazy val value: Double = minuendExpressionResult.value - subtrahendExpressionResult.value
 }
 

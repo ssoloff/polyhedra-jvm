@@ -22,7 +22,7 @@
 
 package io.github.ssoloff.polyhedra
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
+import java.util.Objects
 
 /** A dice expression result.
   *
@@ -53,10 +53,10 @@ final class AdditionExpressionResult(
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(addendExpressionResult)
-    .append(augendExpressionResult)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    addendExpressionResult,
+    augendExpressionResult
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "AdditionExpressionResult(" +
@@ -87,7 +87,7 @@ final class ArrayExpressionResult[A](val expressionResults: Seq[ExpressionResult
     }
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(expressionResults).toHashCode
+  override def hashCode(): Int = Objects.hash(expressionResults)
 
   // $COVERAGE-OFF$
   override def toString: String = "ArrayExpressionResult(" +
@@ -112,7 +112,7 @@ final class ConstantExpressionResult(constant: Double) extends ExpressionResult[
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(value).toHashCode
+  override def hashCode(): Int = Objects.hash(Double.box(value))
 
   // $COVERAGE-OFF$
   override def toString: String = "ConstantExpressionResult(" +
@@ -136,7 +136,7 @@ final class DieExpressionResult(die: Die) extends ExpressionResult[Die] {
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(value).toHashCode
+  override def hashCode(): Int = Objects.hash(value)
 
   // $COVERAGE-OFF$
   override def toString: String = "DieExpressionResult(" +
@@ -165,10 +165,10 @@ final class DivisionExpressionResult(
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(dividendExpressionResult)
-    .append(divisorExpressionResult)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    dividendExpressionResult,
+    divisorExpressionResult
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "DivisionExpressionResult(" +
@@ -206,11 +206,11 @@ final class FunctionCallExpressionResult[A](
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(argumentListExpressionResults)
-    .append(name)
-    .append(value)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    argumentListExpressionResults,
+    name,
+    value.asInstanceOf[AnyRef]
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "FunctionCallExpressionResult(" +
@@ -239,7 +239,7 @@ final class GroupExpressionResult[A](val childExpressionResult: ExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(childExpressionResult).toHashCode
+  override def hashCode(): Int = Objects.hash(childExpressionResult)
 
   // $COVERAGE-OFF$
   override def toString: String = "GroupExpressionResult(" +
@@ -269,10 +269,10 @@ final class ModuloExpressionResult(
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(dividendExpressionResult)
-    .append(divisorExpressionResult)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    dividendExpressionResult,
+    divisorExpressionResult
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "ModuloExpressionResult(" +
@@ -303,10 +303,10 @@ final class MultiplicationExpressionResult(
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(multiplicandExpressionResult)
-    .append(multiplierExpressionResult)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    multiplicandExpressionResult,
+    multiplierExpressionResult
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "MultiplicationExpressionResult(" +
@@ -332,7 +332,7 @@ final class NegativeExpressionResult(val childExpressionResult: ExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(childExpressionResult).toHashCode
+  override def hashCode(): Int = Objects.hash(childExpressionResult)
 
   // $COVERAGE-OFF$
   override def toString: String = "NegativeExpressionResult(" +
@@ -357,7 +357,7 @@ final class PositiveExpressionResult(val childExpressionResult: ExpressionResult
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(childExpressionResult).toHashCode
+  override def hashCode(): Int = Objects.hash(childExpressionResult)
 
   // $COVERAGE-OFF$
   override def toString: String = "PositiveExpressionResult(" +
@@ -387,10 +387,10 @@ final class SubtractionExpressionResult(
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder()
-    .append(minuendExpressionResult)
-    .append(subtrahendExpressionResult)
-    .toHashCode
+  override def hashCode(): Int = Objects.hash(
+    minuendExpressionResult,
+    subtrahendExpressionResult
+  )
 
   // $COVERAGE-OFF$
   override def toString: String = "SubtractionExpressionResult(" +

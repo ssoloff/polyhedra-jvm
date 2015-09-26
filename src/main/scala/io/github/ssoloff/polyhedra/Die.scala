@@ -22,7 +22,7 @@
 
 package io.github.ssoloff.polyhedra
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
+import java.util.Objects
 
 /** A die.
   *
@@ -51,7 +51,7 @@ final class Die(val sides: Int, randomNumberGenerator: Die.RandomNumberGenerator
     case _ => false
   }
 
-  override def hashCode(): Int = new HashCodeBuilder().append(sides).toHashCode
+  override def hashCode(): Int = Objects.hash(Int.box(sides))
 
   /** Returns the result of rolling the die.
     *
